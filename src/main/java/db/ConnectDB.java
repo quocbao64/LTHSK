@@ -10,7 +10,7 @@ public class ConnectDB {
 
 	private ConnectDB() {
 		try {
-			String url = "jdbc:sqlserver://DESKTOP-90JUIDQ\\SON:1433;databaseName=QLST;trustServerCertificate=true";
+			String url = "jdbc:sqlserver://localhost:1433;databaseName=QLST;trustServerCertificate=true";
 			connection = DriverManager.getConnection(url , "sa", "sapassword");
 		} catch (SQLException e) {
 			e.printStackTrace();

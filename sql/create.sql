@@ -5,7 +5,7 @@ GO
 USE QLST
 
 GO
-CREATE TABLE Person(
+CREATE TABLE Users(
 	ID int PRIMARY KEY NOT NULL,
 	Name NVARCHAR(30) NOT NULL,
 	Gender BIT,
@@ -24,7 +24,7 @@ CREATE TABLE Orders(
 	OrderDate DATE,
 	TotalPrice double PRECISION NOT NULL,
 	DisCount double PRECISION,
-	PersonID int FOREIGN KEY REFERENCES Person(ID) NOT NULL
+	UsersID int FOREIGN KEY REFERENCES Users(ID) NOT NULL
 )
 
 GO
@@ -63,7 +63,7 @@ CREATE TABLE CartItem(
 
 -- Nam: 0, Nu:1
 GO
-INSERT INTO [dbo].[Person]([ID],[Name],[Gender],[Gmail],[Phone],[Address],[BirthDate],[HireDate],[Role],[Password]) VALUES
+INSERT INTO [dbo].[Users]([ID],[Name],[Gender],[Gmail],[Phone],[Address],[BirthDate],[HireDate],[Role],[Password]) VALUES
 			(1,N'Nguyễn Phương Thảo',1,'nguyenphuongthao01@gmail.com','0902121940',N'727/942 Trần Hưng Đạo P.1 Quận 5 TP.Hồ Chí Minh','1997-2-23','2021-6-10','ROLE_EMPLOYEE','pass123'),
 			(2,N'Trần Trọng Hải Minh',0,'trantronghaiminh02@gmail.com','0918335697',N'1333/9 Huỳnh Tấn Phát Quận 7 TP.Hồ Chí Minh','1994-8-20','2021-4-12','ROLE_EMPLOYEE','pass123'),
 			(3,N'Phạm Nhàn',1,'phamnhan03@gmail.com','0302121900',N'Ân Phong Cầu Giấy TP.Hà Nội','1999-3-20','2021-2-22','ROLE_EMPLOYEE','pass123'),
@@ -80,7 +80,7 @@ INSERT INTO [dbo].[Person]([ID],[Name],[Gender],[Gmail],[Phone],[Address],[Birth
 
 -- discount = 0, cô hỏi thì bảo là ko có chương trình giảm giá 
 GO
-INSERT INTO [dbo].[Orders]([ID],[OrderDate],[TotalPrice],[DisCount],[PersonID]) VALUES
+INSERT INTO [dbo].[Orders]([ID],[OrderDate],[TotalPrice],[DisCount],[UsersID]) VALUES
            (1001,'2022-11-10',100000,0,12),
 		   (1002,'2022-11-10',200000,0,12),
 		   (1003,'2022-11-10',300000,0,12),
@@ -192,7 +192,7 @@ INSERT INTO [dbo].[CartItem]([ID],[Quantity],[OrdersID],[ProductID]) VALUES
 
 
 go
-select * from Person
+select * from Users
 select * from Orders
 select * from Categories
 select * from Suppliers
@@ -200,7 +200,5 @@ select * from Product
 select * from CartItem
 
 
-
-
-
-
+update into Users
+set values
