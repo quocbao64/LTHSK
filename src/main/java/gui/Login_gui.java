@@ -63,7 +63,7 @@ public class Login_gui extends JFrame implements ActionListener {
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("image\\login-1.png"));
-		lblNewLabel.setBounds(0, 25, 153, 128);
+		lblNewLabel.setBounds(10, 25, 153, 128);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1_4_2 = new JLabel("Nhập gmail");
@@ -89,7 +89,7 @@ public class Login_gui extends JFrame implements ActionListener {
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tfPassword.setColumns(10);
 		tfPassword.setBackground(Color.WHITE);
-		tfPassword.setBounds(289, 76, 204, 32);
+		tfPassword.setBounds(289, 76, 171, 32);
 		contentPane.add(tfPassword);
 		
 		btnLogin = new JButton("Đăng nhập");
@@ -103,6 +103,11 @@ public class Login_gui extends JFrame implements ActionListener {
 		btnExit.setBackground(UIManager.getColor("Button.background"));
 		btnExit.setBounds(175, 128, 100, 25);
 		contentPane.add(btnExit);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon("image\\password.png"));
+		btnNewButton.setBounds(458, 76, 34, 32);
+		contentPane.add(btnNewButton);
 		
 		btnLogin.addActionListener(this);
 		btnExit.addActionListener(this);
