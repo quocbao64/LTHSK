@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.Categories;
 
@@ -39,5 +41,19 @@ public class CategoriesDAO {
             return categories;
         }
         return null;
+    }
+    
+    public List<Categories> getListCategories() throws SQLException {
+    	String sql = "select * from Categories";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        List<Categories> listCategories = new ArrayList<Categories>();
+        while (rs.next()) {
+            Categories categories = new Categories(
+                    rs.getInt("ID"),
+                    rs.getString("Name"));
+            listCategories.add(categories);
+        }
+        return listCategories;
     }
 }

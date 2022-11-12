@@ -69,9 +69,9 @@ public class CartItemDAO {
     // return false;
     // }
 
-    public List<CartItem> getListProducts() throws SQLException {
+    public List<CartItem> getListCartItem() throws SQLException {
         List<CartItem> listCartItem = new ArrayList<CartItem>();
-        String sql = "Select * from Product";
+        String sql = "Select * from CartItem";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
