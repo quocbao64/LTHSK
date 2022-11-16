@@ -6,6 +6,7 @@ import java.util.List;
 
 import dao.CategoriesDAO;
 import entity.Categories;
+import entity.Product;
 import service.CategoriesService;
 
 public class CategoriesServiceImpl implements CategoriesService {
@@ -16,14 +17,8 @@ public class CategoriesServiceImpl implements CategoriesService {
 		this.categoriesDAO = new CategoriesDAO(con);
 	}
 
-	public void addCategories(Categories categories) {
-		// TODO Auto-generated method stub
-		try {
-			categoriesDAO.addCategories(categories);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void addCategories(Categories categories) throws Exception {
+		categoriesDAO.addCategories(categories);
 	}
 
 	public Categories searchCategories(int ID) {
@@ -47,5 +42,51 @@ public class CategoriesServiceImpl implements CategoriesService {
 		}
 		return null;
 	}
+
+	@Override
+	public List<Product> getListProductNullCategories() {
+		try {
+			return categoriesDAO.getListProductNullCategories();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Product> getListProductByCategoriesID(int id) {
+		try {
+			return categoriesDAO.getListProductByCategoriesID(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean DelCategories(int id) {
+		try {
+			return categoriesDAO.DelCategories(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean UpdateCategories(Categories c) {
+		try {
+			return categoriesDAO.UpdateCategories(c);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	
 
 }

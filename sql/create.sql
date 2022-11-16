@@ -30,16 +30,16 @@ CREATE TABLE Orders(
 GO
 CREATE TABLE Categories(
 	ID int PRIMARY KEY NOT NULL,
-	Name NVARCHAR(30) NOT NULL,
+	Name NVARCHAR(100) NOT NULL,
 )
 
 GO
 CREATE TABLE Suppliers(
 	ID int PRIMARY KEY NOT NULL,
-	Name NVARCHAR(30) NOT NULL,
+	Name NVARCHAR(100) NOT NULL,
 	Gmail VARCHAR(50),
 	Phone VARCHAR(10) NOT NULL,
-	Address NVARCHAR(100)
+	Address NVARCHAR(150)
 )
 
 GO
@@ -61,7 +61,7 @@ CREATE TABLE CartItem(
 
 
 
--- Nam: 0, Nu:1
+-- Nam: 1, Nu:0
 GO
 INSERT INTO [dbo].[Users]([ID],[Name],[Gender],[Gmail],[Phone],[Address],[BirthDate],[HireDate],[Role],[Password]) VALUES
 			(1,N'Nguyễn Phương Thảo',1,'nguyenphuongthao01@gmail.com','0902121940',N'727/942 Trần Hưng Đạo P.1 Quận 5 TP.Hồ Chí Minh','1997-2-23','2021-6-10','ROLE_EMPLOYEE','pass123'),

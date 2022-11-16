@@ -16,6 +16,8 @@ public class ProductDAO {
 
     public ProductDAO(Connection con) {
         this.con = con;
+        suppliersDAO = new SuppliersDAO(con);
+        categoriesDAO = new CategoriesDAO(con);
     }
 
     public void addProduct(Product product) throws Exception {
