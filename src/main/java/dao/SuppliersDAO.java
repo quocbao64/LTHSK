@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import entity.Categories;
 import entity.Suppliers;
 
 public class SuppliersDAO {
@@ -46,4 +49,23 @@ public class SuppliersDAO {
         }
         return null;
     }
+    
+    public List<Suppliers> getListSuppliers() throws SQLException {
+    	String sql = "select * from Suppliers";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        List<Suppliers> listSuppliers = new ArrayList<Suppliers>();
+        while (rs.next()) {
+        	Suppliers suppliers = new Suppliers(
+                    rs.getInt("ID"),
+                    rs.getString("Name"),
+                    rs.getString("Gmail"),
+        			rs.getString("Phone"),
+        			rs.getString("Address")
+        			);
+            listSuppliers.add(suppliers);
+        }
+        return listSuppliers;
+    }
+    
 }

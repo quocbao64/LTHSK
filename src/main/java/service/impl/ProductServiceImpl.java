@@ -16,14 +16,8 @@ public class ProductServiceImpl implements ProductService {
 		this.productDAO = new ProductDAO(con);
 	}
 
-	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		try {
-			productDAO.addProduct(product);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void addProduct(Product product) throws Exception{
+		productDAO.addProduct(product);
 	}
 
 	public Product searchProduct(int ID) {
@@ -33,8 +27,9 @@ public class ProductServiceImpl implements ProductService {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+		
 	}
 
 	public boolean updateProduct(Product product) {
@@ -44,8 +39,9 @@ public class ProductServiceImpl implements ProductService {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
+		
 	}
 
 	public List<Product> getListProducts() {
@@ -55,8 +51,19 @@ public class ProductServiceImpl implements ProductService {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+		
+	}
+
+	@Override
+	public boolean DelProduct(int id) {
+		try {
+			return productDAO.DelProduct(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
 	}
 
 }

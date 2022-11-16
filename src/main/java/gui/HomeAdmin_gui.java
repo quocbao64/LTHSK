@@ -15,9 +15,11 @@ import entity.CartItem;
 import entity.Categories;
 import entity.Product;
 import model.CategoriesTableModel;
+import model.ProductTableModel;
 import service.CategoriesService;
 import service.impl.CategoriesServiceImpl;
 import service.impl.ProductServiceImpl;
+import service.impl.SuppliersServiceImpl;
 
 import java.awt.Component;
 import javax.swing.ImageIcon;
@@ -26,6 +28,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -114,9 +117,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JButton btnDetailOrder;
 	private JButton btnDetailItem;
 	private JComboBox comboBox;
-	private CategoriesServiceImpl categoriesService;
+	private CategoriesServiceImpl categoriesServiceImpl;
 	private CategoriesTableModel model_category;
-	private String[] headline_1;
 	private List<Product> listProductCategory;
 	private JButton btnNewButton_2_1_1_1_1_2_1;
 	private JButton btnNewButton_2_1_2_1;
@@ -126,6 +128,21 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JButton btnNewButton_3_2;
 	private JComboBox comboBox_3_1_5;
 	private JComboBox comboBox_3_1_4;
+	private String[] headline_3;
+	private List<Product> listProduct;
+	private ProductTableModel model_product;
+	private String[] headline_2;
+	private JComboBox comboBox_1;
+	private JComboBox comboBox_1_1;
+	private ArrayList comboBox_1Content;
+	private ArrayList comboBox_1_1Content;
+	private ProductServiceImpl productServiceImpl;
+	private SuppliersServiceImpl suppliersServiceImpl;
+	private JButton btnNewButton_2_1_2_2;
+	private JButton btnNewButton_2_1_1_2_1_2;
+	private JButton btnNewButton_2_1_1_1_1_2_2;
+	private JButton btnNewButton_2_1_1_3_2;
+	private JButton btnNewButton_3_3;
 
 	/**
 	 * Launch the application.
@@ -209,6 +226,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+// Service
+		categoriesServiceImpl = new CategoriesServiceImpl(ConnectDB.getInstance().getConnection());
+		productServiceImpl = new ProductServiceImpl(ConnectDB.getInstance().getConnection());
+		suppliersServiceImpl = new SuppliersServiceImpl(ConnectDB.getInstance().getConnection());
+
+// List 
+		listProductCategory = categoriesServiceImpl.getListProductNullCategories();
+		listProduct = productServiceImpl.getListProducts();
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 35, 1066, 646);
@@ -360,6 +386,11 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_3_1.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3_1.setBounds(1009, 18, 42, 25);
 		panel.add(btnNewButton_3_1);
+
+		JButton btnNewButton_6 = new JButton("Xuất danh sách sản phẩm");
+		btnNewButton_6.setIcon(new ImageIcon("image\\xml.png"));
+		btnNewButton_6.setBounds(10, 247, 205, 28);
+		panel.add(btnNewButton_6);
 
 		JPanel panel_1_2_2 = new JPanel();
 		panel_1_2_2.setLayout(null);
@@ -1043,10 +1074,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_1_1_2_1.addActionListener(this);
 
 		// thêm tên loại hàng vào comboBox
-		categoriesService = new CategoriesServiceImpl(ConnectDB.getInstance().getConnection());
 		comboBoxContent = new ArrayList<>();
 		comboBoxContent.add("All");
-		categoriesService.getListCategories().forEach(i -> {
+		categoriesServiceImpl.getListCategories().forEach(i -> {
 			comboBoxContent.add(i.getName());
 		});
 		comboBox = new JComboBox(comboBoxContent.toArray());
@@ -1073,7 +1103,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_33.setBounds(134, 95, 42, 32);
 		panel_5_1_1.add(textField_33);
 
-		textField_33.setText((categoriesService.getListProductNullCategories().size()) + "");
+		textField_33.setText((categoriesServiceImpl.getListProductNullCategories().size()) + "");
 
 		JLabel lblQunLHa_1 = new JLabel("Quản Lý Loại Hàng");
 		lblQunLHa_1.setForeground(new Color(128, 0, 255));
@@ -1097,9 +1127,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_6_1_1.add(scrollPane_1_1);
 
 		// table_catagory
-		headline_1 = new String[] { "Mã sản phẩm", "Tên sản phẩm", "Mã nhà cung cấp", "Mã loại hàng", "Giá sản phẩm" };
-		listProductCategory = categoriesService.getListProductNullCategories();
-		model_category = new CategoriesTableModel(listProductCategory, headline_1);
+		headline_2 = new String[] { "Mã sản phẩm", "Tên sản phẩm", "Mã nhà cung cấp", "Mã loại hàng", "Giá sản phẩm" };
+		model_category = new CategoriesTableModel(listProductCategory, headline_2);
 
 		table_2 = new JTable(model_category);
 		table_2.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -1113,10 +1142,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int index = table_2.getSelectedRow();
-				updateCom(index);
+				updateCom_2(index);
 			}
 
-			private void updateCom(int index) {
+			private void updateCom_2(int index) {
 				textField_11.setText(listProductCategory.get(index).getCategories().getID() + "");
 				textField_12.setText(listProductCategory.get(index).getCategories().getName());
 			}
@@ -1169,7 +1198,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_7_1_1_2.setBounds(772, 161, 257, 45);
 		panel_5_1_2.add(panel_7_1_1_2);
 
-		JButton btnNewButton_2_1_2_2 = new JButton("");
+		btnNewButton_2_1_2_2 = new JButton("");
 		btnNewButton_2_1_2_2.setIcon(new ImageIcon("image\\add1.png"));
 		btnNewButton_2_1_2_2.setToolTipText("Thêm mới vào danh sách");
 		btnNewButton_2_1_2_2.setForeground(Color.BLACK);
@@ -1177,8 +1206,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_2_2.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_2_2.setBounds(10, 10, 52, 32);
 		panel_7_1_1_2.add(btnNewButton_2_1_2_2);
+		btnNewButton_2_1_2_2.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_3_2 = new JButton("");
+		btnNewButton_2_1_1_3_2 = new JButton("");
 		btnNewButton_2_1_1_3_2.setIcon(new ImageIcon("image\\edit.png"));
 		btnNewButton_2_1_1_3_2.setToolTipText("Chỉnh sửa dòng đang chọn");
 		btnNewButton_2_1_1_3_2.setForeground(Color.BLACK);
@@ -1186,8 +1216,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_3_2.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_3_2.setBounds(134, 10, 52, 32);
 		panel_7_1_1_2.add(btnNewButton_2_1_1_3_2);
+		btnNewButton_2_1_1_3_2.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_2_1_2 = new JButton("");
+		btnNewButton_2_1_1_2_1_2 = new JButton("");
 		btnNewButton_2_1_1_2_1_2.setIcon(new ImageIcon("image\\delete.png"));
 		btnNewButton_2_1_1_2_1_2.setToolTipText("Xóa dòng đang chọn");
 		btnNewButton_2_1_1_2_1_2.setForeground(Color.BLACK);
@@ -1195,8 +1226,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_2_1_2.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_2_1_2.setBounds(72, 10, 52, 32);
 		panel_7_1_1_2.add(btnNewButton_2_1_1_2_1_2);
+		btnNewButton_2_1_1_2_1_2.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_1_1_2_2 = new JButton("");
+		btnNewButton_2_1_1_1_1_2_2 = new JButton("");
 		btnNewButton_2_1_1_1_1_2_2.setIcon(new ImageIcon("image\\clear.png"));
 		btnNewButton_2_1_1_1_1_2_2.setToolTipText("Làm rỗng các field");
 		btnNewButton_2_1_1_1_1_2_2.setForeground(Color.BLACK);
@@ -1204,6 +1236,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_1_1_2_2.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_1_1_2_2.setBounds(196, 10, 52, 32);
 		panel_7_1_1_2.add(btnNewButton_2_1_1_1_1_2_2);
+		btnNewButton_2_1_1_1_1_2_2.addActionListener(this);
 
 		JLabel lblNewLabel_1_4 = new JLabel("Mã sản phẩm");
 		lblNewLabel_1_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1254,23 +1287,38 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_16.setBounds(154, 122, 309, 32);
 		panel_5_1_2.add(textField_16);
 
-		JComboBox comboBox_1 = new JComboBox();
+		// comboBox nhà cung cấp - product
+		comboBox_1Content = new ArrayList<>();
+		comboBox_1Content.add("Null");
+		suppliersServiceImpl.getListSuppliers().forEach(i -> {
+			comboBox_1Content.add(i.getName());
+		});
+
+		comboBox_1 = new JComboBox(comboBox_1Content.toArray());
 		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBox_1.setBackground(SystemColor.menu);
 		comboBox_1.setBounds(680, 34, 309, 30);
 		panel_5_1_2.add(comboBox_1);
 
-		JComboBox comboBox_1_1 = new JComboBox();
+		// comboBox loại hàng - product
+		comboBox_1_1Content = new ArrayList<>();
+		comboBox_1_1Content.add("Null");
+		categoriesServiceImpl.getListCategories().forEach(i -> {
+			comboBox_1_1Content.add(i.getName());
+		});
+		comboBox_1_1 = new JComboBox(comboBox_1_1Content.toArray());
 		comboBox_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBox_1_1.setBackground(SystemColor.menu);
 		comboBox_1_1.setBounds(680, 79, 309, 30);
 		panel_5_1_2.add(comboBox_1_1);
 
+// chi tiết sản phẩm - product
 		btnDetailItem = new JButton("...");
 		btnDetailItem.setIcon(new ImageIcon("image\\info.png"));
 		btnDetailItem.setToolTipText("Xem chi tiết hơn");
 		btnDetailItem.setBounds(10, 174, 49, 32);
 		panel_5_1_2.add(btnDetailItem);
+		btnDetailItem.addActionListener(this);
 
 		JLabel lblQunLMt = new JLabel("Quản Lý Mặt Hàng");
 		lblQunLMt.setForeground(new Color(128, 0, 255));
@@ -1292,13 +1340,33 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		scrollPane_1_2.setBounds(10, 31, 1021, 270);
 		panel_6_1_2.add(scrollPane_1_2);
 
-		table_3 = new JTable();
+		// table Product
+		headline_3 = new String[] { "Mã sản phẩm", "Tên sản phẩm", "Mã nhà cung cấp", "Mã loại hàng", "Giá sản phẩm" };
+		model_product = new ProductTableModel(listProductCategory, headline_3);
+
+		table_3 = new JTable(model_product);
 		table_3.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table_3.setSelectionBackground(new Color(255, 255, 204));
 		table_3.setRowHeight(35);
 		table_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		table_3.setBackground(SystemColor.controlHighlight);
 		scrollPane_1_2.setViewportView(table_3);
+
+		table_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = table_3.getSelectedRow();
+				updateCom_3(index);
+			}
+
+			private void updateCom_3(int index) {
+				textField_9.setText(listProduct.get(index).getID() + "");
+				textField_10.setText(listProduct.get(index).getName());
+				textField_16.setText(listProduct.get(index).getPrice() + "");
+				comboBox_1_1.setSelectedIndex(listProduct.get(index).getSuppliers().getID());
+				comboBox_1.setSelectedIndex(listProduct.get(index).getSuppliers().getID());
+			}
+		});
 
 		JLabel lblNewLabel_3_1_5 = new JLabel("Sắp xếp theo");
 		lblNewLabel_3_1_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -1320,12 +1388,13 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_17.setBounds(878, 18, 132, 26);
 		panel_1_2.add(textField_17);
 
-		JButton btnNewButton_3_3 = new JButton("");
+		btnNewButton_3_3 = new JButton("");
 		btnNewButton_3_3.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_3_3.setIcon(new ImageIcon("image\\search.png"));
 		btnNewButton_3_3.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3_3.setBounds(1009, 18, 42, 25);
 		panel_1_2.add(btnNewButton_3_3);
+		btnNewButton_3_3.addActionListener(this);
 
 		JPanel panel_1_2_1_1 = new JPanel();
 		panel_1_2_1_1.setLayout(null);
@@ -1545,8 +1614,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 		this.setLocationRelativeTo(null);
 
-		btnDetailOrder.addActionListener(this);
-		btnDetailItem.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -1554,40 +1621,33 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		if (btnDetailOrder.equals(o)) {
 			new DetailOrder_gui().setVisible(true);
 		}
-		if (btnDetailItem.equals(o)) {
-			new DetailItem_gui().setVisible(true);
-		}
 
-		// Category
-
+// Event Category
 		// combobox category
 		if (o.equals(comboBox)) {
 			if (comboBox.getSelectedIndex() == 0) {
 				textField_11.setText("");
 				textField_12.setText("");
 				textField_11.setEditable(true);
-				listProductCategory = categoriesService.getListProductNullCategories();
-				model_category.setProducts(listProductCategory);
-				table_2.setModel(model_category);
+				
+				updateTableCategory();
+				
 				comboBox_3_1_4.setSelectedIndex(0);
-				table_2.updateUI();
-				textField_33.setText((categoriesService.getListProductNullCategories().size()) + "");
+				textField_33.setText((categoriesServiceImpl.getListProductNullCategories().size()) + "");
 				return;
 			}
-			for (int i = 1; i <= categoriesService.getListCategories().size(); i++) {
+			for (int i = 1; i <= categoriesServiceImpl.getListCategories().size(); i++) {
 				if (comboBox.getSelectedIndex() == i) {
-					listProductCategory = categoriesService.getListProductByCategoriesID(i);
-					model_category.setProducts(listProductCategory);
-
 					textField_11.setText(comboBox.getSelectedIndex() + "");
 					textField_12.setText(comboBox.getSelectedItem().toString());
 					textField_11.setEditable(false);
-
-					table_2.setModel(model_category);
 					comboBox_3_1_4.setSelectedIndex(0);
-					table_2.updateUI();
+					textField_33.setText((categoriesServiceImpl.getListProductByCategoriesID(i).size()) + "");
 					
-					textField_33.setText((categoriesService.getListProductByCategoriesID(i).size()) + "");
+					listProductCategory = categoriesServiceImpl.getListProductByCategoriesID(i);
+					model_category.setProducts(listProductCategory);
+					table_2.setModel(model_category);
+					table_2.updateUI();
 					return;
 				}
 			}
@@ -1617,7 +1677,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			}
 
 			try {
-				categoriesService.addCategories(new Categories(id, textField_12.getText()));
+				categoriesServiceImpl.addCategories(new Categories(id, textField_12.getText()));
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Thêm thất bại! \n Trùng\"Mã loại hàng hóa\"", "Quản Lý Siêu Thị",
 						2);
@@ -1636,7 +1696,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			int i = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa loại hàng \""
 					+ comboBoxContent.get(comboBox.getSelectedIndex()) + "\"?\n", "Quản Lý Siêu Thị", 2);
 			if (i == 0) {
-				boolean kq = categoriesService.DelCategories(comboBox.getSelectedIndex());
+				boolean kq = categoriesServiceImpl.DelCategories(comboBox.getSelectedIndex());
 
 				if (kq) {
 					JOptionPane.showMessageDialog(this, "Xóa thành công!", "Quản Lý Siêu Thị", 2);
@@ -1667,7 +1727,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			if (i == 0) {
 				Categories categories = new Categories(Integer.parseInt(textField_11.getText()),
 						textField_12.getText());
-				boolean kq = categoriesService.UpdateCategories(categories);
+				boolean kq = categoriesServiceImpl.UpdateCategories(categories);
 				if (kq) {
 					JOptionPane.showMessageDialog(this, "Sửa thành công!", "Quản Lý Siêu Thị", 2);
 					updateComboBoxCategory();
@@ -1689,7 +1749,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				return;
 			}
 
-			Categories categories = categoriesService.searchCategories(Integer.parseInt(textField_14.getText()));
+			Categories categories = categoriesServiceImpl.searchCategories(Integer.parseInt(textField_14.getText()));
 			if (categories == null) {
 				JOptionPane.showMessageDialog(this, "Mã hàng hóa \" " + textField_14.getText() + " \" không tồn tại!",
 						"Quản Lý Siêu Thị", 2);
@@ -1698,28 +1758,214 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 			comboBox.setSelectedIndex(Integer.parseInt(textField_14.getText()));
 		}
-		
+
 		// sort category
 		if (o.equals(comboBox_3_1_4)) {
 			if (comboBox_3_1_4.getSelectedIndex() == 0) {
-				model_category.setProducts(listProductCategory);
-				table_2.setModel(model_category);
-				table_2.updateUI();
+				updateTableCategory();
 				return;
 			}
-			List<Product> temp= new ArrayList<>(listProductCategory);
-			Collections.sort(temp, 
-                    (o1, o2) -> o2.getCategories().getName().compareTo(o1.getCategories().getName()));
-			model_category.setProducts(temp);
+			Collections.sort(listProductCategory, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+			model_category.setProducts(listProductCategory);
 			table_2.setModel(model_category);
 			table_2.updateUI();
 		}
+
+// Event product
+
+		// làm rỗng các field
+		if (o.equals(btnNewButton_2_1_1_1_1_2_2)) {
+			textField_9.setText("");
+			textField_10.setText("");
+			textField_16.setText("");
+			textField_14.setText("");
+			textField_17.setText("");
+			comboBox_1.setSelectedIndex(0);
+			comboBox_1_1.setSelectedIndex(0);
+			updateTableProduct();
+		}
+
+		// chi tiết sản phẩm - product
+		if (btnDetailItem.equals(o)) {
+			if (table_3.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			new DetailItem_gui(listProduct.get(table_3.getSelectedRow())).setVisible(true);
+
+		}
+
+		// add - product
+		if (o.equals(btnNewButton_2_1_2_2)) {
+			if (textField_9.getText().strip() == "" || textField_10.getText().strip() == ""
+					|| textField_16.getText().strip() == "" || comboBox_1.getSelectedIndex() == 0
+					|| comboBox_1_1.getSelectedIndex() == 0) {
+				JOptionPane.showMessageDialog(this, "Không được để trống các field và tùy chọn không Null",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+			int id;
+			try {
+				id = Integer.parseInt(textField_9.getText());
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "\"Mã sản phẩm \" phải là số nguyên", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			BigDecimal price;
+			try {
+				price = BigDecimal.valueOf(Double.parseDouble(textField_16.getText()));
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "\"Giá sản phẩm \" phải là số nguyên", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			try {
+				Product product = new Product(id, textField_10.getText(), price,
+						suppliersServiceImpl.searchSuppliers(comboBox_1.getSelectedIndex()),
+						categoriesServiceImpl.searchCategories(comboBox_1_1.getSelectedIndex()));
+				productServiceImpl.addProduct(product);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại! \n Trùng\"Mã sản phẩm\"", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			updateTableProduct();
+			JOptionPane.showMessageDialog(this, "Thêm thành công", "Quản Lý Siêu Thị", 1);
+		}
+
+		// btn delete - product
+		if (o.equals(btnNewButton_2_1_1_2_1_2)) {
+			if (table_3.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm để xóa!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			int i = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa sản phẩm có mã \""
+					+ listProduct.get(table_3.getSelectedRow()).getID() + "\"?\n", "Quản Lý Siêu Thị", 2);
+			if (i == 0) {
+				boolean kq = productServiceImpl.DelProduct(listProduct.get(table_3.getSelectedRow()).getID());
+
+				if (kq) {
+					updateTableProduct();
+					JOptionPane.showMessageDialog(this, "Xóa thành công!", "Quản Lý Siêu Thị", 2);
+				} else
+					JOptionPane.showMessageDialog(this, "Xóa thất bại! \n", "Quản Lý Siêu Thị", 2);
+			} else {
+				return;
+			}
+		}
+
+		// btn edit product
+		if (o.equals(btnNewButton_2_1_1_3_2)) {
+			if (table_3.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm để sửa!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			if (textField_9.getText().strip() == "" || textField_10.getText().strip() == ""
+					|| textField_16.getText().strip() == "" || comboBox_1.getSelectedIndex() == 0
+					|| comboBox_1_1.getSelectedIndex() == 0) {
+				JOptionPane.showMessageDialog(this, "Không được để trống các field và tùy chọn không Null",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			// không được sửa mã
+			if (Integer.parseInt(textField_9.getText().strip()) != listProduct.get(table_3.getSelectedRow()).getID()) {
+				textField_9.setText(listProduct.get(table_3.getSelectedRow()).getID() + "");
+				JOptionPane.showMessageDialog(this, "Không được sửa mã sản phẩm!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			int i = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn sửa sản phẩm đang chọn" + " ?\n",
+					"Quản Lý Siêu Thị", 2);
+
+			if (i == 0) {
+				Product product = new Product(listProduct.get(table_3.getSelectedRow()).getID(),
+						textField_10.getText().strip(),
+						BigDecimal.valueOf(Double.parseDouble(textField_16.getText().strip())),
+						suppliersServiceImpl.searchSuppliers(comboBox_1.getSelectedIndex()),
+						categoriesServiceImpl.searchCategories(comboBox_1_1.getSelectedIndex()));
+				boolean kq = productServiceImpl.updateProduct(product);
+				if (kq) {
+					updateTableProduct();
+					JOptionPane.showMessageDialog(this, "Sửa thành công!", "Quản Lý Siêu Thị", 2);
+				} else
+					JOptionPane.showMessageDialog(this, "Sửa thất bại! \n", "Quản Lý Siêu Thị", 2);
+			} else
+				return;
+		}
+
+		// search product
+		if (o.equals(btnNewButton_3_3)) {
+			if (textField_17.getText().strip() == "") {
+				JOptionPane.showMessageDialog(this, "Field tìm kiếm trống!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			if (!textField_17.getText().matches("[0-9]+")) {
+				JOptionPane.showMessageDialog(this, "Mã hàng hóa phải là số nguyên!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			Product product = productServiceImpl.searchProduct(Integer.parseInt(textField_17.getText()));
+			if (product == null) {
+				JOptionPane.showMessageDialog(this, "Mã sản phẩm \" " + textField_17.getText() + " \" không tồn tại!",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+			List<Product> temp = new ArrayList<>();
+			temp.add(product);
+			model_product.setProducts(temp);
+			table_3.setModel(model_product);
+			table_3.updateUI();
+			
+			textField_9.setText(product.getID() + "");
+			textField_10.setText(product.getName());
+			textField_16.setText(product.getPrice() + "");
+			comboBox_1_1.setSelectedIndex(product.getSuppliers().getID());
+			comboBox_1.setSelectedIndex(product.getSuppliers().getID());
+
+		}
+		// sort product
+		if (o.equals(comboBox_3_1_5)) {
+			if (comboBox_3_1_5.getSelectedIndex() == 0) {
+				updateTableProduct();
+				return;
+			}
+			else if(comboBox_3_1_5.getSelectedIndex() == 1) {
+				Collections.sort(listProduct, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+				model_product.setProducts(listProduct);
+				table_3.setModel(model_product);
+				table_3.updateUI();
+			}
+			else {
+				Collections.sort(listProduct, (o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
+				model_product.setProducts(listProduct);
+				table_3.setModel(model_product);
+				table_3.updateUI();
+			}
+			
+		}
+
+	}
+
+	private void updateTableProduct() {
+		listProduct = productServiceImpl.getListProducts();
+		model_product.setProducts(listProduct);
+		table_3.setModel(model_product);
+		table_3.updateUI();
+	}
+	
+	private void updateTableCategory() {
+		listProductCategory = categoriesServiceImpl.getListProductNullCategories();
+		model_category.setProducts(listProductCategory);
+		table_2.setModel(model_category);
+		table_2.updateUI();
 	}
 
 	public void updateComboBoxCategory() {
 		comboBoxContent = new ArrayList<>();
 		comboBoxContent.add("All");
-		categoriesService.getListCategories().forEach(i -> {
+		categoriesServiceImpl.getListCategories().forEach(i -> {
 			comboBoxContent.add(i.getName());
 		});
 		comboBox.removeAllItems();
@@ -1730,5 +1976,4 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		comboBox.updateUI();
 
 	}
-
 }

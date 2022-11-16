@@ -74,9 +74,10 @@ public class CategoriesDAO {
             Product product = new Product(
                     rs.getInt("ID"),
                     rs.getString("Name"),
+                    rs.getBigDecimal("Price"),
                     suppliersDAO.searchSuppliers(rs.getInt("SuppliersID")),
-                    searchCategories(id),
-                    rs.getBigDecimal("Price"));
+                    searchCategories(id)
+                    );
             listProduct.add(product);
         }
     	return listProduct;

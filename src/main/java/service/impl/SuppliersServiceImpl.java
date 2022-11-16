@@ -2,6 +2,7 @@ package service.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import dao.SuppliersDAO;
 import entity.Suppliers;
@@ -29,6 +30,17 @@ public class SuppliersServiceImpl implements SuppliersService {
 		// TODO Auto-generated method stub
 		try {
 			return suppliersDAO.searchSuppliers(ID);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Suppliers> getListSuppliers(){
+		try {
+			return suppliersDAO.getListSuppliers();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
