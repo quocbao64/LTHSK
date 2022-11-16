@@ -15,10 +15,10 @@ import entity.Order;
 public class OrdersDAO {
     private Connection con;
     private static UsersDAO usersDAO;
-    private static CartItemDAO cartItemDAO;
 
     public OrdersDAO(Connection con) {
         this.con = con;
+        usersDAO = new UsersDAO(con);
     }
 
     public void addOrders(Order order) throws Exception {
@@ -42,19 +42,21 @@ public class OrdersDAO {
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, ID);
         ResultSet rs = stmt.executeQuery();
-
-        String sql2 = "select ci.ProductID"
-                + "from Orders od inner join CartItem ci on od.ID = ci.OrdersID"
-                + "where od.ID = ?";
-        PreparedStatement stmt2 = con.prepareStatement(sql2);
-        stmt2.setInt(1, ID);
-        ResultSet rs2 = stmt2.executeQuery();
-        List<CartItem> listCart = new ArrayList<CartItem>();
-        while (rs2.next()) {
-            CartItem cartItem = cartItemDAO.searchCartItem(ID);
-            if (cartItem != null)
-                listCart.add(cartItem);
-        }
+//
+//        String sql2 = "select ci.ProductID"
+//                + "from Orders od inner join CartItem ci on od.ID = ci.OrdersID"
+//                + "where od.ID = ?";
+//        PreparedStatement stmt2 = con.prepareStatement(sql2);
+//        stmt2.setInt(1, ID);
+//        ResultSet rs2 = stmt2.executeQuery();
+//        List<CartItem> listCart = new ArrayList<CartItem>();
+        
+//        while (rs2.next()) {
+//        	CartItemDAO cartItemDAO = new CartItemDAO(con);
+//            CartItem cartItem = cartItemDAO.searchCartItem(ID);
+//            if (cartItem != null)
+//                listCart.add(cartItem);
+//        }
         while (rs.next()) {
             Order order = new Order(
                     rs.getInt("ID"),
@@ -62,8 +64,8 @@ public class OrdersDAO {
                             "OrderDate").toString()),
                     rs.getBigDecimal("TotalPrice"),
                     rs.getDouble("DisCount"),
-                    usersDAO.searchUsers(rs.getInt("UsersID")),
-                    listCart);
+                    usersDAO.searchUsers(rs.getInt("UsersID"))
+                    );
             return order;
         }
         return null;
@@ -86,19 +88,18 @@ public class OrdersDAO {
 
     public List<Order> getListOrders() throws SQLException {
         List<Order> listOrders = new ArrayList<Order>();
-        String sql = "Select * from Product";
+        String sql = "Select * from Orders";
         PreparedStatement stmt = con.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
             Order order = new Order(
                     rs.getInt("ID"),
-                    LocalDate.parse(rs.getDate(
-                            "OrderDate").toString()),
+                    rs.getDate("OrderDate").toLocalDate(),
                     rs.getBigDecimal("TotalPrice"),
                     rs.getDouble("DisCount"),
-                    usersDAO.searchUsers(rs.getInt("UsersID")),
-                    null);
+                    usersDAO.searchUsers(rs.getInt("UsersID"))
+                    );
             listOrders.add(order);
         }
 

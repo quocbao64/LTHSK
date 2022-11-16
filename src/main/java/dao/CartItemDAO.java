@@ -11,11 +11,13 @@ import entity.CartItem;
 
 public class CartItemDAO {
     private Connection con;
-    private static OrdersDAO ordersDAO;
     private static ProductDAO productDAO;
+    private static OrdersDAO ordersDAO;
 
     public CartItemDAO(Connection con) {
         this.con = con;
+        ordersDAO = new OrdersDAO(con);
+        productDAO = new ProductDAO(con);
     }
 
     public void addCartItem(CartItem cartItem) throws Exception {
@@ -24,17 +26,17 @@ public class CartItemDAO {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, cartItem.getID());
             stmt.setInt(2, cartItem.getQuantity());
-            stmt.setInt(4, cartItem.getOrder().getID());
-            stmt.setInt(5, cartItem.getProduct().getID());
+            stmt.setInt(3, cartItem.getOrder().getID());
+            stmt.setInt(4, cartItem.getProduct().getID());
 
             stmt.executeUpdate();
         } else {
-            throw new Exception("Trung ma");
+            throw new Exception("Trùng mã");
         }
     }
 
     public CartItem searchCartItem(int ID) throws SQLException {
-        String sql = "select * from Product where ID = ?";
+        String sql = "select * from CartItem where ID = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, ID);
         ResultSet rs = stmt.executeQuery();
