@@ -53,4 +53,14 @@ public class CartItemServiceImpl implements CartItemService {
 		}
 	}
 
+	@Override
+	public boolean delCartItem(int id){
+		try {
+			return cartItemDAO.delCartItem(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

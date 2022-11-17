@@ -9,5 +9,6 @@ public interface CartItemService {
 	public void addCartItem(CartItem cartItem);
 	public CartItem searchCartItem(int ID);
 	public List<CartItem> getListCartItem();
+	public boolean delCartItem(int id) throws SQLException;
 	public List<CartItem> getListCartItemByOrderID(int ordersID) throws SQLException;
 }

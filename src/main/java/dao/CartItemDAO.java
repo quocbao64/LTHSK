@@ -51,11 +51,6 @@ public class CartItemDAO {
         return null;
     }
 
-    public boolean xoaNhanvien(String maNV) {
-
-        return false;
-    }
-
     public List<CartItem> getListCartItem() throws SQLException {
         List<CartItem> listCartItem = new ArrayList<CartItem>();
         String sql = "Select * from CartItem";
@@ -71,6 +66,14 @@ public class CartItemDAO {
         }
 
         return listCartItem;
+    }
+    
+    public boolean delCartItem(int id) throws SQLException {
+    	String sql = "delete CartItem where id = ?";
+    	PreparedStatement stmt = con.prepareStatement(sql);
+    	stmt.setInt(1, id);
+    	int n = stmt.executeUpdate();
+    	return n>0;
     }
     
     public List<CartItem> getListCartItemByOrderID(int ordersID) throws SQLException {

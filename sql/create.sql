@@ -198,7 +198,3 @@ select * from Categories
 select * from Suppliers
 select * from Product
 select * from CartItem
-
-
-update into Users
-set values
