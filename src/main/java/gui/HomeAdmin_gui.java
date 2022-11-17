@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
 import javax.swing.border.TitledBorder;
@@ -20,6 +21,7 @@ import model.CartItemTableModel;
 import model.CategoriesTableModel;
 import model.OrderTableModel;
 import model.ProductTableModel;
+import model.UserTableModel;
 import service.CategoriesService;
 import service.impl.CartItemServiceImpl;
 import service.impl.CategoriesServiceImpl;
@@ -74,6 +76,7 @@ import db.ConnectDB;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
+import javax.swing.table.TableModel;
 
 public class HomeAdmin_gui extends JFrame implements ActionListener {
 	/**
@@ -115,12 +118,11 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JTextField textField_28;
 	private JTable table_4;
 	private JTextField textField_29;
-	private JTextField textField_30;
-	private JTextField textField_31;
-	private JTextField textField_32;
+	private JTextField txtHunhQucBo;
+	private JTextField txtBaogmailcom;
 	private JTextField textField_35;
 	private JTextField textField_36;
-	private JTextField textField_37;
+	private JTextField txtNam;
 	private JTextField textField_38;
 	private JTextField textField_33;
 	private JButton btnDetailOrder;
@@ -181,6 +183,54 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JButton btnNewButton_3_3_2_1;
 	private JButton btnNewButton_2_1_1_1_1_3_2;
 	private JComboBox comboBox_3_1_1;
+	private JTable table_5;
+	private List<Users> listUsers;
+	private UserTableModel model_Users;
+	private JButton btnNewButton_2_1_1_1_1_2_2_1;
+	private JDateChooser dateChooser_1;
+	private JDateChooser dateChooser_1_1;
+	private JComboBox comboBox_2;
+	private JButton btnNewButton_2_1_2_2_1;
+	private JButton btnNewButton_2_1_1_2_1_2_1;
+	private JButton btnNewButton_2_1_1_3_2_1;
+	private JButton btnNewButton_2_1_1_1_1_3_1_1_1;
+	private JButton btnNewButton_2_1_1_1_1_3_1_1;
+	private JPasswordField textField_32;
+	private boolean password = true;
+	private JButton btnOrder;
+	private JButton btnBill;
+	private JButton btnCategory;
+	private JButton btnInfo;
+	private JButton btnDelOrder;
+	private JButton btnUsers;
+	private JButton btnProduct;
+
+	// false là hiện
+	private boolean btnOrder_tool = true;
+	private boolean btnBill_tool = true;
+	private boolean btnCategory_tool = true;
+	private boolean btnInfo_tool = true;
+	private boolean btnDelOrder_tool = true;
+	private boolean btnUsers_tool = true;
+	private boolean btnProduct_tool = true;
+
+	private JTabbedPane tabbedPane;
+	private JPanel tabOrder;
+	private JPanel tabDelOrder;
+	private JPanel tabBill;
+	private JPanel tabUser;
+	private JPanel tabCategory;
+	private JPanel tabProduct;
+	private JPanel tabInfo;
+	private JMenuItem menu1_1;
+	private JMenuItem menu1_2;
+	private JMenuItem menu2_1;
+	private JMenuItem menu2_2;
+	private JMenuItem menu2_3;
+	private JMenuItem menu2_4;
+	private JMenuItem menu3_1;
+	private JMenuItem menu4_1;
+	private JMenuItem menu4_2;
 
 	/**
 	 * Launch the application.
@@ -216,51 +266,60 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		JMenu mnNewMenu_3 = new JMenu("  Thao Tác  ");
 		menuBar.add(mnNewMenu_3);
 
-		JMenuItem mntmNewMenuItem_6 = new JMenuItem("  Thanh toán hóa đơn");
-		mntmNewMenuItem_6.setIcon(new ImageIcon("image\\btnAdd.png"));
-		mnNewMenu_3.add(mntmNewMenuItem_6);
+		menu1_1 = new JMenuItem("  Thanh toán hóa đơn");
+		menu1_1.setIcon(new ImageIcon("image\\btnAdd.png"));
+		mnNewMenu_3.add(menu1_1);
+		menu1_1.addActionListener(this);
 
-		JMenuItem mntmNewMenuItem_7 = new JMenuItem("   Hủy chi tiết một đơn hàng");
-		mntmNewMenuItem_7.setIcon(new ImageIcon("image\\delete-item.png"));
-		mnNewMenu_3.add(mntmNewMenuItem_7);
+		menu1_2 = new JMenuItem("   Hủy chi tiết một đơn hàng");
+		menu1_2.setIcon(new ImageIcon("image\\delete-item.png"));
+		mnNewMenu_3.add(menu1_2);
+		menu1_2.addActionListener(this);
 
 		JMenu mnNewMenu = new JMenu("  Quản Lý  ");
 		menuBar.add(mnNewMenu);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("  Quản lý hóa đơn");
-		mntmNewMenuItem.setIcon(new ImageIcon("image\\btnBill.png"));
-		mnNewMenu.add(mntmNewMenuItem);
+		menu2_1 = new JMenuItem("  Quản lý hóa đơn");
+		menu2_1.setIcon(new ImageIcon("image\\btnBill.png"));
+		mnNewMenu.add(menu2_1);
+		menu2_1.addActionListener(this);
 
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("  Quản lý nhân viên");
-		mntmNewMenuItem_1.setIcon(new ImageIcon("image\\btnPerson.png"));
-		mnNewMenu.add(mntmNewMenuItem_1);
+		menu2_2 = new JMenuItem("  Quản lý nhân viên");
+		menu2_2.setIcon(new ImageIcon("image\\btnPerson.png"));
+		mnNewMenu.add(menu2_2);
+		menu2_2.addActionListener(this);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("  Quản lý loại hàng");
-		mntmNewMenuItem_2.setIcon(new ImageIcon("image\\catagory.png"));
-		mnNewMenu.add(mntmNewMenuItem_2);
+		menu2_3 = new JMenuItem("  Quản lý loại hàng");
+		menu2_3.setIcon(new ImageIcon("image\\catagory.png"));
+		mnNewMenu.add(menu2_3);
+		menu2_3.addActionListener(this);
 
-		JMenuItem mntmNewMenuItem_8 = new JMenuItem("  Quản lý mặt hàng");
-		mntmNewMenuItem_8.setIcon(new ImageIcon("image\\btnCatogory.png"));
-		mnNewMenu.add(mntmNewMenuItem_8);
+		menu2_4 = new JMenuItem("  Quản lý mặt hàng");
+		menu2_4.setIcon(new ImageIcon("image\\btnCatogory.png"));
+		mnNewMenu.add(menu2_4);
+		menu2_4.addActionListener(this);
 
 		JMenu mnNewMenu_1 = new JMenu("  Cài Đặt  ");
 		menuBar.add(mnNewMenu_1);
 
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Thông tin của bạn");
-		mntmNewMenuItem_3.setIcon(new ImageIcon("image\\btnProfile.png"));
-		mnNewMenu_1.add(mntmNewMenuItem_3);
+		menu3_1 = new JMenuItem("Thông tin của bạn");
+		menu3_1.setIcon(new ImageIcon("image\\btnProfile.png"));
+		mnNewMenu_1.add(menu3_1);
+		menu3_1.addActionListener(this);
 
 		JMenu mnNewMenu_2 = new JMenu("  Trợ Giúp");
 		menuBar.add(mnNewMenu_2);
 
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("  Đăng xuất");
-		mntmNewMenuItem_5.setIcon(new ImageIcon("image\\out.png"));
-		mnNewMenu_2.add(mntmNewMenuItem_5);
+		menu4_1 = new JMenuItem("  Đăng xuất");
+		menu4_1.setIcon(new ImageIcon("image\\out.png"));
+		mnNewMenu_2.add(menu4_1);
+		menu4_1.addActionListener(this);
 
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("  Thoát");
-		mnNewMenu_2.add(mntmNewMenuItem_4);
+		menu4_2 = new JMenuItem("  Thoát");
+		mnNewMenu_2.add(menu4_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		menu4_2.addActionListener(this);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -280,23 +339,24 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		listOrder = ordersServiceImpl.getListOrders();
 		listCartItem = cartItemServiceImpl.getListCartItem();
 		listCartItemDel = new ArrayList<CartItem>();
+		listUsers = usersServiceImpl.getListUsers();
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 35, 1066, 646);
 		contentPane.add(tabbedPane);
 
-		JPanel panel = new JPanel();
-		panel.setToolTipText("Tìm kiếm theo mã");
-		panel.setBackground(new Color(255, 255, 255));
-		tabbedPane.addTab("Thanh Toán Hóa Đơn", new ImageIcon("image\\btnAdd1.png"), panel, null);
-		panel.setLayout(null);
+		tabOrder = new JPanel();
+		tabOrder.setToolTipText("Tìm kiếm theo mã");
+		tabOrder.setBackground(new Color(255, 255, 255));
+		tabbedPane.addTab("Thanh Toán Hóa Đơn", new ImageIcon("image\\btnAdd1.png"), tabOrder, null);
+		tabOrder.setLayout(null);
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(new Color(255, 255, 255));
 		panel_5.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
 				"Thao t\u00E1c", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5.setBounds(10, 54, 1041, 183);
-		panel.add(panel_5);
+		tabOrder.add(panel_5);
 		panel_5.setLayout(null);
 
 		JPanel panel_7 = new JPanel();
@@ -376,7 +436,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Danh s\u00E1ch s\u1EA3n ph\u1EA9m", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_6.setBackground(new Color(255, 255, 255));
 		panel_6.setBounds(10, 280, 1041, 310);
-		panel.add(panel_6);
+		tabOrder.add(panel_6);
 		panel_6.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -430,7 +490,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel.setForeground(new Color(128, 0, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel.setBounds(417, 10, 217, 34);
-		panel.add(lblNewLabel);
+		tabOrder.add(lblNewLabel);
 
 		textField_2 = new JTextField();
 		textField_2.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -439,23 +499,23 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_2.setEditable(false);
 		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_2.setBounds(930, 247, 119, 28);
-		panel.add(textField_2);
+		tabOrder.add(textField_2);
 		textField_2.setColumns(10);
 
 		JLabel lblNewLabel_2 = new JLabel("Thành tiền: ");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblNewLabel_2.setBounds(835, 247, 87, 28);
-		panel.add(lblNewLabel_2);
+		tabOrder.add(lblNewLabel_2);
 
 		JButton btnNewButton_6 = new JButton("Xuất danh sách sản phẩm");
 		btnNewButton_6.setIcon(new ImageIcon("image\\xml.png"));
 		btnNewButton_6.setBounds(10, 247, 205, 28);
-		panel.add(btnNewButton_6);
+		tabOrder.add(btnNewButton_6);
 
-		JPanel panel_1_2_2 = new JPanel();
-		panel_1_2_2.setLayout(null);
-		panel_1_2_2.setBackground(Color.WHITE);
-		tabbedPane.addTab("Hủy Chi Tiết Một Món Hàng", new ImageIcon("image\\delete-item (1).png"), panel_1_2_2, null);
+		tabDelOrder = new JPanel();
+		tabDelOrder.setLayout(null);
+		tabDelOrder.setBackground(Color.WHITE);
+		tabbedPane.addTab("Hủy Chi Tiết Một Món Hàng", new ImageIcon("image\\delete-item (1).png"), tabDelOrder, null);
 
 		JPanel panel_5_1_2_2 = new JPanel();
 		panel_5_1_2_2.setLayout(null);
@@ -464,7 +524,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Thao t\u00E1c", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5_1_2_2.setBackground(Color.WHITE);
 		panel_5_1_2_2.setBounds(10, 54, 1041, 216);
-		panel_1_2_2.add(panel_5_1_2_2);
+		tabDelOrder.add(panel_5_1_2_2);
 
 		JPanel panel_7_1_1_2_2 = new JPanel();
 		panel_7_1_1_2_2.setLayout(null);
@@ -586,7 +646,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblHyChiTit.setForeground(new Color(128, 0, 255));
 		lblHyChiTit.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblHyChiTit.setBounds(399, 10, 278, 34);
-		panel_1_2_2.add(lblHyChiTit);
+		tabDelOrder.add(lblHyChiTit);
 
 		JPanel panel_6_1_2_2 = new JPanel();
 		panel_6_1_2_2.setLayout(null);
@@ -596,7 +656,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_6_1_2_2.setBackground(Color.WHITE);
 		panel_6_1_2_2.setBounds(10, 280, 1041, 310);
-		panel_1_2_2.add(panel_6_1_2_2);
+		tabDelOrder.add(panel_6_1_2_2);
 
 		JScrollPane scrollPane_1_2_2 = new JScrollPane();
 		scrollPane_1_2_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -643,12 +703,11 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		comboBox_3_1_1.setBounds(950, 10, 81, 20);
 		panel_6_1_2_2.add(comboBox_3_1_1);
 		comboBox_3_1_1.addActionListener(this);
-		
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 255));
-		tabbedPane.addTab("Hóa Đơn", new ImageIcon("image\\invoice1.png"), panel_1, null);
-		panel_1.setLayout(null);
+
+		tabBill = new JPanel();
+		tabBill.setBackground(new Color(255, 255, 255));
+		tabbedPane.addTab("Hóa Đơn", new ImageIcon("image\\invoice1.png"), tabBill, null);
+		tabBill.setLayout(null);
 
 		JPanel panel_5_1 = new JPanel();
 		panel_5_1.setLayout(null);
@@ -657,7 +716,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Thao t\u00E1c", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5_1.setBackground(Color.WHITE);
 		panel_5_1.setBounds(10, 54, 1041, 216);
-		panel_1.add(panel_5_1);
+		tabBill.add(panel_5_1);
 
 		JPanel panel_7_1_1 = new JPanel();
 		panel_7_1_1.setBackground(new Color(255, 255, 255));
@@ -774,7 +833,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblQunLHa.setForeground(new Color(128, 0, 255));
 		lblQunLHa.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblQunLHa.setBounds(438, 10, 179, 34);
-		panel_1.add(lblQunLHa);
+		tabBill.add(lblQunLHa);
 
 		JPanel panel_6_1 = new JPanel();
 		panel_6_1.setLayout(null);
@@ -784,7 +843,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				new Color(0, 0, 0)));
 		panel_6_1.setBackground(Color.WHITE);
 		panel_6_1.setBounds(10, 280, 1041, 310);
-		panel_1.add(panel_6_1);
+		tabBill.add(panel_6_1);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -835,21 +894,21 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_7 = new JTextField();
 		textField_7.setToolTipText("Tìm kiếm theo mã");
 		textField_7.setBounds(878, 18, 132, 26);
-		panel_1.add(textField_7);
+		tabBill.add(textField_7);
 		textField_7.setBackground(UIManager.getColor("Button.background"));
 		textField_7.setColumns(10);
 
 		btnNewButton_3 = new JButton("");
 		btnNewButton_3.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3.setBounds(1009, 18, 42, 25);
-		panel_1.add(btnNewButton_3);
+		tabBill.add(btnNewButton_3);
 		btnNewButton_3.setIcon(new ImageIcon("image\\search.png"));
 		btnNewButton_3.addActionListener(this);
 
-		JPanel panel_1_2_1 = new JPanel();
-		panel_1_2_1.setLayout(null);
-		panel_1_2_1.setBackground(Color.WHITE);
-		tabbedPane.addTab("Nhân Viên", new ImageIcon("image\\btnPerson1.png"), panel_1_2_1, null);
+		tabUser = new JPanel();
+		tabUser.setLayout(null);
+		tabUser.setBackground(Color.WHITE);
+		tabbedPane.addTab("Nhân Viên", new ImageIcon("image\\btnPerson1.png"), tabUser, null);
 
 		JPanel panel_5_1_2_1 = new JPanel();
 		panel_5_1_2_1.setLayout(null);
@@ -858,7 +917,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Thao t\u00E1c", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5_1_2_1.setBackground(Color.WHITE);
 		panel_5_1_2_1.setBounds(10, 54, 1041, 216);
-		panel_1_2_1.add(panel_5_1_2_1);
+		tabUser.add(panel_5_1_2_1);
 
 		JPanel panel_7_1_1_2_1 = new JPanel();
 		panel_7_1_1_2_1.setLayout(null);
@@ -866,7 +925,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_7_1_1_2_1.setBounds(772, 161, 259, 45);
 		panel_5_1_2_1.add(panel_7_1_1_2_1);
 
-		JButton btnNewButton_2_1_2_2_1 = new JButton("");
+		btnNewButton_2_1_2_2_1 = new JButton("");
 		btnNewButton_2_1_2_2_1.setIcon(new ImageIcon("image\\add1.png"));
 		btnNewButton_2_1_2_2_1.setToolTipText("Thêm mới vào danh sách");
 		btnNewButton_2_1_2_2_1.setForeground(Color.BLACK);
@@ -874,8 +933,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_2_2_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_2_2_1.setBounds(10, 10, 52, 32);
 		panel_7_1_1_2_1.add(btnNewButton_2_1_2_2_1);
+		btnNewButton_2_1_2_2_1.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_3_2_1 = new JButton("");
+		btnNewButton_2_1_1_3_2_1 = new JButton("");
 		btnNewButton_2_1_1_3_2_1.setIcon(new ImageIcon("image\\edit.png"));
 		btnNewButton_2_1_1_3_2_1.setToolTipText("Chỉnh sửa dòng đang chọn");
 		btnNewButton_2_1_1_3_2_1.setForeground(Color.BLACK);
@@ -883,8 +943,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_3_2_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_3_2_1.setBounds(134, 10, 52, 32);
 		panel_7_1_1_2_1.add(btnNewButton_2_1_1_3_2_1);
+		btnNewButton_2_1_1_3_2_1.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_2_1_2_1 = new JButton("");
+		btnNewButton_2_1_1_2_1_2_1 = new JButton("");
 		btnNewButton_2_1_1_2_1_2_1.setIcon(new ImageIcon("image\\delete.png"));
 		btnNewButton_2_1_1_2_1_2_1.setToolTipText("Xóa dòng đang chọn");
 		btnNewButton_2_1_1_2_1_2_1.setForeground(Color.BLACK);
@@ -892,8 +953,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_2_1_2_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_2_1_2_1.setBounds(72, 10, 52, 32);
 		panel_7_1_1_2_1.add(btnNewButton_2_1_1_2_1_2_1);
+		btnNewButton_2_1_1_2_1_2_1.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_1_1_2_2_1 = new JButton("");
+		btnNewButton_2_1_1_1_1_2_2_1 = new JButton("");
 		btnNewButton_2_1_1_1_1_2_2_1.setIcon(new ImageIcon("image\\clear.png"));
 		btnNewButton_2_1_1_1_1_2_2_1.setToolTipText("Làm rỗng các field");
 		btnNewButton_2_1_1_1_1_2_2_1.setForeground(Color.BLACK);
@@ -901,6 +963,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_1_1_2_2_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_1_1_2_2_1.setBounds(196, 10, 52, 32);
 		panel_7_1_1_2_1.add(btnNewButton_2_1_1_1_1_2_2_1);
+		btnNewButton_2_1_1_1_1_2_2_1.addActionListener(this);
 
 		JLabel lblNewLabel_1_4_1 = new JLabel("Mã nhân viên");
 		lblNewLabel_1_4_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -960,8 +1023,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_2_1_3.setBounds(562, 76, 108, 32);
 		panel_5_1_2_1.add(lblNewLabel_1_2_1_3);
 
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nư" }));
+		comboBox_2 = new JComboBox();
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "Nữ", "Nam" }));
 		comboBox_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBox_2.setBackground(SystemColor.menu);
 		comboBox_2.setBounds(680, 119, 69, 30);
@@ -1003,7 +1066,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_1_2_1_2_1.setBounds(298, 118, 108, 32);
 		panel_5_1_2_1.add(lblNewLabel_1_1_2_1_2_1);
 
-		JDateChooser dateChooser_1 = new JDateChooser();
+		dateChooser_1 = new JDateChooser();
 		dateChooser_1.getCalendarButton().setIcon(new ImageIcon("image\\calendar.png"));
 		dateChooser_1.getCalendarButton().setToolTipText("Chọn ngày");
 		dateChooser_1.getCalendarButton().setForeground(SystemColor.activeCaption);
@@ -1014,7 +1077,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		dateChooser_1.setBounds(154, 118, 122, 31);
 		panel_5_1_2_1.add(dateChooser_1);
 
-		JDateChooser dateChooser_1_1 = new JDateChooser();
+		dateChooser_1_1 = new JDateChooser();
 		dateChooser_1_1.getCalendarButton().setIcon(new ImageIcon("image\\calendar.png"));
 		dateChooser_1_1.getCalendarButton().setToolTipText("Chọn ngày");
 		dateChooser_1_1.getCalendarButton().setForeground(SystemColor.activeCaption);
@@ -1029,7 +1092,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblQunLNhn.setForeground(new Color(128, 0, 255));
 		lblQunLNhn.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblQunLNhn.setBounds(438, 10, 190, 34);
-		panel_1_2_1.add(lblQunLNhn);
+		tabUser.add(lblQunLNhn);
 
 		JPanel panel_6_1_2_1 = new JPanel();
 		panel_6_1_2_1.setLayout(null);
@@ -1039,12 +1102,43 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				new Color(0, 0, 0)));
 		panel_6_1_2_1.setBackground(Color.WHITE);
 		panel_6_1_2_1.setBounds(10, 280, 1041, 310);
-		panel_1_2_1.add(panel_6_1_2_1);
+		tabUser.add(panel_6_1_2_1);
 
 		JScrollPane scrollPane_1_2_1 = new JScrollPane();
 		scrollPane_1_2_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane_1_2_1.setBounds(10, 31, 1021, 270);
 		panel_6_1_2_1.add(scrollPane_1_2_1);
+
+		String[] headLine_table_5 = { "ID", "Họ tên", "Giới tính", "Gmail", "Phone", "Địa chỉ", "Ngày sinh",
+				"Ngày vào làm", "Mật khẩu" };
+		model_Users = new UserTableModel(listUsers, headLine_table_5);
+
+		table_5 = new JTable(model_Users);
+		table_5.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table_5.setSelectionBackground(new Color(255, 255, 204));
+		table_5.setRowHeight(35);
+		table_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table_5.setBackground(UIManager.getColor("Button.light"));
+		scrollPane_1_2_1.setViewportView(table_5);
+		table_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = table_5.getSelectedRow();
+				updateCom_5_1(index);
+			}
+
+			private void updateCom_5_1(int index) {
+				textField_13.setText(listUsers.get(index).getID() + "");
+				textField_15.setText(listUsers.get(index).getName());
+				textField_20.setText(listUsers.get(index).getGmail());
+				textField_21.setText(listUsers.get(index).getPassword());
+				textField_22.setText(listUsers.get(index).getAddress());
+				textField_18.setText(listUsers.get(index).getPhone());
+				comboBox_2.setSelectedIndex(listUsers.get(index).isGender());
+				dateChooser_1.setDate(java.sql.Date.valueOf(listUsers.get(index).getBirthDate()));
+				dateChooser_1_1.setDate(java.sql.Date.valueOf(listUsers.get(index).getHireDate()));
+			}
+		});
 
 		JLabel lblNewLabel_3_1_3 = new JLabel("Sắp xếp theo");
 		lblNewLabel_3_1_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -1062,25 +1156,25 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_19.setColumns(10);
 		textField_19.setBackground(SystemColor.menu);
 		textField_19.setBounds(878, 18, 132, 26);
-		panel_1_2_1.add(textField_19);
+		tabUser.add(textField_19);
 
 		JButton btnNewButton_3_3_1 = new JButton("");
 		btnNewButton_3_3_1.setIcon(new ImageIcon("image\\search.png"));
 		btnNewButton_3_3_1.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3_3_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_3_3_1.setBounds(1009, 18, 42, 25);
-		panel_1_2_1.add(btnNewButton_3_3_1);
+		tabUser.add(btnNewButton_3_3_1);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(255, 255, 255));
-		tabbedPane.addTab("Loại Hàng", new ImageIcon("image\\catagory1.png"), panel_2, null);
-		panel_2.setLayout(null);
+		tabCategory = new JPanel();
+		tabCategory.setBackground(new Color(255, 255, 255));
+		tabbedPane.addTab("Loại Hàng", new ImageIcon("image\\catagory1.png"), tabCategory, null);
+		tabCategory.setLayout(null);
 
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(Color.WHITE);
 		panel_1_1.setBounds(0, 0, 1061, 619);
-		panel_2.add(panel_1_1);
+		tabCategory.add(panel_1_1);
 
 		JPanel panel_5_1_1 = new JPanel();
 		panel_5_1_1.setLayout(null);
@@ -1277,10 +1371,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_1_1.add(btnNewButton_3_2);
 		btnNewButton_3_2.addActionListener(this);
 
-		JPanel panel_1_2 = new JPanel();
-		panel_1_2.setLayout(null);
-		panel_1_2.setBackground(Color.WHITE);
-		tabbedPane.addTab("Mặt Hàng", new ImageIcon("image\\btnCatogory1.png"), panel_1_2, null);
+		tabProduct = new JPanel();
+		tabProduct.setLayout(null);
+		tabProduct.setBackground(Color.WHITE);
+		tabbedPane.addTab("Mặt Hàng", new ImageIcon("image\\btnCatogory1.png"), tabProduct, null);
 
 		JPanel panel_5_1_2 = new JPanel();
 		panel_5_1_2.setLayout(null);
@@ -1289,7 +1383,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Thao t\u00E1c", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5_1_2.setBackground(Color.WHITE);
 		panel_5_1_2.setBounds(10, 54, 1041, 216);
-		panel_1_2.add(panel_5_1_2);
+		tabProduct.add(panel_5_1_2);
 
 		JPanel panel_7_1_1_2 = new JPanel();
 		panel_7_1_1_2.setLayout(null);
@@ -1423,7 +1517,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblQunLMt.setForeground(new Color(128, 0, 255));
 		lblQunLMt.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblQunLMt.setBounds(438, 10, 190, 34);
-		panel_1_2.add(lblQunLMt);
+		tabProduct.add(lblQunLMt);
 
 		JPanel panel_6_1_2 = new JPanel();
 		panel_6_1_2.setLayout(null);
@@ -1432,7 +1526,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Danh s\u00E1ch m\u1EB7t h\u00E0ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_6_1_2.setBackground(Color.WHITE);
 		panel_6_1_2.setBounds(10, 280, 1041, 310);
-		panel_1_2.add(panel_6_1_2);
+		tabProduct.add(panel_6_1_2);
 
 		JScrollPane scrollPane_1_2 = new JScrollPane();
 		scrollPane_1_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -1485,20 +1579,20 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_17.setColumns(10);
 		textField_17.setBackground(SystemColor.menu);
 		textField_17.setBounds(878, 18, 132, 26);
-		panel_1_2.add(textField_17);
+		tabProduct.add(textField_17);
 
 		btnNewButton_3_3 = new JButton("");
 		btnNewButton_3_3.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_3_3.setIcon(new ImageIcon("image\\search.png"));
 		btnNewButton_3_3.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3_3.setBounds(1009, 18, 42, 25);
-		panel_1_2.add(btnNewButton_3_3);
+		tabProduct.add(btnNewButton_3_3);
 		btnNewButton_3_3.addActionListener(this);
 
-		JPanel panel_1_2_1_1 = new JPanel();
-		panel_1_2_1_1.setLayout(null);
-		panel_1_2_1_1.setBackground(Color.WHITE);
-		tabbedPane.addTab("Thông Tin Của Bạn", new ImageIcon("image\\btnProfile1.png"), panel_1_2_1_1, null);
+		tabInfo = new JPanel();
+		tabInfo.setLayout(null);
+		tabInfo.setBackground(Color.WHITE);
+		tabbedPane.addTab("Thông Tin Của Bạn", new ImageIcon("image\\btnProfile1.png"), tabInfo, null);
 
 		JPanel panel_5_1_2_1_1 = new JPanel();
 		panel_5_1_2_1_1.setLayout(null);
@@ -1507,7 +1601,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				"Th\u00F4ng tin chi ti\u1EBFt", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_5_1_2_1_1.setBackground(Color.WHITE);
 		panel_5_1_2_1_1.setBounds(10, 54, 1041, 440);
-		panel_1_2_1_1.add(panel_5_1_2_1_1);
+		tabInfo.add(panel_5_1_2_1_1);
 
 		JLabel lblNewLabel_1_4_1_1 = new JLabel("Mã nhân viên");
 		lblNewLabel_1_4_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1515,6 +1609,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_5_1_2_1_1.add(lblNewLabel_1_4_1_1);
 
 		textField_29 = new JTextField();
+		textField_29.setText("11");
 		textField_29.setEditable(false);
 		textField_29.setToolTipText("");
 		textField_29.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1529,14 +1624,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_1_2_1_3.setBounds(78, 91, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_3);
 
-		textField_30 = new JTextField();
-		textField_30.setEditable(false);
-		textField_30.setToolTipText("");
-		textField_30.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_30.setColumns(10);
-		textField_30.setBackground(SystemColor.menu);
-		textField_30.setBounds(185, 91, 309, 32);
-		panel_5_1_2_1_1.add(textField_30);
+		txtHunhQucBo = new JTextField();
+		txtHunhQucBo.setText("Huỳnh Quốc Bảo");
+		txtHunhQucBo.setEditable(false);
+		txtHunhQucBo.setToolTipText("");
+		txtHunhQucBo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtHunhQucBo.setColumns(10);
+		txtHunhQucBo.setBackground(SystemColor.menu);
+		txtHunhQucBo.setBounds(185, 91, 309, 32);
+		panel_5_1_2_1_1.add(txtHunhQucBo);
 
 		JLabel lblNewLabel_1_1_1_1_1_1 = new JLabel("Giới tính");
 		lblNewLabel_1_1_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1548,17 +1644,17 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_2_4_1.setBounds(561, 49, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_2_4_1);
 
-		textField_31 = new JTextField();
-		textField_31.setEditable(false);
-		textField_31.setToolTipText("");
-		textField_31.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_31.setColumns(10);
-		textField_31.setBackground(SystemColor.menu);
-		textField_31.setBounds(679, 49, 309, 32);
-		panel_5_1_2_1_1.add(textField_31);
+		txtBaogmailcom = new JTextField();
+		txtBaogmailcom.setText("bao11@gmail.com");
+		txtBaogmailcom.setEditable(false);
+		txtBaogmailcom.setToolTipText("");
+		txtBaogmailcom.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtBaogmailcom.setColumns(10);
+		txtBaogmailcom.setBackground(SystemColor.menu);
+		txtBaogmailcom.setBounds(679, 49, 309, 32);
+		panel_5_1_2_1_1.add(txtBaogmailcom);
 
-		textField_32 = new JTextField();
-		textField_32.setToolTipText("");
+		textField_32 = new JPasswordField(usersServiceImpl.searchUsers(11).getPassword());
 		textField_32.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_32.setColumns(10);
 		textField_32.setBackground(SystemColor.menu);
@@ -1586,6 +1682,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_2_1_1);
 
 		textField_35 = new JTextField();
+		textField_35.setText("2002-2-22");
 		textField_35.setEditable(false);
 		textField_35.setToolTipText("");
 		textField_35.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1595,6 +1692,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_5_1_2_1_1.add(textField_35);
 
 		textField_36 = new JTextField();
+		textField_36.setText("2021-1-27");
 		textField_36.setEditable(false);
 		textField_36.setToolTipText("");
 		textField_36.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1603,14 +1701,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_36.setBounds(185, 220, 309, 32);
 		panel_5_1_2_1_1.add(textField_36);
 
-		textField_37 = new JTextField();
-		textField_37.setToolTipText("");
-		textField_37.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_37.setEditable(false);
-		textField_37.setColumns(10);
-		textField_37.setBackground(SystemColor.menu);
-		textField_37.setBounds(185, 133, 309, 32);
-		panel_5_1_2_1_1.add(textField_37);
+		txtNam = new JTextField();
+		txtNam.setText("Nam");
+		txtNam.setToolTipText("");
+		txtNam.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtNam.setEditable(false);
+		txtNam.setColumns(10);
+		txtNam.setBackground(SystemColor.menu);
+		txtNam.setBounds(185, 133, 309, 32);
+		panel_5_1_2_1_1.add(txtNam);
 
 		JLabel lblNewLabel_1_1_2_1_2_1_1_1 = new JLabel("Số điện thoại");
 		lblNewLabel_1_1_2_1_2_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -1618,6 +1717,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_2_1_1_1);
 
 		textField_38 = new JTextField();
+		textField_38.setText("0333399988");
 		textField_38.setToolTipText("");
 		textField_38.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_38.setEditable(false);
@@ -1626,14 +1726,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_38.setBounds(185, 262, 309, 32);
 		panel_5_1_2_1_1.add(textField_38);
 
-		JTextPane textPane = new JTextPane();
-		textPane.setEditable(false);
-		textPane.setBackground(SystemColor.menu);
-		textPane.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textPane.setBounds(185, 307, 309, 84);
-		panel_5_1_2_1_1.add(textPane);
+		JTextPane txtpnNguynVn = new JTextPane();
+		txtpnNguynVn.setText("12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh");
+		txtpnNguynVn.setEditable(false);
+		txtpnNguynVn.setBackground(SystemColor.menu);
+		txtpnNguynVn.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtpnNguynVn.setBounds(185, 307, 309, 84);
+		panel_5_1_2_1_1.add(txtpnNguynVn);
 
-		JButton btnNewButton_2_1_1_1_1_3_1_1 = new JButton("");
+		btnNewButton_2_1_1_1_1_3_1_1 = new JButton("");
 		btnNewButton_2_1_1_1_1_3_1_1.setIcon(new ImageIcon("image\\save.png"));
 		btnNewButton_2_1_1_1_1_3_1_1.setToolTipText("Cập nhật mật khẩu");
 		btnNewButton_2_1_1_1_1_3_1_1.setForeground(Color.BLACK);
@@ -1641,8 +1742,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_1_1_3_1_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_1_1_3_1_1.setBounds(936, 133, 52, 32);
 		panel_5_1_2_1_1.add(btnNewButton_2_1_1_1_1_3_1_1);
+		btnNewButton_2_1_1_1_1_3_1_1.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_1_1_3_1_1_1 = new JButton("");
+		btnNewButton_2_1_1_1_1_3_1_1_1 = new JButton("");
 		btnNewButton_2_1_1_1_1_3_1_1_1.setIcon(new ImageIcon("image\\password.png"));
 		btnNewButton_2_1_1_1_1_3_1_1_1.setToolTipText("Xem mật khẩu");
 		btnNewButton_2_1_1_1_1_3_1_1_1.setForeground(Color.BLACK);
@@ -1650,12 +1752,13 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_1_1_3_1_1_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_1_1_3_1_1_1.setBounds(951, 91, 37, 31);
 		panel_5_1_2_1_1.add(btnNewButton_2_1_1_1_1_3_1_1_1);
+		btnNewButton_2_1_1_1_1_3_1_1_1.addActionListener(this);
 
 		JLabel lblThngTinCa = new JLabel("Thông Tin Của Bạn");
 		lblThngTinCa.setForeground(new Color(128, 0, 255));
 		lblThngTinCa.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblThngTinCa.setBounds(438, 10, 190, 34);
-		panel_1_2_1_1.add(lblThngTinCa);
+		tabInfo.add(lblThngTinCa);
 
 		JTextPane txtpnTnTi = new JTextPane();
 		txtpnTnTi.setText(
@@ -1664,14 +1767,14 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		txtpnTnTi.setEditable(false);
 		txtpnTnTi.setBackground(Color.WHITE);
 		txtpnTnTi.setBounds(371, 513, 359, 66);
-		panel_1_2_1_1.add(txtpnTnTi);
+		tabInfo.add(txtpnTnTi);
 
 		JToolBar toolBar = new JToolBar();
 		toolBar.setBackground(SystemColor.menu);
 		toolBar.setBounds(0, 0, 1086, 30);
 		contentPane.add(toolBar);
 
-		JButton btnOrder = new JButton("");
+		btnOrder = new JButton("");
 		btnOrder.setToolTipText("Thanh toán hóa đơn");
 		btnOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1679,44 +1782,128 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		});
 		btnOrder.setIcon(new ImageIcon("image\\btnAdd.png"));
 		toolBar.add(btnOrder);
+		btnOrder.addActionListener(this);
 
-		JButton btnNewButton_4 = new JButton("");
-		btnNewButton_4.setToolTipText("Hủy chi tiết một đơn hàng");
-		btnNewButton_4.setIcon(new ImageIcon("image\\delete-item.png"));
-		toolBar.add(btnNewButton_4);
+		btnDelOrder = new JButton("");
+		btnDelOrder.setToolTipText("Hủy chi tiết một đơn hàng");
+		btnDelOrder.setIcon(new ImageIcon("image\\delete-item.png"));
+		toolBar.add(btnDelOrder);
+		btnDelOrder.addActionListener(this);
 
-		JButton btnBill = new JButton("");
+		btnBill = new JButton("");
 		btnBill.setToolTipText("Quản lý hóa đơn");
 		btnBill.setIcon(new ImageIcon("image\\btnBill.png"));
 		toolBar.add(btnBill);
+		btnBill.addActionListener(this);
 
-		JButton btnPerson = new JButton("");
-		btnPerson.setIcon(new ImageIcon("image\\btnPerson.png"));
-		btnPerson.setToolTipText("Quản lý nhân viên");
-		toolBar.add(btnPerson);
+		btnUsers = new JButton("");
+		btnUsers.setIcon(new ImageIcon("image\\btnPerson.png"));
+		btnUsers.setToolTipText("Quản lý nhân viên");
+		toolBar.add(btnUsers);
+		btnUsers.addActionListener(this);
 
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setToolTipText("Quản lý loại hàng");
-		btnNewButton.setIcon(new ImageIcon("image\\catagory.png"));
-		toolBar.add(btnNewButton);
+		btnCategory = new JButton("");
+		btnCategory.setToolTipText("Quản lý loại hàng");
+		btnCategory.setIcon(new ImageIcon("image\\catagory.png"));
+		toolBar.add(btnCategory);
+		btnCategory.addActionListener(this);
 
-		JButton btnNewButton_5 = new JButton("");
-		btnNewButton_5.setIcon(new ImageIcon("image\\btnCatogory.png"));
-		btnNewButton_5.setToolTipText("Quản lý mặt hàng");
-		toolBar.add(btnNewButton_5);
+		btnProduct = new JButton("");
+		btnProduct.setIcon(new ImageIcon("image\\btnCatogory.png"));
+		btnProduct.setToolTipText("Quản lý mặt hàng");
+		toolBar.add(btnProduct);
+		btnProduct.addActionListener(this);
 
-		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setToolTipText("Xem thông tin của bạn");
-		btnNewButton_1.setIcon(new ImageIcon("image\\btnProfile.png"));
-		toolBar.add(btnNewButton_1);
+		btnInfo = new JButton("");
+		btnInfo.setToolTipText("Xem thông tin của bạn");
+		btnInfo.setIcon(new ImageIcon("image\\btnProfile.png"));
+		toolBar.add(btnInfo);
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { tabbedPane }));
+		btnInfo.addActionListener(this);
 
 		this.setLocationRelativeTo(null);
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+// event toolBar
+
+		if (o.equals(btnOrder) || o.equals(menu1_1)) {
+			if (btnOrder_tool) {
+				tabbedPane.remove(tabOrder);
+				btnOrder_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Thanh Toán Hóa Đơn", new ImageIcon("image\\btnAdd1.png"), tabOrder, null);
+			btnOrder_tool = true;
+		}
+		if (o.equals(btnDelOrder) || o.equals(menu1_2)) {
+			if (btnDelOrder_tool) {
+				tabbedPane.remove(tabDelOrder);
+				btnDelOrder_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Hủy Chi Tiết Một Món Hàng", new ImageIcon("image\\delete-item (1).png"), tabDelOrder,
+					null);
+			btnDelOrder_tool = true;
+
+		}
+		if (o.equals(btnBill) || o.equals(menu2_1)) {
+			if (btnBill_tool) {
+				tabbedPane.remove(tabBill);
+				btnBill_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Hóa Đơn", new ImageIcon("image\\invoice1.png"), tabBill, null);
+			btnBill_tool = true;
+
+		}
+		if (o.equals(btnUsers) || o.equals(menu2_2)) {
+			if (btnUsers_tool) {
+				tabbedPane.remove(tabUser);
+				btnUsers_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Nhân Viên", new ImageIcon("image\\btnPerson1.png"), tabUser, null);
+			btnUsers_tool = true;
+		}
+		if (o.equals(btnCategory) || o.equals(menu2_3)) {
+			if (btnCategory_tool) {
+				tabbedPane.remove(tabCategory);
+				btnCategory_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Loại Hàng", new ImageIcon("image\\catagory1.png"), tabCategory, null);
+			btnCategory_tool = true;
+		}
+		if (o.equals(btnProduct) || o.equals(menu2_4)) {
+			if (btnProduct_tool) {
+				tabbedPane.remove(tabProduct);
+				btnProduct_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Mặt Hàng", new ImageIcon("image\\btnCatogory1.png"), tabProduct, null);
+			btnProduct_tool = true;
+
+		}
+		if (o.equals(btnInfo) || o.equals(menu3_1)) {
+			if (btnInfo_tool) {
+				tabbedPane.remove(tabInfo);
+				btnInfo_tool = false;
+				return;
+			}
+			tabbedPane.addTab("Thông Tin Của Bạn", new ImageIcon("image\\btnProfile1.png"), tabInfo, null);
+			btnInfo_tool = true;
+		}
+		
+		if(o.equals(menu4_1)) {
+			this.setVisible(false);
+			new Login_gui().setVisible(true);
+		}
+		
+		if(o.equals(menu4_2)) {
+			System.exit(0);
+		}
 
 // Event Category
 		// combobox category
@@ -2353,14 +2540,14 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 					int id = listCartItemDel.get(table_4.getSelectedRow()).getID();
 					cartItemServiceImpl.delCartItem(id);
 					listCartItemDel.remove(table_4.getSelectedRow());
-					
+
 					double totalPrice = 0;
 					for (CartItem c : listCartItemDel)
 						totalPrice += c.getQuantity() * Double.parseDouble(c.getProduct().getPrice().toString());
-					
+
 					Order order = ordersServiceImpl.searchOrder(listCartItemDel.get(0).getOrder().getID());
 					order.setTotalPrice(BigDecimal.valueOf(totalPrice));
-					
+
 					ordersServiceImpl.updateOrder(order);
 					updateTableCartItemDel();
 					JOptionPane.showMessageDialog(this, "Xóa thành công!", "Quản Lý Siêu Thị", 2);
@@ -2371,7 +2558,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				return;
 			}
 		}
-		
+
 		// sort hủy cartItem
 		if (o.equals(comboBox_3_1_1)) {
 
@@ -2390,6 +2577,145 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				updateTableCartItemDel();
 			}
 		}
+
+// event Users
+
+		// rỗng field
+		if (o.equals(btnNewButton_2_1_1_1_1_2_2_1)) {
+			textField_19.setText("");
+
+			textField_13.setText("");
+			textField_15.setText("");
+			textField_20.setText("");
+			textField_21.setText("");
+			textField_22.setText("");
+			textField_18.setText("");
+			comboBox_2.setSelectedIndex(0);
+			dateChooser_1.setDate(new Date());
+			dateChooser_1_1.setDate(new Date());
+		}
+
+		// add users
+		if (o.equals(btnNewButton_2_1_2_2_1)) {
+			Boolean regex = regexUsers();
+			if (!regex) {
+				return;
+			}
+
+			try {
+				Users users = new Users(Integer.parseInt(textField_13.getText().strip()),
+						textField_15.getText().strip(), comboBox_2.getSelectedIndex(), textField_20.getText().strip(),
+						textField_18.getText().strip(), textField_22.getText().strip(),
+						LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser_1.getDate())),
+						LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser_1_1.getDate())),
+						"ROLE_EMPLOYEE", textField_21.getText());
+
+				usersServiceImpl.addUsers(users);
+				updateTableUsers();
+				JOptionPane.showMessageDialog(this, "Thêm thành công", "Quản Lý Siêu Thị", 2);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại", "Quản Lý Siêu Thị", 2);
+			}
+		}
+
+		// delete user
+		if (o.equals(btnNewButton_2_1_1_2_1_2_1)) {
+			if (table_5.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Mời chọn dòng để xóa", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			try {
+
+				usersServiceImpl.delUsers(listUsers.get(table_5.getSelectedRow()).getID());
+				updateTableUsers();
+
+				JOptionPane.showMessageDialog(this, "Xóa thành công", "Quản Lý Siêu Thị", 2);
+
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Xóa thất bại", "Quản Lý Siêu Thị", 2);
+			}
+		}
+
+		// edit user
+		if (o.equals(btnNewButton_2_1_1_3_2_1)) {
+			if (table_5.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Mời chọn dòng để sửa", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			if (Integer.parseInt(textField_13.getText().strip()) != listUsers.get(table_5.getSelectedRow()).getID()) {
+				JOptionPane.showMessageDialog(this, "Không được sửa mã nhân viên", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			Boolean regex = regexUsers();
+			if (!regex) {
+				return;
+			}
+			Users users = new Users(Integer.parseInt(textField_13.getText().strip()), textField_15.getText().strip(),
+					comboBox_2.getSelectedIndex(), textField_20.getText().strip(), textField_18.getText().strip(),
+					textField_22.getText().strip(),
+					LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser_1.getDate())),
+					LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser_1_1.getDate())),
+					"ROLE_EMPLOYEE", textField_21.getText());
+
+			try {
+				usersServiceImpl.updateUsers(users);
+				updateTableUsers();
+				JOptionPane.showMessageDialog(this, "Sửa thành công", "Quản Lý Siêu Thị", 2);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Sửa thât bại", "Quản Lý Siêu Thị", 2);
+			}
+		}
+
+// info
+		// show password
+		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1_1)) {
+			if (password) {
+				textField_32.setEchoChar((char) 0);
+				password = false;
+				return;
+			}
+			textField_32.setEchoChar('•');
+			password = true;
+		}
+
+		// save password
+		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1)) {
+
+			int i = JOptionPane.showConfirmDialog(this, "Xác nhận đổi mật khẩu", "Quản Lý Siêu Thị", 2);
+
+			if (i == 0) {
+				try {
+					Users users = usersServiceImpl.searchUsers(11);
+					users.setPassword(textField_32.getText());
+					usersServiceImpl.updateUsers(users);
+					textField_32.setEchoChar('•');
+					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Quản Lý Siêu Thị", 1);
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại", "Quản Lý Siêu Thị", 2);
+				}
+			}
+
+		}
+
+	}
+
+	private Boolean regexUsers() {
+		if (textField_13.getText().strip() == "" || textField_15.getText().strip() == ""
+				|| textField_20.getText().strip() == "" || textField_21.getText().strip() == ""
+				|| textField_22.getText().strip() == "" || textField_18.getText().strip() == "") {
+			JOptionPane.showMessageDialog(this, "Không được trống các field", "Quản Lý Siêu Thị", 2);
+			return false;
+		}
+		return true;
+	}
+
+	private void updateTableUsers() {
+		listUsers = usersServiceImpl.getListUsers();
+		model_Users.setUsers(listUsers);
+		table_5.setModel(model_Users);
+		table_5.updateUI();
 	}
 
 	private void updateTableCartItemDel() {

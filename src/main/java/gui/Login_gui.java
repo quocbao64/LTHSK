@@ -4,12 +4,19 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import db.ConnectDB;
+import entity.Users;
+import service.impl.UsersServiceImpl;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -26,9 +33,11 @@ public class Login_gui extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tfGmail;
-	private JTextField tfPassword;
+	private JPasswordField tfPassword;
 	private JButton btnLogin;
 	private JButton btnExit;
+	private JButton btnShowPass;
+	private boolean password = true;
 
 	/**
 	 * Launch the application.
@@ -84,7 +93,7 @@ public class Login_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_4_2_1.setBounds(172, 76, 117, 32);
 		contentPane.add(lblNewLabel_1_4_2_1);
 		
-		tfPassword = new JTextField();
+		tfPassword = new JPasswordField();
 		tfPassword.setToolTipText("Nhập mật khẩu của bạn");
 		tfPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tfPassword.setColumns(10);
@@ -104,23 +113,58 @@ public class Login_gui extends JFrame implements ActionListener {
 		btnExit.setBounds(175, 128, 100, 25);
 		contentPane.add(btnExit);
 		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon("image\\password.png"));
-		btnNewButton.setBounds(458, 76, 34, 32);
-		contentPane.add(btnNewButton);
+		btnShowPass = new JButton("");
+		btnShowPass.setIcon(new ImageIcon("image\\password.png"));
+		btnShowPass.setBounds(458, 76, 34, 32);
+		contentPane.add(btnShowPass);
+		btnShowPass.addActionListener(this);
 		
 		btnLogin.addActionListener(this);
 		btnExit.addActionListener(this);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {
-		this.setVisible(false);
+		Object o = e.getSource();
+		if (o.equals(btnShowPass)) {
+			if (password) {
+				tfPassword.setEchoChar((char) 0);
+				password = false;
+				return;
+			}
+			tfPassword.setEchoChar('•');
+			password = true;
+		}
+		else if(o.equals(btnLogin)) {
+			if(tfGmail.getText().strip()=="" || tfPassword.getText().strip()=="") {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ các trường", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			
+			UsersServiceImpl usersServiceImpl = new UsersServiceImpl(ConnectDB.getInstance().getConnection());
+			Users users = usersServiceImpl.searchUsersByGmail(tfGmail.getText().strip());
+			
+			if(users == null) {
+				JOptionPane.showMessageDialog(this, "Gmail không tồn tại", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			if(users.getPassword().compareTo(tfPassword.getText())!=0) {
+				JOptionPane.showMessageDialog(this, "Mật khẩu sai", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			
+			if(users.getRole().compareTo("ROLE_ADMIN")==0) {
+				this.setVisible(false);
+				new HomeAdmin_gui().setVisible(true);
+			}
+			else {
+				this.setVisible(false);
+				new HomeEmploy_gui(users).setVisible(true);
+			}
+			
+			
+		}
+		else System.exit(0);
 		
-		//admin 
-		new HomeAdmin_gui().setVisible(true);
-		
-		
-		//Person
-//		new HomePerson_gui().setVisible(true);
 	}
 }

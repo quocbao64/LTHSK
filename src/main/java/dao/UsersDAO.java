@@ -45,44 +45,51 @@ public class UsersDAO {
 		stmt.setInt(1, ID);
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
-			Users user = new Users(
-					rs.getInt("ID"), 
-					rs.getString("Name"), 
-					rs.getInt("Gender"),
-					rs.getString("Gmail"), 
-					rs.getString("Phone"), 
-					rs.getString("Address"),
-					LocalDate.parse(rs.getDate("BirthDate").toString()),
-					LocalDate.parse(rs.getDate("HireDate").toString()), 
-					rs.getString("Role"), 
-					rs.getString("Password"));
+			Users user = new Users(rs.getInt("ID"), rs.getString("Name"), rs.getInt("Gender"), rs.getString("Gmail"),
+					rs.getString("Phone"), rs.getString("Address"), LocalDate.parse(rs.getDate("BirthDate").toString()),
+					LocalDate.parse(rs.getDate("HireDate").toString()), rs.getString("Role"), rs.getString("Password"));
+			return user;
+		}
+		return null;
+	}
+	
+	public Users searchUsersByGmail(String gmail) throws SQLException {
+		String sql = "select * from Users where Gmail = ?";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, gmail);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			Users user = new Users(rs.getInt("ID"), rs.getString("Name"), rs.getInt("Gender"), rs.getString("Gmail"),
+					rs.getString("Phone"), rs.getString("Address"), LocalDate.parse(rs.getDate("BirthDate").toString()),
+					LocalDate.parse(rs.getDate("HireDate").toString()), rs.getString("Role"), rs.getString("Password"));
 			return user;
 		}
 		return null;
 	}
 
-	public boolean xoaNhanvien(String maNV) {
-
-		return false;
+	public boolean delUsers(int id) throws SQLException {
+		String sql = "delete Users where ID = ?";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setInt(1, id);
+		int n = stmt.executeUpdate();
+		return n > 0;
 	}
 
 	public boolean updateUsers(Users user) throws SQLException {
-		if (searchUsers(user.getID()) == null) {
-			String sql = "update Users set Name = ?, Gender = ?, Gmail = ?, Phone = ?, Address = ?, BirthDate = ?, HireDate = ?, Role = ?, Password = ?";
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, user.getName());
-			stmt.setInt(2, user.isGender());
-			stmt.setString(3, user.getGmail());
-			stmt.setString(4, user.getPhone());
-			stmt.setString(5, user.getAddress());
-			stmt.setDate(6, Date.valueOf(user.getBirthDate()));
-			stmt.setDate(7, Date.valueOf(user.getHireDate()));
-			stmt.setString(8, user.getRole());
-			stmt.setString(9, user.getPassword());
-			stmt.executeUpdate();
-			return true;
-		}
-		return false;
+		String sql = "update Users set Name = ?, Gender = ?, Gmail = ?, Phone = ?, Address = ?, BirthDate = ?, HireDate = ?, Role = ?, Password = ? where id = ?";
+		PreparedStatement stmt = con.prepareStatement(sql);
+		stmt.setString(1, user.getName());
+		stmt.setInt(2, user.isGender());
+		stmt.setString(3, user.getGmail());
+		stmt.setString(4, user.getPhone());
+		stmt.setString(5, user.getAddress());
+		stmt.setDate(6, Date.valueOf(user.getBirthDate()));
+		stmt.setDate(7, Date.valueOf(user.getHireDate()));
+		stmt.setString(8, user.getRole());
+		stmt.setString(9, user.getPassword());
+		stmt.setInt(10, user.getID());
+		int n = stmt.executeUpdate();
+		return n > 0;
 	}
 
 	public List<Users> getListUsers() throws SQLException {
@@ -91,17 +98,9 @@ public class UsersDAO {
 		PreparedStatement stmt = con.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
-			Users user = new Users(rs.getInt("ID"), 
-					rs.getString("Name"), 
-					rs.getInt("Gender"),
-					rs.getString("Gmail"), 
-					rs.getString("Phone"), 
-					rs.getString("Address"),
-					LocalDate.parse(rs.getDate("BirthDate").toString()),
-					LocalDate.parse(rs.getDate("HireDate").toString()), 
-					rs.getString("Role"), 
-					rs.getString("Password")
-			);
+			Users user = new Users(rs.getInt("ID"), rs.getString("Name"), rs.getInt("Gender"), rs.getString("Gmail"),
+					rs.getString("Phone"), rs.getString("Address"), LocalDate.parse(rs.getDate("BirthDate").toString()),
+					LocalDate.parse(rs.getDate("HireDate").toString()), rs.getString("Role"), rs.getString("Password"));
 			listUsers.add(user);
 		}
 
