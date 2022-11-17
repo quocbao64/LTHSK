@@ -56,25 +56,28 @@ public class CartItemDAO {
         return false;
     }
 
-    // public boolean updateProduct(Product product) throws SQLException {
-    // if (searchProduct(product.getID()) == null) {
-    // String sql = "update Product set Name = ?, Price = ?, SuppliersID = ?,
-    // CategoriesID = ?";
-    // PreparedStatement stmt = con.prepareStatement(sql);
-    // stmt.setString(1, product.getName());
-    // stmt.setBigDecimal(2, product.getPrice());
-    // stmt.setInt(3, product.getSuppliers().getID());
-    // stmt.setInt(4, product.getCategories().getID());
-    // stmt.executeUpdate();
-    // return true;
-    // }
-    // return false;
-    // }
-
     public List<CartItem> getListCartItem() throws SQLException {
         List<CartItem> listCartItem = new ArrayList<CartItem>();
         String sql = "Select * from CartItem";
         PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            CartItem cartItem = new CartItem(
+                    rs.getInt("ID"),
+                    rs.getInt("Quantity"),
+                    ordersDAO.searchOrder(rs.getInt("OrdersID")),
+                    productDAO.searchProduct(rs.getInt("ProductID")));
+            listCartItem.add(cartItem);
+        }
+
+        return listCartItem;
+    }
+    
+    public List<CartItem> getListCartItemByOrderID(int ordersID) throws SQLException {
+        List<CartItem> listCartItem = new ArrayList<CartItem>();
+        String sql = "Select * from CartItem where OrdersID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, ordersID);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             CartItem cartItem = new CartItem(

@@ -17,11 +17,9 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 	public void addOrders(Order order) {
-		// TODO Auto-generated method stub
 		try {
 			ordersDAO.addOrders(order);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -31,21 +29,39 @@ public class OrdersServiceImpl implements OrdersService {
 		try {
 			return ordersDAO.searchOrder(ID);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+	public List<Order> getListOrders() {
+		try {
+			return ordersDAO.getListOrders();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public List<Order> getListOrders() {
-		// TODO Auto-generated method stub
+	@Override
+	public boolean delOrder(int id){
+		
 		try {
-			return ordersDAO.getListOrders();
+			return ordersDAO.delOrder(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return null;
+	}
+
+	public boolean updateOrder(Order order){
+		try {
+			return ordersDAO.updateOrder(order);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

@@ -15,6 +15,7 @@ import entity.CartItem;
 import entity.Categories;
 import entity.Order;
 import entity.Product;
+import entity.Users;
 import model.CartItemTableModel;
 import model.CategoriesTableModel;
 import model.OrderTableModel;
@@ -35,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -155,7 +157,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private OrderTableModel model_Order;
 	private JDateChooser dateChooser;
 	private JButton btnNewButton_2_1_1_1_1_2;
-	private JButton btnNewButton_2_1_2;
 	private JButton btnNewButton_2;
 	private CartItemServiceImpl cartItemServiceImpl;
 	private List<CartItem> listCartItem;
@@ -171,6 +172,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JButton btnNewButton_2_1_1_1;
 	private int idOrder_temp;
 	private UsersServiceImpl usersServiceImpl;
+	private JButton btnNewButton_2_1_1_2_1;
+	private JButton btnNewButton_2_1_1_3;
+	private JButton btnNewButton_3;
+	private JComboBox comboBox_3_1_2;
 
 	/**
 	 * Launch the application.
@@ -628,30 +633,17 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		panel_7_1_1.setBounds(772, 161, 259, 45);
 		panel_5_1.add(panel_7_1_1);
 
-		btnNewButton_2_1_2 = new JButton("");
-		btnNewButton_2_1_2.setToolTipText("Thêm hóa đơn mới");
-		btnNewButton_2_1_2.setIcon(new ImageIcon("image\\add1.png"));
-		btnNewButton_2_1_2.setForeground(Color.BLACK);
-		btnNewButton_2_1_2.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_2.setBackground(UIManager.getColor("Button.background"));
-		btnNewButton_2_1_2.setBounds(10, 10, 52, 32);
-		panel_7_1_1.add(btnNewButton_2_1_2);
-		btnNewButton_2_1_2.addActionListener(this);
-
-		JButton btnNewButton_2_1_1_3 = new JButton("");
+		btnNewButton_2_1_1_3 = new JButton("");
 		btnNewButton_2_1_1_3.setToolTipText("Sửa hóa đơn đang chọn");
-		btnNewButton_2_1_1_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnNewButton_2_1_1_3.setIcon(new ImageIcon("image\\edit.png"));
 		btnNewButton_2_1_1_3.setForeground(Color.BLACK);
 		btnNewButton_2_1_1_3.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnNewButton_2_1_1_3.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_3.setBounds(134, 10, 52, 32);
 		panel_7_1_1.add(btnNewButton_2_1_1_3);
+		btnNewButton_2_1_1_3.addActionListener(this);
 
-		JButton btnNewButton_2_1_1_2_1 = new JButton("");
+		btnNewButton_2_1_1_2_1 = new JButton("");
 		btnNewButton_2_1_1_2_1.setToolTipText("Xóa hóa đơn đang chọn");
 		btnNewButton_2_1_1_2_1.setIcon(new ImageIcon("image\\delete.png"));
 		btnNewButton_2_1_1_2_1.setForeground(Color.BLACK);
@@ -659,6 +651,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_2_1_1_2_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_2_1_1_2_1.setBounds(72, 10, 52, 32);
 		panel_7_1_1.add(btnNewButton_2_1_1_2_1);
+		btnNewButton_2_1_1_2_1.addActionListener(this);
+		
 
 		btnNewButton_2_1_1_1_1_2 = new JButton("");
 		btnNewButton_2_1_1_1_1_2.setIcon(new ImageIcon("image\\clear.png"));
@@ -683,7 +677,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_1.setColumns(10);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Tên nhân viên");
+		JLabel lblNewLabel_1_1 = new JLabel("Mã nhân viên");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_1_1.setBounds(47, 76, 108, 32);
 		panel_5_1.add(lblNewLabel_1_1);
@@ -743,6 +737,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnDetailOrder.setIcon(new ImageIcon("image\\info.png"));
 		btnDetailOrder.setBounds(10, 174, 49, 32);
 		panel_5_1.add(btnDetailOrder);
+		btnDetailOrder.addActionListener(this);
 
 		JLabel lblQunLHa = new JLabel("Quản Lý Hóa Đơn");
 		lblQunLHa.setForeground(new Color(128, 0, 255));
@@ -786,7 +781,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 			private void updateCom_4(int index) {
 				textField_1.setText(listOrder.get(index).getID() + "");
-				textField_3.setText(listOrder.get(index).getUsers().getName());
+				textField_3.setText(listOrder.get(index).getUsers().getID()+"");
 				textField_4.setText(listOrder.get(index).getTotalPrice() + "");
 				textField_5.setText(listOrder.get(index).getDiscount() + "");
 				dateChooser.setDate(java.sql.Date.valueOf(listOrder.get(index).getOrderDate()));
@@ -798,12 +793,13 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_3_1_2.setBounds(878, 14, 81, 13);
 		panel_6_1.add(lblNewLabel_3_1_2);
 
-		JComboBox comboBox_3_1_2 = new JComboBox();
+		comboBox_3_1_2 = new JComboBox();
 		comboBox_3_1_2.setModel(
 				new DefaultComboBoxModel(new String[] { "Không", "Tên nhân viên", "Ngày lập", "Tổng tiền hàng" }));
 		comboBox_3_1_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_3_1_2.setBounds(950, 10, 81, 20);
 		panel_6_1.add(comboBox_3_1_2);
+		comboBox_3_1_2.addActionListener(this);
 
 		textField_7 = new JTextField();
 		textField_7.setToolTipText("Tìm kiếm theo mã");
@@ -812,11 +808,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_7.setBackground(UIManager.getColor("Button.background"));
 		textField_7.setColumns(10);
 
-		JButton btnNewButton_3 = new JButton("");
+		btnNewButton_3 = new JButton("");
 		btnNewButton_3.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3.setBounds(1009, 18, 42, 25);
 		panel_1.add(btnNewButton_3);
 		btnNewButton_3.setIcon(new ImageIcon("image\\search.png"));
+		btnNewButton_3.addActionListener(this);
 
 		JPanel panel_1_2_1 = new JPanel();
 		panel_1_2_1.setLayout(null);
@@ -1689,9 +1686,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if (btnDetailOrder.equals(o)) {
-			new DetailOrder_gui().setVisible(true);
-		}
 
 // Event Category
 		// combobox category
@@ -1983,9 +1977,9 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 						"Quản Lý Siêu Thị", 2);
 				return;
 			}
-			List<Product> temp = new ArrayList<>();
-			temp.add(product);
-			model_product.setProducts(temp);
+			listProduct = new ArrayList<>();
+			listProduct.add(product);
+			model_product.setProducts(listProduct);
 			table_3.setModel(model_product);
 			table_3.updateUI();
 
@@ -2025,51 +2019,143 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			textField_4.setText("");
 			textField_5.setText("");
 			dateChooser.setDate(new Date());
+			
+			updateTableOrder();
 		}
 
-		// add - order
-		if (o.equals(btnNewButton_2_1_2)) {
-			if (textField_1.getText().strip() == "" || textField_3.getText().strip() == ""
-					|| textField_4.getText().strip() == "" || textField_5.getText().strip() == "") {
-				JOptionPane.showMessageDialog(this, "Không được để trống các field và tùy chọn không Null",
+		// delete - order
+		if(o.equals(btnNewButton_2_1_1_2_1)) {
+			if (table_1.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn hoá đơn!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			int i = JOptionPane.showConfirmDialog(this, 
+					"Bạn có chắc chắn muốn xóa hóa đơn có mã \""+listOrder.get(table_1.getSelectedRow()).getID()+"\" không?"
+					, "Quản Lý Siêu Thị", 2);
+			if(i==0) {
+				try {
+					ordersServiceImpl.delOrder(listOrder.get(table_1.getSelectedRow()).getID());
+					JOptionPane.showMessageDialog(this, "Xóa thành công!", "Quản Lý Siêu Thị", 2);
+				
+					updateTableOrder();
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Quản Lý Siêu Thị", 2);
+				}
+			}else return;
+		}
+		
+		//edit Order
+		if(o.equals(btnNewButton_2_1_1_3)) {
+			if (table_1.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn hoá đơn!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			
+			if (Integer.parseInt(textField_1.getText().strip()) != listOrder.get(table_1.getSelectedRow()).getID()) {
+				textField_1.setText(listOrder.get(table_1.getSelectedRow()).getID()+"");
+				JOptionPane.showMessageDialog(this, "Không được sửa mã hóa đơn!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			Users users = usersServiceImpl.searchUsers(Integer.parseInt(textField_3.getText()));
+			
+			if (users == null) {
+				JOptionPane.showMessageDialog(this, "Mã nhân viên \""+textField_3.getText()+"\" không tồn tại", "Quản Lý Siêu Thị", 2);
+				textField_3.setText(""+listOrder.get(table_1.getSelectedRow()).getUsers().getID());
+				return;
+			}
+			LocalDate localDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser.getDate()));
+
+			if(!LocalDate.now().isAfter(localDate)) {
+				if(LocalDate.now().isEqual(localDate)) {
+				}else {
+					dateChooser.setDate(java.sql.Date.valueOf(listOrder.get(table_1.getSelectedRow()).getOrderDate()));
+					JOptionPane.showMessageDialog(this, "Ngày lập hóa đơn không lớn hơn ngày hiện tại!", "Quản Lý Siêu Thị", 2);
+					return;
+				}
+			}
+			
+			int i = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn sửa hóa đơn đang chọn" + " ?\n",
+					"Quản Lý Siêu Thị", 2);
+			
+			if (i == 0) {
+				Order order = new Order(
+						listOrder.get(table_1.getSelectedRow()).getID(),
+						localDate,
+						BigDecimal.valueOf(Double.parseDouble(textField_4.getText())),
+						Double.parseDouble(textField_5.getText()),
+						users
+						);
+				
+				boolean kq = ordersServiceImpl.updateOrder(order);
+				if (kq) {
+					updateTableOrder();
+					JOptionPane.showMessageDialog(this, "Sửa thành công!", "Quản Lý Siêu Thị", 2);
+				} else
+					JOptionPane.showMessageDialog(this, "Sửa thất bại! \n", "Quản Lý Siêu Thị", 2);
+			} else
+				return;
+		}
+		
+		// search -order
+		if (o.equals(btnNewButton_3)) {
+			if (textField_7.getText().strip() == "") {
+				JOptionPane.showMessageDialog(this, "Field tìm kiếm trống!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			if (!textField_7.getText().matches("[0-9]+")) {
+				JOptionPane.showMessageDialog(this, "Mã hóa đơn phải là số nguyên!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			Order order = ordersServiceImpl.searchOrder(Integer.parseInt(textField_7.getText().strip()));
+			if (order == null) {
+				JOptionPane.showMessageDialog(this, "Mã hóa đơn \" " + textField_7.getText() + " \" không tồn tại!",
 						"Quản Lý Siêu Thị", 2);
 				return;
 			}
-			int id;
-			try {
-				id = Integer.parseInt(textField_1.getText());
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "\"Mã hóa đơn \" phải là số nguyên", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-
-			BigDecimal price;
-			try {
-				price = BigDecimal.valueOf(Double.parseDouble(textField_3.getText()));
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "\"Giá sản phẩm \" phải là số nguyên", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-			Double discount;
-			try {
-				discount = Double.parseDouble(textField_5.getText());
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "\"Giảm giá sản phẩm \" phải là số nguyên", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-
-			try {
-				Product product = new Product(id, textField_10.getText(), price,
-						suppliersServiceImpl.searchSuppliers(comboBox_1.getSelectedIndex()),
-						categoriesServiceImpl.searchCategories(comboBox_1_1.getSelectedIndex()));
-				productServiceImpl.addProduct(product);
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "Thêm thất bại! \n Trùng\"Mã sản phẩm\"", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-			updateTableProduct();
-			JOptionPane.showMessageDialog(this, "Thêm thành công", "Quản Lý Siêu Thị", 1);
+			listOrder=new ArrayList<>();
+			listOrder.add(order);
+			model_Order.setOrders(listOrder);
+			table_1.setModel(model_Order);
+			table_1.updateUI();
+			
+			textField_1.setText(order.getID() + "");
+			textField_3.setText(order.getUsers().getID() + "");
+			textField_4.setText(order.getTotalPrice()+"");
+			textField_5.setText(order.getDiscount() + "");
+			dateChooser.setDate(new Date());
 		}
+		
+		// detail order
+		if (btnDetailOrder.equals(o)) {
+			if (table_1.getSelectedRow() < 0) {
+				JOptionPane.showMessageDialog(this, "Chưa chọn hoá đơn!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			
+			new DetailOrder_gui(listOrder.get(table_1.getSelectedRow())).setVisible(true);
+		}
+		
+		// sort order 
+		if (o.equals(comboBox_3_1_2)) {
+
+			if (comboBox_3_1_2.getSelectedIndex() == 0) {
+				updateTableOrder();
+			} else if (comboBox_3_1_2.getSelectedIndex() == 1) {
+				Collections.sort(listOrder,
+						(o1, o2) -> o1.getUsers().getName().compareTo(o2.getUsers().getName()));
+				table_1.updateUI();
+			} else if (comboBox_3_1_2.getSelectedIndex() == 2) {
+				Collections.sort(listOrder, (o1, o2) -> (o1.getOrderDate().isAfter(o2.getOrderDate())) ? -1 : 1);
+				table_1.updateUI();
+			} else {
+				Collections.sort(listOrder,
+						(o1, o2) -> o2.getTotalPrice().compareTo(o1.getTotalPrice()));
+				table_1.updateUI();
+			}
+		}
+		
 
 //Event Thanh toán hóa đơn	
 
@@ -2098,6 +2184,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			CartItem cartItem = new CartItem(1, id, new Order(idOrder_temp), product);
 			cartItem.setQuantity(Integer.parseInt(spinner.getValue().toString()));
 			listCartItem_temp.add(cartItem);
+			
 			updateTableCartItem();
 			updateTotalPrice();
 
@@ -2118,8 +2205,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				return;
 			}
 			listCartItem_temp.remove(table.getSelectedRow());
+			
 			updateTableCartItem();
 			updateTotalPrice();
+			
 			JOptionPane.showMessageDialog(this, "Xóa thành công", "Quản Lý Siêu Thị", 1);
 		}
 
@@ -2132,8 +2221,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			listCartItem_temp.get(table.getSelectedRow())
 					.setProduct(productServiceImpl.searchProduct(Integer.parseInt(textField.getText())));
 			listCartItem_temp.get(table.getSelectedRow()).setQuantity(Integer.parseInt(spinner.getValue().toString()));
+			
 			updateTableCartItem();
 			updateTotalPrice();
+			
 			textField.setText("");
 			spinner.setValue(1);
 			JOptionPane.showMessageDialog(this, "Sửa thành công", "Quản Lý Siêu Thị", 1);
@@ -2188,7 +2279,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 					listCartItem_temp = new ArrayList<>();
 
 					updateTableCartItem();
-					updateTableCartItem();
+					updateTotalPrice();
+					updateTableOrder();
+					
+					
 					textField.setText("");
 					spinner.setValue(1);
 					textField_2.setText("");
@@ -2201,6 +2295,13 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				return;
 			}
 		}
+	}
+
+	private void updateTableOrder() {
+		listOrder = ordersServiceImpl.getListOrders();
+		model_Order.setOrders(listOrder);
+		table_1.setModel(model_Order);
+		table_1.updateUI();
 	}
 
 	private void updateTotalPrice() {

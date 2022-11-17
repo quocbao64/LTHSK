@@ -17,36 +17,40 @@ public class CartItemServiceImpl implements CartItemService {
 	}
 
 	public void addCartItem(CartItem cartItem) {
-		// TODO Auto-generated method stub
 		try {
 			cartItemDAO.addCartItem(cartItem);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
 	public CartItem searchCartItem(int ID) {
-		// TODO Auto-generated method stub
 		try {
 			return cartItemDAO.searchCartItem(ID);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public List<CartItem> getListCartItem() {
-		// TODO Auto-generated method stub
 		try {
 			return cartItemDAO.getListCartItem();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+	}
+
+	@Override
+	public List<CartItem> getListCartItemByOrderID(int ordersID) {
+		try {
+			return cartItemDAO.getListCartItemByOrderID(ordersID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

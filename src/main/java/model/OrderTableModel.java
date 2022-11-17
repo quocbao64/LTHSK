@@ -63,7 +63,7 @@ public class OrderTableModel extends AbstractTableModel{
 		return Integer.class;
 	}
 	
-	public void setProducts(List<Order> orders) {
+	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 }
