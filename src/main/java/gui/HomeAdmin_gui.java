@@ -17,6 +17,7 @@ import entity.Categories;
 import entity.Order;
 import entity.Product;
 import entity.Users;
+import handler.UsersHandler;
 import model.CartItemTableModel;
 import model.CategoriesTableModel;
 import model.OrderTableModel;
@@ -231,6 +232,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JMenuItem menu3_1;
 	private JMenuItem menu4_1;
 	private JMenuItem menu4_2;
+	private JButton XML;
 
 	/**
 	 * Launch the application.
@@ -506,11 +508,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblNewLabel_2.setBounds(835, 247, 87, 28);
 		tabOrder.add(lblNewLabel_2);
-
-		JButton btnNewButton_6 = new JButton("Xuất danh sách sản phẩm");
-		btnNewButton_6.setIcon(new ImageIcon("image\\xml.png"));
-		btnNewButton_6.setBounds(10, 247, 205, 28);
-		tabOrder.add(btnNewButton_6);
 
 		tabDelOrder = new JPanel();
 		tabDelOrder.setLayout(null);
@@ -1164,6 +1161,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		btnNewButton_3_3_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_3_3_1.setBounds(1009, 18, 42, 25);
 		tabUser.add(btnNewButton_3_3_1);
+		
+		XML = new JButton("Xuất danh sách");
+		XML.setIcon(new ImageIcon("C:\\SON.admin\\V\\JavaSuKien\\LTHSK_QuanLySieuThi\\image\\xml.png"));
+		XML.setBounds(10, 16, 142, 28);
+		tabUser.add(XML);
+		XML.addActionListener(this);
 
 		tabCategory = new JPanel();
 		tabCategory.setBackground(new Color(255, 255, 255));
@@ -2697,6 +2700,28 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				}
 			}
 
+		}
+		
+		
+// Xuất file xml danh sách sinh viên xml/user.xml
+		if(o.equals(XML)) {
+			String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
+			UsersHandler usersHandler = new UsersHandler();
+			if(location == null) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			if(location.strip() == "") {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			try {
+				usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
+				JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \""+location+"\"", "Quản Lý Siêu Thị", 2);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị", 2);
+			}
+			
 		}
 
 	}
