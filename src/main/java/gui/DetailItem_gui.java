@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
+import entity.Product;
+
 import java.awt.Font;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -28,23 +30,23 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DetailItem_gui frame = new DetailItem_gui();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					DetailItem_gui frame = new DetailItem_gui();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public DetailItem_gui() {
+	public DetailItem_gui(Product product) {
 		setTitle("Chi tiết Sản Phẩm");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\SON.admin\\V\\JavaSuKien\\LTHSK_QuanLySieuThi\\image\\logo.png"));
 		setBounds(100, 100, 800, 381);
@@ -79,7 +81,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblTnSnPhm.setBounds(24, 55, 112, 20);
 		panel.add(lblTnSnPhm);
 		
-		JLabel lblNameProduct = new JLabel("Heo xào sả ớt, 500g, xuất xứ trung quốc đại lục");
+		JLabel lblNameProduct = new JLabel(product.getName());
 		lblNameProduct.setForeground(Color.BLACK);
 		lblNameProduct.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNameProduct.setBounds(165, 55, 578, 20);
@@ -90,7 +92,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblGi.setBounds(24, 85, 127, 20);
 		panel.add(lblGi);
 		
-		JLabel lblPriceProduct = new JLabel("200000");
+		JLabel lblPriceProduct = new JLabel(String.format("%,.0f", product.getPrice()) + " ₫");
 		lblPriceProduct.setForeground(Color.BLACK);
 		lblPriceProduct.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPriceProduct.setBounds(165, 85, 258, 20);
@@ -101,7 +103,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblMNhCung.setBounds(24, 203, 127, 20);
 		panel.add(lblMNhCung);
 		
-		JLabel lblIDSupply = new JLabel("02");
+		JLabel lblIDSupply = new JLabel(product.getSuppliers().getID()+"");
 		lblIDSupply.setForeground(Color.BLACK);
 		lblIDSupply.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblIDSupply.setBounds(165, 203, 258, 20);
@@ -112,7 +114,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblMNhCung_1.setBounds(24, 233, 132, 20);
 		panel.add(lblMNhCung_1);
 		
-		JLabel lblNameSupply = new JLabel("Thực phẩm sạch");
+		JLabel lblNameSupply = new JLabel(product.getSuppliers().getName());
 		lblNameSupply.setForeground(Color.BLACK);
 		lblNameSupply.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNameSupply.setBounds(165, 233, 258, 20);
@@ -123,7 +125,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblMNhCung_1_1.setBounds(484, 203, 78, 20);
 		panel.add(lblMNhCung_1_1);
 		
-		JLabel lblPhoneSupply = new JLabel("0395906032");
+		JLabel lblPhoneSupply = new JLabel(product.getSuppliers().getPhone());
 		lblPhoneSupply.setForeground(Color.BLACK);
 		lblPhoneSupply.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPhoneSupply.setBounds(552, 203, 191, 20);
@@ -134,7 +136,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblMNhCung_1_1_1.setBounds(484, 233, 56, 20);
 		panel.add(lblMNhCung_1_1_1);
 		
-		JLabel lblGmailSupply = new JLabel("son12@gmail.com");
+		JLabel lblGmailSupply = new JLabel(product.getSuppliers().getGmail());
 		lblGmailSupply.setForeground(Color.BLACK);
 		lblGmailSupply.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblGmailSupply.setBounds(552, 233, 191, 20);
@@ -145,7 +147,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblaCh.setBounds(24, 263, 112, 20);
 		panel.add(lblaCh);
 		
-		JLabel lblAddressSupply = new JLabel("12, Nguyễn văn bảo, p4, gò vấp, tp.Hồ chí minh");
+		JLabel lblAddressSupply = new JLabel(product.getSuppliers().getAddress());
 		lblAddressSupply.setForeground(Color.BLACK);
 		lblAddressSupply.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblAddressSupply.setBounds(165, 263, 578, 20);
@@ -156,7 +158,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblMLoiHng.setBounds(24, 129, 112, 20);
 		panel.add(lblMLoiHng);
 		
-		JLabel lblIDCatagory = new JLabel("1");
+		JLabel lblIDCatagory = new JLabel(product.getCategories().getID()+"");
 		lblIDCatagory.setForeground(Color.BLACK);
 		lblIDCatagory.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblIDCatagory.setBounds(165, 129, 88, 20);
@@ -167,10 +169,10 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		lblTnLoiHng.setBounds(24, 159, 112, 20);
 		panel.add(lblTnLoiHng);
 		
-		JLabel lblNameCatagory = new JLabel("Thực phẩm");
+		JLabel lblNameCatagory = new JLabel(product.getCategories().getName());
 		lblNameCatagory.setForeground(Color.BLACK);
 		lblNameCatagory.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNameCatagory.setBounds(165, 159, 88, 20);
+		lblNameCatagory.setBounds(165, 159, 258, 20);
 		panel.add(lblNameCatagory);
 		
 		btnClose = new JButton("  Hoàn thành");

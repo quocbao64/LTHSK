@@ -8,8 +8,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.border.TitledBorder;
+
+import db.ConnectDB;
+import entity.CartItem;
+import entity.Order;
+import model.CartItemTableModel;
+import service.impl.CartItemServiceImpl;
+
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import java.awt.SystemColor;
@@ -30,29 +38,15 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnClose;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DetailOrder_gui frame = new DetailOrder_gui();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	private CartItemServiceImpl cartItemServiceImpl;
+	private CartItemTableModel model_CartItem;
+	
 	/**
 	 * Create the frame.
 	 */
-	public DetailOrder_gui() {
+	public DetailOrder_gui(Order order) {
 		setTitle("Chi Tiết Hóa Đơn");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\SON.admin\\V\\JavaSuKien\\LTHSK_QuanLySieuThi\\image\\logo.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("image\\logo.png"));
 		setBounds(100, 100, 1069, 534);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -74,8 +68,12 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		scrollPane.setBounds(10, 20, 1021, 270);
 		panel.add(scrollPane);
 		
+		String[] headLine_table = { "STT", "Tên sản phẩm", "Giá sản phẩm", "Số lượng", "Tổng tiền" };
+		cartItemServiceImpl = new CartItemServiceImpl(ConnectDB.getInstance().getConnection());
+	
+		model_CartItem = new CartItemTableModel(cartItemServiceImpl.getListCartItemByOrderID(order.getID()), headLine_table);
 
-		table = new JTable();
+		table = new JTable(model_CartItem);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		table.setBackground(UIManager.getColor("Button.light"));
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -90,7 +88,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblNewLabel.setBounds(445, 14, 95, 20);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblIDOrder = new JLabel("01");
+		JLabel lblIDOrder = new JLabel(order.getID()+"");
 		lblIDOrder.setForeground(Color.BLUE);
 		lblIDOrder.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblIDOrder.setBounds(537, 10, 95, 20);
@@ -101,7 +99,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblNgyLp.setBounds(138, 59, 142, 20);
 		contentPane.add(lblNgyLp);
 		
-		JLabel lblDateOrder = new JLabel("20/12/2022");
+		JLabel lblDateOrder = new JLabel(order.getOrderDate().toString());
 		lblDateOrder.setForeground(Color.BLACK);
 		lblDateOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblDateOrder.setBounds(291, 59, 142, 20);
@@ -112,7 +110,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblTngGi.setBounds(138, 89, 142, 20);
 		contentPane.add(lblTngGi);
 		
-		JLabel lblPriceOrder = new JLabel("200000");
+		JLabel lblPriceOrder = new JLabel(String.format("%,.0f", order.getTotalPrice()) + " ₫");
 		lblPriceOrder.setForeground(Color.BLACK);
 		lblPriceOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPriceOrder.setBounds(291, 89, 142, 20);
@@ -123,7 +121,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblGimGi.setBounds(138, 119, 142, 20);
 		contentPane.add(lblGimGi);
 		
-		JLabel lblDiscountOrder = new JLabel("0");
+		JLabel lblDiscountOrder = new JLabel(String.format("%,.0f", order.getDiscount()) + " ₫");
 		lblDiscountOrder.setForeground(Color.BLACK);
 		lblDiscountOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblDiscountOrder.setBounds(291, 119, 142, 20);
@@ -134,7 +132,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblMNhnVin.setBounds(609, 59, 178, 20);
 		contentPane.add(lblMNhnVin);
 		
-		JLabel lblIDPerson = new JLabel("01");
+		JLabel lblIDPerson = new JLabel(order.getUsers().getID()+"");
 		lblIDPerson.setForeground(Color.BLACK);
 		lblIDPerson.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblIDPerson.setBounds(798, 59, 142, 20);
@@ -145,7 +143,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblTnNhnVin.setBounds(609, 89, 178, 20);
 		contentPane.add(lblTnNhnVin);
 		
-		JLabel lblNamePerson = new JLabel("Nguyễn văn sơn");
+		JLabel lblNamePerson = new JLabel(order.getUsers().getName()+"");
 		lblNamePerson.setForeground(Color.BLACK);
 		lblNamePerson.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNamePerson.setBounds(798, 89, 199, 20);
@@ -156,7 +154,7 @@ public class DetailOrder_gui extends JFrame implements ActionListener {
 		lblSinThoi.setBounds(609, 119, 178, 20);
 		contentPane.add(lblSinThoi);
 		
-		JLabel lblPhonePerson = new JLabel("0395906032");
+		JLabel lblPhonePerson = new JLabel(order.getUsers().getPhone());
 		lblPhonePerson.setForeground(Color.BLACK);
 		lblPhonePerson.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPhonePerson.setBounds(798, 119, 199, 20);

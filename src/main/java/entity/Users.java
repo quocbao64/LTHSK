@@ -26,6 +26,12 @@ public class Users {
 		this.password = password;
 	}
 
+	public Users() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public int getID() {
 		return ID;
 	}

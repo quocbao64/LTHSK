@@ -17,47 +17,59 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	public void addUsers(Users users) {
-		// TODO Auto-generated method stub
 		try {
 			usersDAO.addUsers(users);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
 	public Users searchUsers(int ID) {
-		// TODO Auto-generated method stub
 		try {
 			return usersDAO.searchUsers(ID);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public boolean updateUsers(Users users) {
-		// TODO Auto-generated method stub
 		try {
 			return usersDAO.updateUsers(users);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	public List<Users> getListUsers() {
-		// TODO Auto-generated method stub
 		try {
 			return usersDAO.getListUsers();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+	}
+
+	@Override
+	public boolean delUsers(int id){
+		try {
+			return usersDAO.delUsers(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public Users searchUsersByGmail(String gmail) {
+		try {
+			return usersDAO.searchUsersByGmail(gmail);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

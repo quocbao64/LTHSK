@@ -11,11 +11,13 @@ import entity.CartItem;
 
 public class CartItemDAO {
     private Connection con;
-    private static OrdersDAO ordersDAO;
     private static ProductDAO productDAO;
+    private static OrdersDAO ordersDAO;
 
     public CartItemDAO(Connection con) {
         this.con = con;
+        ordersDAO = new OrdersDAO(con);
+        productDAO = new ProductDAO(con);
     }
 
     public void addCartItem(CartItem cartItem) throws Exception {
@@ -24,17 +26,17 @@ public class CartItemDAO {
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, cartItem.getID());
             stmt.setInt(2, cartItem.getQuantity());
-            stmt.setInt(4, cartItem.getOrder().getID());
-            stmt.setInt(5, cartItem.getProduct().getID());
+            stmt.setInt(3, cartItem.getOrder().getID());
+            stmt.setInt(4, cartItem.getProduct().getID());
 
             stmt.executeUpdate();
         } else {
-            throw new Exception("Trung ma");
+            throw new Exception("Trùng mã");
         }
     }
 
     public CartItem searchCartItem(int ID) throws SQLException {
-        String sql = "select * from Product where ID = ?";
+        String sql = "select * from CartItem where ID = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setInt(1, ID);
         ResultSet rs = stmt.executeQuery();
@@ -49,30 +51,36 @@ public class CartItemDAO {
         return null;
     }
 
-    public boolean xoaNhanvien(String maNV) {
-
-        return false;
-    }
-
-    // public boolean updateProduct(Product product) throws SQLException {
-    // if (searchProduct(product.getID()) == null) {
-    // String sql = "update Product set Name = ?, Price = ?, SuppliersID = ?,
-    // CategoriesID = ?";
-    // PreparedStatement stmt = con.prepareStatement(sql);
-    // stmt.setString(1, product.getName());
-    // stmt.setBigDecimal(2, product.getPrice());
-    // stmt.setInt(3, product.getSuppliers().getID());
-    // stmt.setInt(4, product.getCategories().getID());
-    // stmt.executeUpdate();
-    // return true;
-    // }
-    // return false;
-    // }
-
     public List<CartItem> getListCartItem() throws SQLException {
         List<CartItem> listCartItem = new ArrayList<CartItem>();
         String sql = "Select * from CartItem";
         PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            CartItem cartItem = new CartItem(
+                    rs.getInt("ID"),
+                    rs.getInt("Quantity"),
+                    ordersDAO.searchOrder(rs.getInt("OrdersID")),
+                    productDAO.searchProduct(rs.getInt("ProductID")));
+            listCartItem.add(cartItem);
+        }
+
+        return listCartItem;
+    }
+    
+    public boolean delCartItem(int id) throws SQLException {
+    	String sql = "delete CartItem where id = ?";
+    	PreparedStatement stmt = con.prepareStatement(sql);
+    	stmt.setInt(1, id);
+    	int n = stmt.executeUpdate();
+    	return n>0;
+    }
+    
+    public List<CartItem> getListCartItemByOrderID(int ordersID) throws SQLException {
+        List<CartItem> listCartItem = new ArrayList<CartItem>();
+        String sql = "Select * from CartItem where OrdersID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, ordersID);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             CartItem cartItem = new CartItem(
