@@ -12,6 +12,7 @@ public class ConnectDB {
 		try {
 			String url = "jdbc:sqlserver://localhost:1433;databaseName=QLST;trustServerCertificate=true";
 			connection = DriverManager.getConnection(url , "sa", "sapassword");
+			System.out.println("Connected");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

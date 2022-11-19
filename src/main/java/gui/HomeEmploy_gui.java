@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -166,8 +167,9 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public HomeEmploy_gui(Users users) {
+	public HomeEmploy_gui(Users users) throws SQLException {
 		user = users;
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("image\\logo.png"));
