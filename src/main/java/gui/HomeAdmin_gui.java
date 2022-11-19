@@ -2625,6 +2625,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			}
 			String patternEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 			String patternPhone = "([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\\b";
+			String patternPassword = "^(?=.*[A-Za-z0-9]).{8,}$";
 			
 			if (!checkRegex(patternEmail, textField_20.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Thêm thất bại: Mail không đúng định dạng", "Quản Lý Siêu Thị", 2);
@@ -2632,6 +2633,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			}
 			else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Thêm thất bại: Phone không đúng định dạng", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+			else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
 			}
 			Date birthday = dateChooser_1.getDate();
@@ -2692,6 +2697,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			}
 			String patternEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 			String patternPhone = "([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\\b";
+			String patternPassword = "^(?=.*[A-Za-z0-9]).{8,}$";
 			
 			if (!checkRegex(patternEmail, textField_20.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Sửa thất bại: Mail không đúng định dạng", "Quản Lý Siêu Thị", 2);
@@ -2699,6 +2705,10 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			}
 			else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Sửa thất bại: Phone không đúng định dạng", "Quản Lý Siêu Thị", 2);
+				return;
+			} 
+			else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
 			}
 			Date birthday = dateChooser_1.getDate();
