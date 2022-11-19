@@ -51,7 +51,7 @@ public class UserTableModel extends AbstractTableModel{
 		case NAME:
 			return u.getName();
 		case GENDER:
-			return u.isGender()==1?"Nam":"Nữ";
+			return u.isGender()==0?"Nam":"Nữ";
 		case GMAIL:
 			return u.getGmail();
 		case PHONE:

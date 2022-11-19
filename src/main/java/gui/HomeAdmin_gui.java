@@ -233,6 +233,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	private JMenuItem menu4_1;
 	private JMenuItem menu4_2;
 	private JButton XML;
+	private JButton btnNewButton_3_3_1;
+	private JComboBox comboBox_3_1_3;
 
 	/**
 	 * Launch the application.
@@ -1142,11 +1144,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		lblNewLabel_3_1_3.setBounds(878, 14, 81, 13);
 		panel_6_1_2_1.add(lblNewLabel_3_1_3);
 
-		JComboBox comboBox_3_1_3 = new JComboBox();
+		comboBox_3_1_3 = new JComboBox();
 		comboBox_3_1_3.setModel(new DefaultComboBoxModel(new String[] { "Không", "Tên nhân viên", "Ngày vào làm" }));
 		comboBox_3_1_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_3_1_3.setBounds(950, 10, 81, 20);
 		panel_6_1_2_1.add(comboBox_3_1_3);
+		comboBox_3_1_3.addActionListener(this);
 
 		textField_19 = new JTextField();
 		textField_19.setToolTipText("Tìm kiếm theo mã");
@@ -1155,13 +1158,14 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		textField_19.setBounds(878, 18, 132, 26);
 		tabUser.add(textField_19);
 
-		JButton btnNewButton_3_3_1 = new JButton("");
+		btnNewButton_3_3_1 = new JButton("");
 		btnNewButton_3_3_1.setIcon(new ImageIcon("image\\search.png"));
 		btnNewButton_3_3_1.setToolTipText("Tìm kiếm theo mã");
 		btnNewButton_3_3_1.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_3_3_1.setBounds(1009, 18, 42, 25);
 		tabUser.add(btnNewButton_3_3_1);
-		
+		btnNewButton_3_3_1.addActionListener(this);
+
 		XML = new JButton("Xuất danh sách");
 		XML.setIcon(new ImageIcon("C:\\SON.admin\\V\\JavaSuKien\\LTHSK_QuanLySieuThi\\image\\xml.png"));
 		XML.setBounds(10, 16, 142, 28);
@@ -1898,13 +1902,13 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			tabbedPane.addTab("Thông Tin Của Bạn", new ImageIcon("image\\btnProfile1.png"), tabInfo, null);
 			btnInfo_tool = true;
 		}
-		
-		if(o.equals(menu4_1)) {
+
+		if (o.equals(menu4_1)) {
 			this.setVisible(false);
 			new Login_gui().setVisible(true);
 		}
-		
-		if(o.equals(menu4_2)) {
+
+		if (o.equals(menu4_2)) {
 			System.exit(0);
 		}
 
@@ -2596,6 +2600,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			comboBox_2.setSelectedIndex(0);
 			dateChooser_1.setDate(new Date());
 			dateChooser_1_1.setDate(new Date());
+			updateTableUsers();
 		}
 
 		// add users
@@ -2669,61 +2674,117 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Sửa thât bại", "Quản Lý Siêu Thị", 2);
 			}
-		}
 
-// info
-		// show password
-		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1_1)) {
-			if (password) {
-				textField_32.setEchoChar((char) 0);
-				password = false;
+		}
+		// search -user
+		if (o.equals(btnNewButton_3_3_1)) {
+			if (textField_19.getText().strip() == "") {
+				JOptionPane.showMessageDialog(this, "Field tìm kiếm trống!", "Quản Lý Siêu Thị", 2);
 				return;
 			}
-			textField_32.setEchoChar('•');
-			password = true;
+
+			if (!textField_19.getText().matches("[0-9]+")) {
+				JOptionPane.showMessageDialog(this, "Mã nhân viên phải là số nguyên!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
+
+			Users users = usersServiceImpl.searchUsers(Integer.parseInt(textField_19.getText().strip()));
+			if (users == null) {
+				JOptionPane.showMessageDialog(this, "Mã nhân viên \" " + textField_19.getText() + " \" không tồn tại!",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+			listUsers = new ArrayList<>();
+			listUsers.add(users);
+			model_Users.setUsers(listUsers);
+			table_5.setModel(model_Users);
+			table_5.updateUI();
+
+			textField_19.setText("");
+
+			textField_13.setText(users.getID() + "");
+			textField_15.setText(users.getName());
+			textField_20.setText(users.getGmail());
+			textField_21.setText(users.getPassword());
+			textField_22.setText(users.getAddress());
+			textField_18.setText(users.getPhone());
+			comboBox_2.setSelectedIndex(users.isGender() == 0 ? 1 : 0);
+			dateChooser_1.setDate(new Date());
+			dateChooser_1_1.setDate(new Date());
 		}
 
-		// save password
-		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1)) {
+		// sort user
+		if (o.equals(comboBox_3_1_3)) {
 
-			int i = JOptionPane.showConfirmDialog(this, "Xác nhận đổi mật khẩu", "Quản Lý Siêu Thị", 2);
+			if (comboBox_3_1_3.getSelectedIndex() == 0) {
+				updateTableUsers();
+			} else if (comboBox_3_1_3.getSelectedIndex() == 1) {
+				Collections.sort(listUsers, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+				model_Users.setUsers(listUsers);
+				table_5.setModel(model_Users);
+				table_5.updateUI();
+			} else if (comboBox_3_1_3.getSelectedIndex() == 2) {
+				Collections.sort(listUsers, (o1, o2) -> (o1.getHireDate().isAfter(o2.getHireDate())) ? -1 : 1);
+				model_Users.setUsers(listUsers);
+				table_5.setModel(model_Users);
+				table_5.updateUI();
+			}
 
-			if (i == 0) {
-				try {
-					Users users = usersServiceImpl.searchUsers(11);
-					users.setPassword(textField_32.getText());
-					usersServiceImpl.updateUsers(users);
-					textField_32.setEchoChar('•');
-					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Quản Lý Siêu Thị", 1);
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại", "Quản Lý Siêu Thị", 2);
+// info
+			// show password
+			if (o.equals(btnNewButton_2_1_1_1_1_3_1_1_1)) {
+				if (password) {
+					textField_32.setEchoChar((char) 0);
+					password = false;
+					return;
+				}
+				textField_32.setEchoChar('•');
+				password = true;
+			}
+
+			// save password
+			if (o.equals(btnNewButton_2_1_1_1_1_3_1_1)) {
+
+				int i = JOptionPane.showConfirmDialog(this, "Xác nhận đổi mật khẩu", "Quản Lý Siêu Thị", 2);
+
+				if (i == 0) {
+					try {
+						Users users = usersServiceImpl.searchUsers(11);
+						users.setPassword(textField_32.getText());
+						usersServiceImpl.updateUsers(users);
+						textField_32.setEchoChar('•');
+						JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Quản Lý Siêu Thị", 1);
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại", "Quản Lý Siêu Thị", 2);
+					}
 				}
 			}
 
-		}
-		
-		
 // Xuất file xml danh sách sinh viên xml/user.xml
-		if(o.equals(XML)) {
-			String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
-			UsersHandler usersHandler = new UsersHandler();
-			if(location == null) {
-				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-			if(location.strip() == "") {
-				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị", 2);
-				return;
-			}
-			try {
-				usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
-				JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \""+location+"\"", "Quản Lý Siêu Thị", 2);
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị", 2);
-			}
-			
-		}
+			if (o.equals(XML)) {
+				String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
+				UsersHandler usersHandler = new UsersHandler();
+				if (location == null) {
+					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"",
+							"Quản Lý Siêu Thị", 2);
+					return;
+				}
+				if (location.strip() == "") {
+					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị",
+							2);
+					return;
+				}
+				try {
+					usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
+					JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \"" + location + "\"",
+							"Quản Lý Siêu Thị", 2);
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị",
+							2);
+				}
 
+			}
+		}
 	}
 
 	private Boolean regexUsers() {
