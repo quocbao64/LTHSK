@@ -145,6 +145,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 	private UserTableModel model_Users;
 	private CategoriesTableModel model_category;
 	private ProductTableModel model_product;
+	private Users user;
 
 	/**
 	 * Launch the application.
@@ -154,6 +155,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					HomeEmploy_gui frame = new HomeEmploy_gui(new Users());
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -166,6 +168,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public HomeEmploy_gui(Users users) {
+		user = users;
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("image\\logo.png"));
 		setTitle("Quản Lý Siêu Thị   |    Huỳnh Quốc Bảo - Nguyễn Văn Sơn");
@@ -392,11 +395,6 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblNewLabel_2.setBounds(835, 247, 87, 28);
 		tabOrder.add(lblNewLabel_2);
-
-		JButton btnNewButton_6 = new JButton("Xuất danh sách sản phẩm");
-		btnNewButton_6.setIcon(new ImageIcon("image\\xml.png"));
-		btnNewButton_6.setBounds(10, 247, 205, 28);
-		tabOrder.add(btnNewButton_6);
 
 		String[] headLine_table_4 = { "STT", "Tên sản phẩm", "Giá sản phẩm", "Số lượng", "Tổng tiền" };
 
@@ -786,7 +784,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 						totalPrice += c.getQuantity() * Double.parseDouble(c.getProduct().getPrice().toString());
 
 					Order order = new Order(idOrder_temp, LocalDate.now(), BigDecimal.valueOf(totalPrice), 0.0,
-							usersServiceImpl.searchUsers(11));
+							user);
 					ordersServiceImpl.addOrders(order);
 
 					for (CartItem c : listCartItem_temp) {
@@ -834,9 +832,8 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 			if (i == 0) {
 				try {
-					Users users = usersServiceImpl.searchUsers(11);
-					users.setPassword(textField_32.getText());
-					usersServiceImpl.updateUsers(users);
+					user.setPassword(textField_32.getText());
+					usersServiceImpl.updateUsers(user);
 					textField_32.setEchoChar('•');
 					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Quản Lý Siêu Thị", 1);
 				} catch (Exception e2) {
@@ -845,6 +842,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 			}
 
 		}
+			
 
 	}
 

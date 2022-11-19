@@ -2,7 +2,15 @@ package entity;
 
 import java.time.LocalDate;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Users {
+	@XmlAttribute(required = true)
 	private int ID;
 	private String name;
 	private int gender;
