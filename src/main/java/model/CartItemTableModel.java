@@ -26,22 +26,18 @@ public class CartItemTableModel extends AbstractTableModel{
 		this.headLine = headLine;
 	}
 
-	@Override
 	public int getRowCount() {
 		return cartItems.size();
 	}
 
-	@Override
 	public int getColumnCount() {
 		return headLine.length;
 	}
 	
-	@Override
 	public String getColumnName(int column) {
 		return headLine[column];
 	}
 
-	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		CartItem c = cartItems.get(rowIndex);
 		switch (columnIndex) {
@@ -61,7 +57,6 @@ public class CartItemTableModel extends AbstractTableModel{
 		return null;
 	}
 	
-	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		if(columnIndex==NAME) return String.class;
 		return Integer.class;

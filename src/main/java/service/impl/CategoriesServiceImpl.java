@@ -43,7 +43,6 @@ public class CategoriesServiceImpl implements CategoriesService {
 		return null;
 	}
 
-	@Override
 	public List<Product> getListProductNullCategories() {
 		try {
 			return categoriesDAO.getListProductNullCategories();
@@ -54,7 +53,6 @@ public class CategoriesServiceImpl implements CategoriesService {
 		return null;
 	}
 
-	@Override
 	public List<Product> getListProductByCategoriesID(int id) {
 		try {
 			return categoriesDAO.getListProductByCategoriesID(id);

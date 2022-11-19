@@ -3,9 +3,14 @@ package service.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 import dao.UsersDAO;
 import entity.Users;
+import gui.HomeAdmin_gui;
 import service.UsersService;
 
 public class UsersServiceImpl implements UsersService {
@@ -16,60 +21,28 @@ public class UsersServiceImpl implements UsersService {
 		this.usersDAO = new UsersDAO(con);
 	}
 
-	public void addUsers(Users users) {
-		try {
-			usersDAO.addUsers(users);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	public void addUsers(Users users) throws Exception {
+		usersDAO.addUsers(users);
 	}
 
-	public Users searchUsers(int ID) {
-		try {
-			return usersDAO.searchUsers(ID);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public Users searchUsers(int ID) throws SQLException {
+		return usersDAO.searchUsers(ID);
 	}
 
-	public boolean updateUsers(Users users) {
-		try {
-			return usersDAO.updateUsers(users);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean updateUsers(Users users) throws SQLException {
+		return usersDAO.updateUsers(users);
 	}
 
-	public List<Users> getListUsers() {
-		try {
-			return usersDAO.getListUsers();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public List<Users> getListUsers() throws SQLException {
+		return usersDAO.getListUsers();
 	}
 
-	@Override
-	public boolean delUsers(int id){
-		try {
-			return usersDAO.delUsers(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean delUsers(int id) throws SQLException {
+		return usersDAO.delUsers(id);
 	}
 
-	@Override
-	public Users searchUsersByGmail(String gmail) {
-		try {
-			return usersDAO.searchUsersByGmail(gmail);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public Users searchUsersByGmail(String gmail) throws SQLException {
+		return usersDAO.searchUsersByGmail(gmail);
 	}
 
 }

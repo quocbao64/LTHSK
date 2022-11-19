@@ -14,6 +14,7 @@ import service.impl.UsersServiceImpl;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -142,7 +143,13 @@ public class Login_gui extends JFrame implements ActionListener {
 			}
 			
 			UsersServiceImpl usersServiceImpl = new UsersServiceImpl(ConnectDB.getInstance().getConnection());
-			Users users = usersServiceImpl.searchUsersByGmail(tfGmail.getText().strip());
+			Users users = null;
+			try {
+				users = usersServiceImpl.searchUsersByGmail(tfGmail.getText().strip());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			if(users == null) {
 				JOptionPane.showMessageDialog(this, "Gmail không tồn tại", "Quản Lý Siêu Thị", 2);
@@ -155,11 +162,21 @@ public class Login_gui extends JFrame implements ActionListener {
 			
 			if(users.getRole().compareTo("ROLE_ADMIN")==0) {
 				this.setVisible(false);
-				new HomeAdmin_gui().setVisible(true);
+				try {
+					new HomeAdmin_gui().setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			else {
 				this.setVisible(false);
-				new HomeEmploy_gui(users).setVisible(true);
+				try {
+					new HomeEmploy_gui(users).setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 			
