@@ -699,6 +699,18 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 						2);
 				return;
 			}
+			
+			textField.setText("");
+			spinner.setValue(1);
+			
+			for(CartItem c :listCartItem_temp){
+				if(c.getProduct().getID()==product.getID()) {
+					c.setQuantity(c.getQuantity()+Integer.parseInt(spinner.getValue().toString()));
+					updateTableCartItem();
+					updateTotalPrice();
+					return;
+				}
+			}
 
 			idOrder_temp = listOrder.get(listOrder.size() - 1).getID() + 1;
 
@@ -708,9 +720,6 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 			updateTableCartItem();
 			updateTotalPrice();
-
-			textField.setText("");
-			spinner.setValue(1);
 		}
 
 		// làm rỗng field - cartItem
@@ -842,7 +851,6 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại", "Quản Lý Siêu Thị", 2);
 				}
 			}
-
 		}
 			
 

@@ -257,7 +257,8 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
-	 * @throws SQLException 
+	 * 
+	 * @throws SQLException
 	 */
 	public HomeAdmin_gui() throws SQLException {
 		setResizable(false);
@@ -2056,13 +2057,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		// sort category
 		if (o.equals(comboBox_3_1_4)) {
 			if (comboBox_3_1_4.getSelectedIndex() == 0) {
+				listProductCategory = categoriesServiceImpl.getListProductNullCategories();
 				updateTableCategory();
 				return;
 			}
 			Collections.sort(listProductCategory, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-			model_category.setProducts(listProductCategory);
-			table_2.setModel(model_category);
-			table_2.updateUI();
+			updateTableCategory();
 		}
 
 		// Event product
@@ -2222,18 +2222,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		// sort product
 		if (o.equals(comboBox_3_1_5)) {
 			if (comboBox_3_1_5.getSelectedIndex() == 0) {
+				listProduct = productServiceImpl.getListProducts();
 				updateTableProduct();
 				return;
 			} else if (comboBox_3_1_5.getSelectedIndex() == 1) {
 				Collections.sort(listProduct, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-				model_product.setProducts(listProduct);
-				table_3.setModel(model_product);
-				table_3.updateUI();
+				updateTableProduct();
 			} else {
 				Collections.sort(listProduct, (o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
-				model_product.setProducts(listProduct);
-				table_3.setModel(model_product);
-				table_3.updateUI();
+				updateTableProduct();
 			}
 
 		}
@@ -2373,16 +2370,17 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		if (o.equals(comboBox_3_1_2)) {
 
 			if (comboBox_3_1_2.getSelectedIndex() == 0) {
+				listOrder = ordersServiceImpl.getListOrders();
 				updateTableOrder();
 			} else if (comboBox_3_1_2.getSelectedIndex() == 1) {
 				Collections.sort(listOrder, (o1, o2) -> o1.getUsers().getName().compareTo(o2.getUsers().getName()));
-				table_1.updateUI();
+				updateTableOrder();
 			} else if (comboBox_3_1_2.getSelectedIndex() == 2) {
-				Collections.sort(listOrder, (o1, o2) -> (o1.getOrderDate().isAfter(o2.getOrderDate())) ? -1 : 1);
-				table_1.updateUI();
+				Collections.sort(listOrder, (o1, o2) -> (o1.getOrderDate().isAfter(o2.getOrderDate())) ? 1 : -1);
+				updateTableOrder();
 			} else {
-				Collections.sort(listOrder, (o1, o2) -> o2.getTotalPrice().compareTo(o1.getTotalPrice()));
-				table_1.updateUI();
+				Collections.sort(listOrder, (o1, o2) -> o1.getTotalPrice().compareTo(o2.getTotalPrice()));
+				updateTableOrder();
 			}
 		}
 
@@ -2408,6 +2406,18 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				return;
 			}
 
+			textField.setText("");
+			spinner.setValue(1);
+
+			for (CartItem c : listCartItem_temp) {
+				if (c.getProduct().getID() == product.getID()) {
+					c.setQuantity(c.getQuantity() + Integer.parseInt(spinner.getValue().toString()));
+					updateTableCartItem();
+					updateTotalPrice();
+					return;
+				}
+			}
+
 			idOrder_temp = listOrder.get(listOrder.size() - 1).getID() + 1;
 
 			CartItem cartItem = new CartItem(1, id, new Order(idOrder_temp), product);
@@ -2416,9 +2426,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 			updateTableCartItem();
 			updateTotalPrice();
-
-			textField.setText("");
-			spinner.setValue(1);
 		}
 
 		// làm rỗng field - cartItem
@@ -2626,23 +2633,23 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			String patternEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 			String patternPhone = "([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\\b";
 			String patternPassword = "^(?=.*[A-Za-z0-9]).{8,}$";
-			
+
 			if (!checkRegex(patternEmail, textField_20.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Thêm thất bại: Mail không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
-			}
-			else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
+			} else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Thêm thất bại: Phone không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
-			}
-			else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
-				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị", 2);
+			} else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị",
+						2);
 				return;
 			}
 			Date birthday = dateChooser_1.getDate();
 			Date hiredate = dateChooser_1_1.getDate();
 			if (hiredate.before(birthday)) {
-				JOptionPane.showMessageDialog(this, "Thêm thất bại: Ngày vào làm phải sau ngày sinh", "Quản Lý Siêu Thị", 2);
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Ngày vào làm phải sau ngày sinh",
+						"Quản Lý Siêu Thị", 2);
 				return;
 			}
 			try {
@@ -2698,28 +2705,29 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			String patternEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 			String patternPhone = "([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\\b";
 			String patternPassword = "^(?=.*[A-Za-z0-9]).{8,}$";
-			
+
 			if (!checkRegex(patternEmail, textField_20.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Sửa thất bại: Mail không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
-			}
-			else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
+			} else if (!checkRegex(patternPhone, textField_18.getText().strip())) {
 				JOptionPane.showMessageDialog(this, "Sửa thất bại: Phone không đúng định dạng", "Quản Lý Siêu Thị", 2);
 				return;
-			} 
-			else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
-				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị", 2);
+			} else if (!checkRegex(patternPassword, textField_21.getText().strip())) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị",
+						2);
 				return;
 			}
 			Date birthday = dateChooser_1.getDate();
 			Date hiredate = dateChooser_1_1.getDate();
 			if (hiredate.before(birthday)) {
-				JOptionPane.showMessageDialog(this, "Sửa thất bại: Ngày vào làm phải sau ngày sinh", "Quản Lý Siêu Thị", 2);
+				JOptionPane.showMessageDialog(this, "Sửa thất bại: Ngày vào làm phải sau ngày sinh", "Quản Lý Siêu Thị",
+						2);
 				return;
 			}
-			
+
 			try {
-				Users users = new Users(Integer.parseInt(textField_13.getText().strip()), textField_15.getText().strip(),
+				Users users = new Users(Integer.parseInt(textField_13.getText().strip()),
+						textField_15.getText().strip(),
 						comboBox_2.getSelectedIndex(), textField_20.getText().strip(), textField_18.getText().strip(),
 						textField_22.getText().strip(),
 						LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(dateChooser_1.getDate())),
@@ -2742,7 +2750,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 					model_Users.setUsers(listUsers);
 					table_5.setModel(model_Users);
 					table_5.updateUI();
-					
+
 					textField_19.setText("");
 
 					textField_13.setText("");
@@ -2812,14 +2820,20 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 				}
 			} else if (comboBox_3_1_3.getSelectedIndex() == 1) {
 				Collections.sort(listUsers, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-				model_Users.setUsers(listUsers);
-				table_5.setModel(model_Users);
-				table_5.updateUI();
+				try {
+					updateTableUsers();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			} else if (comboBox_3_1_3.getSelectedIndex() == 2) {
-				Collections.sort(listUsers, (o1, o2) -> (o1.getHireDate().isAfter(o2.getHireDate())) ? -1 : 1);
-				model_Users.setUsers(listUsers);
-				table_5.setModel(model_Users);
-				table_5.updateUI();
+				Collections.sort(listUsers, (o1, o2) -> (o1.getHireDate().isAfter(o2.getHireDate())) ? 1 : -1);
+				try {
+					updateTableUsers();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 			// info
@@ -2851,34 +2865,34 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 					}
 				}
 			}
+		}
 
-			// Xuất file xml danh sách sinh viên xml/user.xml
-			if (o.equals(XML)) {
-				String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
-				UsersHandler usersHandler = new UsersHandler();
-				if (location == null) {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"",
-							"Quản Lý Siêu Thị", 2);
-					return;
-				}
-				if (location.strip() == "") {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị",
-							2);
-					return;
-				}
-				try {
-					usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
-					JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \"" + location + "\"",
-							"Quản Lý Siêu Thị", 2);
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị",
-							2);
-				}
+		// Xuất file xml danh sách sinh viên xml/user.xml
 
+		if (o.equals(XML)) {
+			String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
+			UsersHandler usersHandler = new UsersHandler();
+			if (location == null) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+			if (location.strip() == "") {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị",
+						2);
+				return;
+			}
+			try {
+				usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
+				JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \"" + location + "\"",
+						"Quản Lý Siêu Thị", 2);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị",
+						2);
 			}
 		}
 	}
-	
+
 	private boolean checkRegex(String pattern, String str) {
 		Pattern r = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 		Matcher m = r.matcher(str);
@@ -2909,7 +2923,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	}
 
 	private void updateTableOrder() {
-		listOrder = ordersServiceImpl.getListOrders();
 		model_Order.setOrders(listOrder);
 		table_1.setModel(model_Order);
 		table_1.updateUI();
@@ -2930,14 +2943,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	}
 
 	private void updateTableProduct() {
-		listProduct = productServiceImpl.getListProducts();
 		model_product.setProducts(listProduct);
 		table_3.setModel(model_product);
 		table_3.updateUI();
 	}
 
 	private void updateTableCategory() {
-		listProductCategory = categoriesServiceImpl.getListProductNullCategories();
 		model_category.setProducts(listProductCategory);
 		table_2.setModel(model_category);
 		table_2.updateUI();

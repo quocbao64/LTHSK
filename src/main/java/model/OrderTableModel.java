@@ -1,12 +1,11 @@
 package model;
 
-import java.text.DecimalFormat;
 import java.util.List;
-
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.swing.table.AbstractTableModel;
 
 import entity.Order;
-import entity.Product;
 
 public class OrderTableModel extends AbstractTableModel{
 	private static final int ID = 0;
@@ -45,11 +44,11 @@ public class OrderTableModel extends AbstractTableModel{
 		case ID:
 			return o.getID();
 		case ORDERDATE:
-			return o.getOrderDate();
+			return new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(o.getOrderDate()));
 		case TOTALPRICE:
-			return o.getTotalPrice();
+			return String.format("%,.0f", o.getTotalPrice()) + " ₫";
 		case DISCOUNT:
-			return o.getDiscount();
+			return String.format("%,.0f", o.getDiscount()) + " ₫";
 		case USERNAME:
 			return o.getUsers().getName();
 		default:
@@ -60,6 +59,7 @@ public class OrderTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
+		if(USERNAME==columnIndex || ID == columnIndex) return String.class;
 		return Integer.class;
 	}
 	
