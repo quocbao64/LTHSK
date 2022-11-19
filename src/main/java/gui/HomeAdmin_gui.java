@@ -2052,13 +2052,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		// sort category
 		if (o.equals(comboBox_3_1_4)) {
 			if (comboBox_3_1_4.getSelectedIndex() == 0) {
+				listProductCategory = categoriesServiceImpl.getListProductNullCategories();
 				updateTableCategory();
 				return;
 			}
 			Collections.sort(listProductCategory, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-			model_category.setProducts(listProductCategory);
-			table_2.setModel(model_category);
-			table_2.updateUI();
+			updateTableCategory();
 		}
 
 // Event product
@@ -2218,18 +2217,15 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		// sort product
 		if (o.equals(comboBox_3_1_5)) {
 			if (comboBox_3_1_5.getSelectedIndex() == 0) {
+				listProduct = productServiceImpl.getListProducts();
 				updateTableProduct();
 				return;
 			} else if (comboBox_3_1_5.getSelectedIndex() == 1) {
 				Collections.sort(listProduct, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-				model_product.setProducts(listProduct);
-				table_3.setModel(model_product);
-				table_3.updateUI();
+				updateTableProduct();
 			} else {
 				Collections.sort(listProduct, (o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
-				model_product.setProducts(listProduct);
-				table_3.setModel(model_product);
-				table_3.updateUI();
+				updateTableProduct();
 			}
 
 		}
@@ -2364,16 +2360,17 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		if (o.equals(comboBox_3_1_2)) {
 
 			if (comboBox_3_1_2.getSelectedIndex() == 0) {
+				listOrder = ordersServiceImpl.getListOrders();
 				updateTableOrder();
 			} else if (comboBox_3_1_2.getSelectedIndex() == 1) {
 				Collections.sort(listOrder, (o1, o2) -> o1.getUsers().getName().compareTo(o2.getUsers().getName()));
-				table_1.updateUI();
+				updateTableOrder();
 			} else if (comboBox_3_1_2.getSelectedIndex() == 2) {
-				Collections.sort(listOrder, (o1, o2) -> (o1.getOrderDate().isAfter(o2.getOrderDate())) ? -1 : 1);
-				table_1.updateUI();
+				Collections.sort(listOrder, (o1, o2) -> (o1.getOrderDate().isAfter(o2.getOrderDate())) ? 1 : -1);
+				updateTableOrder();
 			} else {
-				Collections.sort(listOrder, (o1, o2) -> o2.getTotalPrice().compareTo(o1.getTotalPrice()));
-				table_1.updateUI();
+				Collections.sort(listOrder, (o1, o2) -> o1.getTotalPrice().compareTo(o2.getTotalPrice()));
+				updateTableOrder();
 			}
 		}
 
@@ -2398,6 +2395,18 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 						2);
 				return;
 			}
+			
+			textField.setText("");
+			spinner.setValue(1);
+			
+			for(CartItem c :listCartItem_temp){
+				if(c.getProduct().getID()==product.getID()) {
+					c.setQuantity(c.getQuantity()+Integer.parseInt(spinner.getValue().toString()));
+					updateTableCartItem();
+					updateTotalPrice();
+					return;
+				}
+			}
 
 			idOrder_temp = listOrder.get(listOrder.size() - 1).getID() + 1;
 
@@ -2407,9 +2416,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 			updateTableCartItem();
 			updateTotalPrice();
-
-			textField.setText("");
-			spinner.setValue(1);
 		}
 
 		// làm rỗng field - cartItem
@@ -2717,17 +2723,14 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		if (o.equals(comboBox_3_1_3)) {
 
 			if (comboBox_3_1_3.getSelectedIndex() == 0) {
+				listUsers = usersServiceImpl.getListUsers();
 				updateTableUsers();
 			} else if (comboBox_3_1_3.getSelectedIndex() == 1) {
 				Collections.sort(listUsers, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-				model_Users.setUsers(listUsers);
-				table_5.setModel(model_Users);
-				table_5.updateUI();
+				updateTableUsers();
 			} else if (comboBox_3_1_3.getSelectedIndex() == 2) {
-				Collections.sort(listUsers, (o1, o2) -> (o1.getHireDate().isAfter(o2.getHireDate())) ? -1 : 1);
-				model_Users.setUsers(listUsers);
-				table_5.setModel(model_Users);
-				table_5.updateUI();
+				Collections.sort(listUsers, (o1, o2) -> (o1.getHireDate().isAfter(o2.getHireDate())) ? 1 : -1);
+				updateTableUsers();
 			}
 
 // info
@@ -2759,30 +2762,30 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 					}
 				}
 			}
+		}
 
 // Xuất file xml danh sách sinh viên xml/user.xml
-			if (o.equals(XML)) {
-				String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
-				UsersHandler usersHandler = new UsersHandler();
-				if (location == null) {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"",
-							"Quản Lý Siêu Thị", 2);
-					return;
-				}
-				if (location.strip() == "") {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị",
-							2);
-					return;
-				}
-				try {
-					usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
-					JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \"" + location + "\"",
-							"Quản Lý Siêu Thị", 2);
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị",
-							2);
-				}
-
+		
+		if (o.equals(XML)) {
+			String location = JOptionPane.showInputDialog(this, "File sẽ được lưu ở: ", "Quản Lý Siêu Thị", 1);
+			UsersHandler usersHandler = new UsersHandler();
+			if (location == null) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"không nhập đường dẫn\"",
+						"Quản Lý Siêu Thị", 2);
+				return;
+			}
+			if (location.strip() == "") {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Đường dẫn rỗng\"", "Quản Lý Siêu Thị",
+						2);
+				return;
+			}
+			try {
+				usersHandler.writeUsersXML(usersServiceImpl.getListUsers(), location);
+				JOptionPane.showMessageDialog(this, "File đã được lưu theo đường dẫn \"" + location + "\"",
+						"Quản Lý Siêu Thị", 2);
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(this, "Xuất file thất bại! \"Lỗi đường dẫn\"!", "Quản Lý Siêu Thị",
+						2);
 			}
 		}
 	}
@@ -2798,7 +2801,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	}
 
 	private void updateTableUsers() {
-		listUsers = usersServiceImpl.getListUsers();
 		model_Users.setUsers(listUsers);
 		table_5.setModel(model_Users);
 		table_5.updateUI();
@@ -2811,7 +2813,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	}
 
 	private void updateTableOrder() {
-		listOrder = ordersServiceImpl.getListOrders();
 		model_Order.setOrders(listOrder);
 		table_1.setModel(model_Order);
 		table_1.updateUI();
@@ -2832,14 +2833,12 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 	}
 
 	private void updateTableProduct() {
-		listProduct = productServiceImpl.getListProducts();
 		model_product.setProducts(listProduct);
 		table_3.setModel(model_product);
 		table_3.updateUI();
 	}
 
 	private void updateTableCategory() {
-		listProductCategory = categoriesServiceImpl.getListProductNullCategories();
 		model_category.setProducts(listProductCategory);
 		table_2.setModel(model_category);
 		table_2.updateUI();

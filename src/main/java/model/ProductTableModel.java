@@ -61,7 +61,7 @@ public class ProductTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		if(NAME == columnIndex) return String.class;
+		if(NAME == columnIndex || ID == columnIndex) return String.class;
 		return Integer.class;
 	}
 	

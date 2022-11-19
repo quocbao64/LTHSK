@@ -1,6 +1,8 @@
 package model;
 
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -59,9 +61,9 @@ public class UserTableModel extends AbstractTableModel{
 		case ADDRESS:
 			return u.getAddress();
 		case BIRTHDATE:
-			return u.getBirthDate();
+			return new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(u.getBirthDate()));
 		case HIREDATE:
-			return u.getHireDate();
+			return new SimpleDateFormat("dd/MM/yyyy").format(Date.valueOf(u.getHireDate()));
 		case PASSWORD:
 			return u.getPassword();
 		default:
@@ -72,7 +74,7 @@ public class UserTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		if(NAME == columnIndex || PASSWORD == columnIndex || GMAIL==columnIndex || PHONE == columnIndex || ADDRESS == columnIndex) return String.class;
+		if(NAME == columnIndex || PASSWORD == columnIndex || GMAIL==columnIndex || ADDRESS == columnIndex || ID == columnIndex) return String.class;
 		return Integer.class;
 	}
 	
