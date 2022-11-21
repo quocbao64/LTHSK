@@ -58,7 +58,7 @@ public class CartItemTableModel extends AbstractTableModel{
 	}
 	
 	public Class<?> getColumnClass(int columnIndex) {
-		if(columnIndex==NAME) return String.class;
+		if(columnIndex==NAME || STT==columnIndex) return String.class;
 		return Integer.class;
 	}
 	

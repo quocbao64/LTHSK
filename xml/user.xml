@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UsersList>
+    <users id="1" gender="1">
+        <name>Nguyễn Thị Thảo</name>
+        <gmail>nguyenphuongthao01@gmail.com</gmail>
+        <phone>0902121940</phone>
+        <address>727/942 Trần Hưng Đạo P.1 Quận 5 TP.Hồ Chí Minh</address>
+        <birthDate>1997-02-23</birthDate>
+        <hireDate>2021-06-10</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="2" gender="0">
+        <name>Nguyễn Văn Minh</name>
+        <gmail>trantronghaiminh02@gmail.com</gmail>
+        <phone>0918335697</phone>
+        <address>1333/9 Huỳnh Tấn Phát Quận 7 TP.Hồ Chí Minh</address>
+        <birthDate>1994-08-20</birthDate>
+        <hireDate>2021-04-12</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="3" gender="1">
+        <name>Nguyễn Thị Nhàn</name>
+        <gmail>phamnhan03@gmail.com</gmail>
+        <phone>0302121900</phone>
+        <address>Ân Phong Cầu Giấy TP.Hà Nội</address>
+        <birthDate>1999-03-20</birthDate>
+        <hireDate>2021-02-22</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="4" gender="1">
+        <name>Nguyễn Thị Hương</name>
+        <gmail>buithithuhuong04@gmail.com</gmail>
+        <phone>0802121907</phone>
+        <address>Kp3 P. Tân Thới Hiệp Q12 TP.Hồ Chí Minh</address>
+        <birthDate>1998-03-20</birthDate>
+        <hireDate>2021-12-23</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="5" gender="0">
+        <name>Nguyễn Văn Sang</name>
+        <gmail>nguyenminhsang05@gmail.com</gmail>
+        <phone>0982121915</phone>
+        <address>109/5 Thống Nhất P.16 Q.Gò Vấp TP.Hồ Chí Minh</address>
+        <birthDate>1998-05-11</birthDate>
+        <hireDate>2021-11-12</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="6" gender="1">
+        <name>Nguyễn Thị Trang</name>
+        <gmail>phamthiminhtrang06@gmail.com</gmail>
+        <phone>0302111901</phone>
+        <address>293/150D1 Trường Chinh F14 Quận Tân Bình TP.Hồ Chí Minh</address>
+        <birthDate>1999-02-22</birthDate>
+        <hireDate>2021-04-23</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="7" gender="0">
+        <name>Nguyễn Văn Dũng</name>
+        <gmail>nguyenkhanhdung07@gmail.com</gmail>
+        <phone>0332121900</phone>
+        <address>133/38A Van Than P.8 Q.6 TP.Hồ Chí Minh</address>
+        <birthDate>1995-09-20</birthDate>
+        <hireDate>2021-10-10</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="8" gender="1">
+        <name>Nguyễn Thị Mỹ</name>
+        <gmail>luonglemy08@gmail.com</gmail>
+        <phone>0802121909</phone>
+        <address>N4/2T50 Tô Hiến Thành Q.10 TP.Hồ Chí Minh</address>
+        <birthDate>1997-02-27</birthDate>
+        <hireDate>2021-02-26</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="9" gender="1">
+        <name>Nguyễn Thị Quyên</name>
+        <gmail>nguyenlequyen09@gmail.com</gmail>
+        <phone>0882121960</phone>
+        <address>Ngõ 165 Cầu Giấy TP.Hà Nội</address>
+        <birthDate>1997-06-12</birthDate>
+        <hireDate>2021-12-14</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="10" gender="0">
+        <name>Nguyễn Văn Thiệp</name>
+        <gmail>doanmanhthiet10@gmail.com</gmail>
+        <phone>0302121911</phone>
+        <address>507C Cầu Giấy TP.Hà Nội</address>
+        <birthDate>1996-03-22</birthDate>
+        <hireDate>2021-09-18</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+    <users id="11" gender="0">
+        <name>Huỳnh Quốc Bảo</name>
+        <gmail>bao11@gmail.com</gmail>
+        <phone>0333399988</phone>
+        <address>12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh</address>
+        <birthDate>2002-02-22</birthDate>
+        <hireDate>2021-01-27</hireDate>
+        <role>ROLE_ADMIN</role>
+        <password>pass123</password>
+    </users>
+    <users id="12" gender="0">
+        <name>Nguyễn Văn Sơn</name>
+        <gmail>son12@gmail.com</gmail>
+        <phone>0395906032</phone>
+        <address>12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh</address>
+        <birthDate>2002-02-22</birthDate>
+        <hireDate>2021-01-27</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass12345</password>
+    </users>
+    <users id="13" gender="1">
+        <name>Nguyễn Văn Quý</name>
+        <gmail>quy13@gmail.com</gmail>
+        <phone>0395906045</phone>
+        <address>12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh</address>
+        <birthDate>2002-02-01</birthDate>
+        <hireDate>2021-01-13</hireDate>
+        <role>ROLE_EMPLOYEE</role>
+        <password>pass123</password>
+    </users>
+</UsersList>

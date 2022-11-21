@@ -47,6 +47,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
@@ -85,16 +87,16 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
-	private JTextField textField;
+	private JTable table_tabOrder;
+	private JTextField tfID_tabOrder;
 	private JTextField textField_2;
-	private JTextField textField_29;
-	private JTextField txtHunhQucBo;
-	private JTextField txtBaogmailcom;
-	private JTextField textField_35;
-	private JTextField textField_36;
-	private JTextField txtNam;
-	private JTextField textField_38;
+	private JTextField txtID_tabInfo;
+	private JTextField txtName_tabInfo;
+	private JTextField txtGmail_tabInfo;
+	private JTextField txtDateBirth_tabInfo;
+	private JTextField txtDateHir_tabInfo;
+	private JTextField txtGender_tabInfo;
+	private JTextField txtPhone_tabInfo;
 	private CategoriesServiceImpl categoriesServiceImpl;
 	private List<Product> listProductCategory;
 	private ArrayList<String> comboBoxContent;
@@ -106,24 +108,24 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 	private SuppliersServiceImpl suppliersServiceImpl;
 	private OrdersServiceImpl ordersServiceImpl;
 	private List<Order> listOrder;
-	private JButton btnNewButton_2;
+	private JButton btnAdd_tabOrder;
 	private CartItemServiceImpl cartItemServiceImpl;
 	private List<CartItem> listCartItem;
 	private ArrayList<CartItem> listCartItem_temp;
 	private CartItemTableModel model_CartItem;
-	private JSpinner spinner;
-	private JButton btnNewButton_2_1_1;
-	private JButton btnNewButton_2_1;
-	private JButton btnNewButton_2_1_1_2;
-	private JComboBox comboBox_3_1;
-	private JButton btnNewButton_2_1_1_1;
+	private JSpinner spinnerQuantity_tabOrder;
+	private JButton btnSReset_tabOrder;
+	private JButton btnDel_tabOrder;
+	private JButton btnEdit_tabOrder;
+	private JComboBox comboBoxSort_tabOrder;
+	private JButton btnPay_tabOrder;
 	private int idOrder_temp;
 	private UsersServiceImpl usersServiceImpl;
 	private List<CartItem> listCartItemDel;
 	private List<Users> listUsers;
-	private JButton btnNewButton_2_1_1_1_1_3_1_1_1;
-	private JButton btnNewButton_2_1_1_1_1_3_1_1;
-	private JPasswordField textField_32;
+	private JButton btnShowPass_tabInfo;
+	private JButton btnSave_tabInfo;
+	private JPasswordField tfPassWord_tabInfo;
 	private boolean password = true;
 	private JButton btnOrder;
 	private JButton btnInfo;
@@ -156,7 +158,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					HomeEmploy_gui frame = new HomeEmploy_gui(new Users());
-					
+
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -167,10 +169,11 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
-	 * @throws SQLException 
+	 * 
+	 * @throws SQLException
 	 */
-	public HomeEmploy_gui(Users users) throws SQLException {
-		user = users;
+	public HomeEmploy_gui(Users usersSupper) throws SQLException {
+		user = usersSupper;
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("image\\logo.png"));
 		setTitle("Quản Lý Siêu Thị   |    Huỳnh Quốc Bảo - Nguyễn Văn Sơn");
@@ -256,70 +259,70 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		panel_5.add(panel_7);
 		panel_7.setLayout(null);
 
-		textField = new JTextField();
-		textField.setToolTipText("Nhập mã sản phẩm");
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField.setBounds(10, 10, 175, 32);
-		panel_7.add(textField);
-		textField.setColumns(10);
+		tfID_tabOrder = new JTextField();
+		tfID_tabOrder.setToolTipText("Nhập mã sản phẩm");
+		tfID_tabOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tfID_tabOrder.setBounds(10, 10, 175, 32);
+		panel_7.add(tfID_tabOrder);
+		tfID_tabOrder.setColumns(10);
 
-		spinner = new JSpinner();
-		spinner.setToolTipText("Chọn số lượng");
-		spinner.setModel(new SpinnerNumberModel(1, 1, 1000, 1));
-		spinner.setBounds(195, 10, 43, 32);
-		panel_7.add(spinner);
-		spinner.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		spinnerQuantity_tabOrder = new JSpinner();
+		spinnerQuantity_tabOrder.setToolTipText("Chọn số lượng");
+		spinnerQuantity_tabOrder.setModel(new SpinnerNumberModel(1, 1, 1000, 1));
+		spinnerQuantity_tabOrder.setBounds(195, 10, 43, 32);
+		panel_7.add(spinnerQuantity_tabOrder);
+		spinnerQuantity_tabOrder.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
-		btnNewButton_2 = new JButton("");
-		btnNewButton_2.setToolTipText("Thêm sản phẩm mới vào hóa đơn");
-		btnNewButton_2.setBounds(248, 10, 76, 32);
-		panel_7.add(btnNewButton_2);
-		btnNewButton_2.setBackground(new Color(255, 255, 255));
-		btnNewButton_2.setForeground(Color.BLACK);
-		btnNewButton_2.setIcon(new ImageIcon("image\\add.png"));
-		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2.addActionListener(this);
+		btnAdd_tabOrder = new JButton("");
+		btnAdd_tabOrder.setToolTipText("Thêm sản phẩm mới vào hóa đơn");
+		btnAdd_tabOrder.setBounds(248, 10, 76, 32);
+		panel_7.add(btnAdd_tabOrder);
+		btnAdd_tabOrder.setBackground(new Color(255, 255, 255));
+		btnAdd_tabOrder.setForeground(Color.BLACK);
+		btnAdd_tabOrder.setIcon(new ImageIcon("image\\add.png"));
+		btnAdd_tabOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnAdd_tabOrder.addActionListener(this);
 
 		JPanel panel_7_1 = new JPanel();
 		panel_7_1.setLayout(null);
 		panel_7_1.setBounds(95, 96, 857, 52);
 		panel_5.add(panel_7_1);
 
-		btnNewButton_2_1 = new JButton("  Xóa");
-		btnNewButton_2_1.setIcon(new ImageIcon("image\\delete.png"));
-		btnNewButton_2_1.setForeground(Color.BLACK);
-		btnNewButton_2_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1.setBackground(new Color(255, 255, 255));
-		btnNewButton_2_1.setBounds(36, 10, 169, 32);
-		panel_7_1.add(btnNewButton_2_1);
-		btnNewButton_2_1.addActionListener(this);
+		btnDel_tabOrder = new JButton("  Xóa");
+		btnDel_tabOrder.setIcon(new ImageIcon("image\\delete.png"));
+		btnDel_tabOrder.setForeground(Color.BLACK);
+		btnDel_tabOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnDel_tabOrder.setBackground(new Color(255, 255, 255));
+		btnDel_tabOrder.setBounds(36, 10, 169, 32);
+		panel_7_1.add(btnDel_tabOrder);
+		btnDel_tabOrder.addActionListener(this);
 
-		btnNewButton_2_1_1 = new JButton("  Làm Rỗng");
-		btnNewButton_2_1_1.setIcon(new ImageIcon("image\\clear.png"));
-		btnNewButton_2_1_1.setForeground(Color.BLACK);
-		btnNewButton_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_1.setBackground(Color.WHITE);
-		btnNewButton_2_1_1.setBounds(445, 10, 169, 32);
-		panel_7_1.add(btnNewButton_2_1_1);
-		btnNewButton_2_1_1.addActionListener(this);
+		btnSReset_tabOrder = new JButton("  Làm Rỗng");
+		btnSReset_tabOrder.setIcon(new ImageIcon("image\\clear.png"));
+		btnSReset_tabOrder.setForeground(Color.BLACK);
+		btnSReset_tabOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnSReset_tabOrder.setBackground(Color.WHITE);
+		btnSReset_tabOrder.setBounds(445, 10, 169, 32);
+		panel_7_1.add(btnSReset_tabOrder);
+		btnSReset_tabOrder.addActionListener(this);
 
-		btnNewButton_2_1_1_1 = new JButton("  Thanh Toán");
-		btnNewButton_2_1_1_1.setIcon(new ImageIcon("image\\check-mark.png"));
-		btnNewButton_2_1_1_1.setForeground(Color.BLACK);
-		btnNewButton_2_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_1_1.setBackground(Color.WHITE);
-		btnNewButton_2_1_1_1.setBounds(654, 10, 169, 32);
-		panel_7_1.add(btnNewButton_2_1_1_1);
-		btnNewButton_2_1_1_1.addActionListener(this);
+		btnPay_tabOrder = new JButton("  Thanh Toán");
+		btnPay_tabOrder.setIcon(new ImageIcon("image\\check-mark.png"));
+		btnPay_tabOrder.setForeground(Color.BLACK);
+		btnPay_tabOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnPay_tabOrder.setBackground(Color.WHITE);
+		btnPay_tabOrder.setBounds(654, 10, 169, 32);
+		panel_7_1.add(btnPay_tabOrder);
+		btnPay_tabOrder.addActionListener(this);
 
-		btnNewButton_2_1_1_2 = new JButton("  Chỉnh Sửa");
-		btnNewButton_2_1_1_2.setIcon(new ImageIcon("image\\edit.png"));
-		btnNewButton_2_1_1_2.setForeground(Color.BLACK);
-		btnNewButton_2_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_1_2.setBackground(Color.WHITE);
-		btnNewButton_2_1_1_2.setBounds(245, 10, 156, 32);
-		panel_7_1.add(btnNewButton_2_1_1_2);
-		btnNewButton_2_1_1_2.addActionListener(this);
+		btnEdit_tabOrder = new JButton("  Chỉnh Sửa");
+		btnEdit_tabOrder.setIcon(new ImageIcon("image\\edit.png"));
+		btnEdit_tabOrder.setForeground(Color.BLACK);
+		btnEdit_tabOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnEdit_tabOrder.setBackground(Color.WHITE);
+		btnEdit_tabOrder.setBounds(245, 10, 156, 32);
+		panel_7_1.add(btnEdit_tabOrder);
+		btnEdit_tabOrder.addActionListener(this);
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new TitledBorder(
@@ -342,26 +345,26 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		listCartItem_ID_temp = new ArrayList<Integer>();
 		model_CartItem = new CartItemTableModel(listCartItem_temp, headLine_table);
 
-		table = new JTable(model_CartItem);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		table.setBackground(UIManager.getColor("Button.light"));
-		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		table.setSelectionBackground(new java.awt.Color(255, 255, 204));
+		table_tabOrder = new JTable(model_CartItem);
+		table_tabOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table_tabOrder.setBackground(UIManager.getColor("Button.light"));
+		table_tabOrder.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table_tabOrder.setSelectionBackground(new java.awt.Color(255, 255, 204));
 
-		table.setRowHeight(35);
+		table_tabOrder.setRowHeight(35);
 
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(table_tabOrder);
 
-		table.addMouseListener(new MouseAdapter() {
+		table_tabOrder.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int index = table.getSelectedRow();
+				int index = table_tabOrder.getSelectedRow();
 				updateCom_5(index);
 			}
 
 			private void updateCom_5(int index) {
-				textField.setText(listCartItem_temp.get(index).getProduct().getID() + "");
-				spinner.setValue(listCartItem_temp.get(index).getQuantity());
+				tfID_tabOrder.setText(listCartItem_temp.get(index).getProduct().getID() + "");
+				spinnerQuantity_tabOrder.setValue(listCartItem_temp.get(index).getQuantity());
 			}
 		});
 
@@ -370,12 +373,13 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		lblNewLabel_3_1.setBounds(878, 14, 81, 13);
 		panel_6.add(lblNewLabel_3_1);
 
-		comboBox_3_1 = new JComboBox();
-		comboBox_3_1.setModel(new DefaultComboBoxModel(new String[] { "Không", "Tên sản phẩm", "Số lượng", "Giá" }));
-		comboBox_3_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		comboBox_3_1.setBounds(950, 10, 81, 20);
-		panel_6.add(comboBox_3_1);
-		comboBox_3_1.addActionListener(this);
+		comboBoxSort_tabOrder = new JComboBox();
+		comboBoxSort_tabOrder
+				.setModel(new DefaultComboBoxModel(new String[] { "Không", "Tên sản phẩm", "Số lượng", "Giá" }));
+		comboBoxSort_tabOrder.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		comboBoxSort_tabOrder.setBounds(950, 10, 81, 20);
+		panel_6.add(comboBoxSort_tabOrder);
+		comboBoxSort_tabOrder.addActionListener(this);
 
 		JLabel lblNewLabel = new JLabel("Thanh Toán Hóa Đơn");
 		lblNewLabel.setForeground(new Color(128, 0, 255));
@@ -458,31 +462,31 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_4_1_1.setBounds(78, 49, 97, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_4_1_1);
 
-		textField_29 = new JTextField();
-		textField_29.setText("11");
-		textField_29.setEditable(false);
-		textField_29.setToolTipText("");
-		textField_29.setHorizontalAlignment(SwingConstants.LEFT);
-		textField_29.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_29.setColumns(10);
-		textField_29.setBackground(SystemColor.menu);
-		textField_29.setBounds(185, 49, 309, 32);
-		panel_5_1_2_1_1.add(textField_29);
+		txtID_tabInfo = new JTextField();
+		txtID_tabInfo.setText("11");
+		txtID_tabInfo.setEditable(false);
+		txtID_tabInfo.setToolTipText("");
+		txtID_tabInfo.setHorizontalAlignment(SwingConstants.LEFT);
+		txtID_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtID_tabInfo.setColumns(10);
+		txtID_tabInfo.setBackground(SystemColor.menu);
+		txtID_tabInfo.setBounds(185, 49, 309, 32);
+		panel_5_1_2_1_1.add(txtID_tabInfo);
 
 		JLabel lblNewLabel_1_1_2_1_3 = new JLabel("Tên nhân viên");
 		lblNewLabel_1_1_2_1_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_1_1_2_1_3.setBounds(78, 91, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_3);
 
-		txtHunhQucBo = new JTextField();
-		txtHunhQucBo.setText(users.getName());
-		txtHunhQucBo.setEditable(false);
-		txtHunhQucBo.setToolTipText("");
-		txtHunhQucBo.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtHunhQucBo.setColumns(10);
-		txtHunhQucBo.setBackground(SystemColor.menu);
-		txtHunhQucBo.setBounds(185, 91, 309, 32);
-		panel_5_1_2_1_1.add(txtHunhQucBo);
+		txtName_tabInfo = new JTextField();
+		txtName_tabInfo.setText(user.getName());
+		txtName_tabInfo.setEditable(false);
+		txtName_tabInfo.setToolTipText("");
+		txtName_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtName_tabInfo.setColumns(10);
+		txtName_tabInfo.setBackground(SystemColor.menu);
+		txtName_tabInfo.setBounds(185, 91, 309, 32);
+		panel_5_1_2_1_1.add(txtName_tabInfo);
 
 		JLabel lblNewLabel_1_1_1_1_1_1 = new JLabel("Giới tính");
 		lblNewLabel_1_1_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -494,22 +498,22 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_2_4_1.setBounds(561, 49, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_2_4_1);
 
-		txtBaogmailcom = new JTextField();
-		txtBaogmailcom.setText(users.getGmail());
-		txtBaogmailcom.setEditable(false);
-		txtBaogmailcom.setToolTipText("");
-		txtBaogmailcom.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtBaogmailcom.setColumns(10);
-		txtBaogmailcom.setBackground(SystemColor.menu);
-		txtBaogmailcom.setBounds(679, 49, 309, 32);
-		panel_5_1_2_1_1.add(txtBaogmailcom);
+		txtGmail_tabInfo = new JTextField();
+		txtGmail_tabInfo.setText(user.getGmail());
+		txtGmail_tabInfo.setEditable(false);
+		txtGmail_tabInfo.setToolTipText("");
+		txtGmail_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtGmail_tabInfo.setColumns(10);
+		txtGmail_tabInfo.setBackground(SystemColor.menu);
+		txtGmail_tabInfo.setBounds(679, 49, 309, 32);
+		panel_5_1_2_1_1.add(txtGmail_tabInfo);
 
-		textField_32 = new JPasswordField(users.getPassword());
-		textField_32.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_32.setColumns(10);
-		textField_32.setBackground(SystemColor.menu);
-		textField_32.setBounds(679, 91, 274, 32);
-		panel_5_1_2_1_1.add(textField_32);
+		tfPassWord_tabInfo = new JPasswordField(user.getPassword());
+		tfPassWord_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tfPassWord_tabInfo.setColumns(10);
+		tfPassWord_tabInfo.setBackground(SystemColor.menu);
+		tfPassWord_tabInfo.setBounds(679, 91, 274, 32);
+		panel_5_1_2_1_1.add(tfPassWord_tabInfo);
 
 		JLabel lblNewLabel_1_2_1_3_1 = new JLabel("Password");
 		lblNewLabel_1_2_1_3_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -531,78 +535,80 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		lblNewLabel_1_1_2_1_2_1_1.setBounds(78, 220, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_2_1_1);
 
-		textField_35 = new JTextField();
-		textField_35.setText(users.getBirthDate().toString());
-		textField_35.setEditable(false);
-		textField_35.setToolTipText("");
-		textField_35.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_35.setColumns(10);
-		textField_35.setBackground(SystemColor.menu);
-		textField_35.setBounds(185, 177, 309, 32);
-		panel_5_1_2_1_1.add(textField_35);
+		txtDateBirth_tabInfo = new JTextField();
+		txtDateBirth_tabInfo
+				.setText(new SimpleDateFormat("dd/MM/yyyy").format(java.sql.Date.valueOf(user.getBirthDate())));
+		txtDateBirth_tabInfo.setEditable(false);
+		txtDateBirth_tabInfo.setToolTipText("");
+		txtDateBirth_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtDateBirth_tabInfo.setColumns(10);
+		txtDateBirth_tabInfo.setBackground(SystemColor.menu);
+		txtDateBirth_tabInfo.setBounds(185, 177, 309, 32);
+		panel_5_1_2_1_1.add(txtDateBirth_tabInfo);
 
-		textField_36 = new JTextField();
-		textField_36.setText(users.getHireDate().toString());
-		textField_36.setEditable(false);
-		textField_36.setToolTipText("");
-		textField_36.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_36.setColumns(10);
-		textField_36.setBackground(SystemColor.menu);
-		textField_36.setBounds(185, 220, 309, 32);
-		panel_5_1_2_1_1.add(textField_36);
+		txtDateHir_tabInfo = new JTextField();
+		txtDateHir_tabInfo
+				.setText(new SimpleDateFormat("dd/MM/yyyy").format(java.sql.Date.valueOf(user.getHireDate())));
+		txtDateHir_tabInfo.setEditable(false);
+		txtDateHir_tabInfo.setToolTipText("");
+		txtDateHir_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtDateHir_tabInfo.setColumns(10);
+		txtDateHir_tabInfo.setBackground(SystemColor.menu);
+		txtDateHir_tabInfo.setBounds(185, 220, 309, 32);
+		panel_5_1_2_1_1.add(txtDateHir_tabInfo);
 
-		txtNam = new JTextField();
-		txtNam.setText(users.isGender()==0?"Nam":"Nữ");
-		txtNam.setToolTipText("");
-		txtNam.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtNam.setEditable(false);
-		txtNam.setColumns(10);
-		txtNam.setBackground(SystemColor.menu);
-		txtNam.setBounds(185, 133, 309, 32);
-		panel_5_1_2_1_1.add(txtNam);
+		txtGender_tabInfo = new JTextField();
+		txtGender_tabInfo.setText(user.isGender() == 0 ? "Nam" : "Nữ");
+		txtGender_tabInfo.setToolTipText("");
+		txtGender_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtGender_tabInfo.setEditable(false);
+		txtGender_tabInfo.setColumns(10);
+		txtGender_tabInfo.setBackground(SystemColor.menu);
+		txtGender_tabInfo.setBounds(185, 133, 309, 32);
+		panel_5_1_2_1_1.add(txtGender_tabInfo);
 
 		JLabel lblNewLabel_1_1_2_1_2_1_1_1 = new JLabel("Số điện thoại");
 		lblNewLabel_1_1_2_1_2_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_1_1_2_1_2_1_1_1.setBounds(78, 262, 108, 32);
 		panel_5_1_2_1_1.add(lblNewLabel_1_1_2_1_2_1_1_1);
 
-		textField_38 = new JTextField();
-		textField_38.setText(users.getPhone());
-		textField_38.setToolTipText("");
-		textField_38.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_38.setEditable(false);
-		textField_38.setColumns(10);
-		textField_38.setBackground(SystemColor.menu);
-		textField_38.setBounds(185, 262, 309, 32);
-		panel_5_1_2_1_1.add(textField_38);
+		txtPhone_tabInfo = new JTextField();
+		txtPhone_tabInfo.setText(user.getPhone());
+		txtPhone_tabInfo.setToolTipText("");
+		txtPhone_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtPhone_tabInfo.setEditable(false);
+		txtPhone_tabInfo.setColumns(10);
+		txtPhone_tabInfo.setBackground(SystemColor.menu);
+		txtPhone_tabInfo.setBounds(185, 262, 309, 32);
+		panel_5_1_2_1_1.add(txtPhone_tabInfo);
 
-		JTextPane txtpnNguynVn = new JTextPane();
-		txtpnNguynVn.setText(users.getAddress());
-		txtpnNguynVn.setEditable(false);
-		txtpnNguynVn.setBackground(SystemColor.menu);
-		txtpnNguynVn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtpnNguynVn.setBounds(185, 307, 309, 84);
-		panel_5_1_2_1_1.add(txtpnNguynVn);
+		JTextPane txtAddress_tabInfo = new JTextPane();
+		txtAddress_tabInfo.setText(user.getAddress());
+		txtAddress_tabInfo.setEditable(false);
+		txtAddress_tabInfo.setBackground(SystemColor.menu);
+		txtAddress_tabInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtAddress_tabInfo.setBounds(185, 307, 309, 84);
+		panel_5_1_2_1_1.add(txtAddress_tabInfo);
 
-		btnNewButton_2_1_1_1_1_3_1_1 = new JButton("");
-		btnNewButton_2_1_1_1_1_3_1_1.setIcon(new ImageIcon("image\\save.png"));
-		btnNewButton_2_1_1_1_1_3_1_1.setToolTipText("Cập nhật mật khẩu");
-		btnNewButton_2_1_1_1_1_3_1_1.setForeground(Color.BLACK);
-		btnNewButton_2_1_1_1_1_3_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_1_1_1_3_1_1.setBackground(UIManager.getColor("Button.background"));
-		btnNewButton_2_1_1_1_1_3_1_1.setBounds(936, 133, 52, 32);
-		panel_5_1_2_1_1.add(btnNewButton_2_1_1_1_1_3_1_1);
-		btnNewButton_2_1_1_1_1_3_1_1.addActionListener(this);
+		btnSave_tabInfo = new JButton("");
+		btnSave_tabInfo.setIcon(new ImageIcon("image\\save.png"));
+		btnSave_tabInfo.setToolTipText("Cập nhật mật khẩu");
+		btnSave_tabInfo.setForeground(Color.BLACK);
+		btnSave_tabInfo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnSave_tabInfo.setBackground(UIManager.getColor("Button.background"));
+		btnSave_tabInfo.setBounds(936, 133, 52, 32);
+		panel_5_1_2_1_1.add(btnSave_tabInfo);
+		btnSave_tabInfo.addActionListener(this);
 
-		btnNewButton_2_1_1_1_1_3_1_1_1 = new JButton("");
-		btnNewButton_2_1_1_1_1_3_1_1_1.setIcon(new ImageIcon("image\\password.png"));
-		btnNewButton_2_1_1_1_1_3_1_1_1.setToolTipText("Xem mật khẩu");
-		btnNewButton_2_1_1_1_1_3_1_1_1.setForeground(Color.BLACK);
-		btnNewButton_2_1_1_1_1_3_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton_2_1_1_1_1_3_1_1_1.setBackground(UIManager.getColor("Button.background"));
-		btnNewButton_2_1_1_1_1_3_1_1_1.setBounds(951, 91, 37, 31);
-		panel_5_1_2_1_1.add(btnNewButton_2_1_1_1_1_3_1_1_1);
-		btnNewButton_2_1_1_1_1_3_1_1_1.addActionListener(this);
+		btnShowPass_tabInfo = new JButton("");
+		btnShowPass_tabInfo.setIcon(new ImageIcon("image\\password.png"));
+		btnShowPass_tabInfo.setToolTipText("Xem mật khẩu");
+		btnShowPass_tabInfo.setForeground(Color.BLACK);
+		btnShowPass_tabInfo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnShowPass_tabInfo.setBackground(UIManager.getColor("Button.background"));
+		btnShowPass_tabInfo.setBounds(951, 91, 37, 31);
+		panel_5_1_2_1_1.add(btnShowPass_tabInfo);
+		btnShowPass_tabInfo.addActionListener(this);
 
 		JLabel lblThngTinCa = new JLabel("Thông Tin Của Bạn");
 		lblThngTinCa.setForeground(new Color(128, 0, 255));
@@ -681,14 +687,14 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 //Event Thanh toán hóa đơn	
 
 		// add cartItem vào ds temp
-		if (o.equals(btnNewButton_2)) {
-			if (textField.getText().strip() == "") {
+		if (o.equals(btnAdd_tabOrder)) {
+			if (tfID_tabOrder.getText().strip() == "") {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm vào field", "Quản Lý Siêu Thị", 2);
 				return;
 			}
 			int id;
 			try {
-				id = Integer.parseInt(textField.getText().strip());
+				id = Integer.parseInt(tfID_tabOrder.getText().strip());
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(this, "Mã sản phẩm phải là số nguyên dương", "Quản Lý Siêu Thị", 2);
 				return;
@@ -699,42 +705,40 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 						2);
 				return;
 			}
-			
-			textField.setText("");
-			spinner.setValue(1);
-			
-			for(CartItem c :listCartItem_temp){
-				if(c.getProduct().getID()==product.getID()) {
-					c.setQuantity(c.getQuantity()+Integer.parseInt(spinner.getValue().toString()));
+
+			for (CartItem c : listCartItem_temp) {
+				if (c.getProduct().getID() == product.getID()) {
+					c.setQuantity(c.getQuantity() + Integer.parseInt(spinnerQuantity_tabOrder.getValue().toString()));
 					updateTableCartItem();
 					updateTotalPrice();
 					return;
 				}
 			}
 
-			idOrder_temp = listOrder.get(listOrder.size() - 1).getID() + 1;
+			idOrder_temp = ordersServiceImpl.getListOrders().get(ordersServiceImpl.getListOrders().size() - 1).getID() + 1;
 
 			CartItem cartItem = new CartItem(1, id, new Order(idOrder_temp), product);
-			cartItem.setQuantity(Integer.parseInt(spinner.getValue().toString()));
+			cartItem.setQuantity(Integer.parseInt(spinnerQuantity_tabOrder.getValue().toString()));
 			listCartItem_temp.add(cartItem);
-
+			tfID_tabOrder.setText("");
+			spinnerQuantity_tabOrder.setValue(1);
 			updateTableCartItem();
 			updateTotalPrice();
 		}
 
 		// làm rỗng field - cartItem
-		if (o.equals(btnNewButton_2_1_1)) {
-			textField.setText("");
-			spinner.setValue(1);
+		if (o.equals(btnSReset_tabOrder)) {
+			tfID_tabOrder.setText("");
+			spinnerQuantity_tabOrder.setValue(1);
 		}
 
 		// delete 1 dòng trong ds cartItem_temp
-		if (o.equals(btnNewButton_2_1)) {
-			if (table.getSelectedRow() < 0) {
+		if (o.equals(btnDel_tabOrder)) {
+			if (table_tabOrder.getSelectedRow() < 0) {
 				JOptionPane.showMessageDialog(this, "Mời chọn dòng để xóa", "Quản Lý Siêu Thị", 2);
 				return;
 			}
-			listCartItem_temp.remove(table.getSelectedRow());
+			listCartItem_temp.remove(table_tabOrder.getSelectedRow());
 
 			updateTableCartItem();
 			updateTotalPrice();
@@ -743,33 +747,34 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		}
 
 		// edit cartItem_temp
-		if (o.equals(btnNewButton_2_1_1_2)) {
-			if (table.getSelectedRow() < 0) {
+		if (o.equals(btnEdit_tabOrder)) {
+			if (table_tabOrder.getSelectedRow() < 0) {
 				JOptionPane.showMessageDialog(this, "Mời chọn dòng để xóa", "Quản Lý Siêu Thị", 2);
 				return;
 			}
-			listCartItem_temp.get(table.getSelectedRow())
-					.setProduct(productServiceImpl.searchProduct(Integer.parseInt(textField.getText())));
-			listCartItem_temp.get(table.getSelectedRow()).setQuantity(Integer.parseInt(spinner.getValue().toString()));
+			listCartItem_temp.get(table_tabOrder.getSelectedRow())
+					.setProduct(productServiceImpl.searchProduct(Integer.parseInt(tfID_tabOrder.getText())));
+			listCartItem_temp.get(table_tabOrder.getSelectedRow())
+					.setQuantity(Integer.parseInt(spinnerQuantity_tabOrder.getValue().toString()));
 
 			updateTableCartItem();
 			updateTotalPrice();
 
-			textField.setText("");
-			spinner.setValue(1);
+			tfID_tabOrder.setText("");
+			spinnerQuantity_tabOrder.setValue(1);
 			JOptionPane.showMessageDialog(this, "Sửa thành công", "Quản Lý Siêu Thị", 1);
 		}
 
 		// sort cartItem_temp
-		if (o.equals(comboBox_3_1)) {
+		if (o.equals(comboBoxSort_tabOrder)) {
 
-			if (comboBox_3_1.getSelectedIndex() == 0) {
+			if (comboBoxSort_tabOrder.getSelectedIndex() == 0) {
 				updateTableCartItem();
-			} else if (comboBox_3_1.getSelectedIndex() == 1) {
+			} else if (comboBoxSort_tabOrder.getSelectedIndex() == 1) {
 				Collections.sort(listCartItem_temp,
 						(o1, o2) -> o1.getProduct().getName().compareTo(o2.getProduct().getName()));
 				updateTableCartItem();
-			} else if (comboBox_3_1.getSelectedIndex() == 2) {
+			} else if (comboBoxSort_tabOrder.getSelectedIndex() == 2) {
 				Collections.sort(listCartItem_temp, (o1, o2) -> (o1.getQuantity() > o2.getQuantity()) ? -1 : 1);
 				updateTableCartItem();
 			} else {
@@ -780,7 +785,7 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 		}
 
 		// Thanh toán - add cartItem
-		if (o.equals(btnNewButton_2_1_1_1)) {
+		if (o.equals(btnPay_tabOrder)) {
 			if (listCartItem_temp.size() == 0) {
 				JOptionPane.showMessageDialog(this, "Hóa đơn rỗng", "Quản Lý Siêu Thị", 2);
 				return;
@@ -788,14 +793,13 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 			int i = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán", "Quản Lý Siêu Thị", 2);
 			if (i == 0) {
 				try {
-					int cartItemID = listCartItem.get(listCartItem.size() - 1).getID() + 1;
+					int cartItemID = cartItemServiceImpl.getListCartItem().get(cartItemServiceImpl.getListCartItem().size() - 1).getID() + 1;
 
 					double totalPrice = 0;
 					for (CartItem c : listCartItem_temp)
 						totalPrice += c.getQuantity() * Double.parseDouble(c.getProduct().getPrice().toString());
 
-					Order order = new Order(idOrder_temp, LocalDate.now(), BigDecimal.valueOf(totalPrice), 0.0,
-							user);
+					Order order = new Order(idOrder_temp, LocalDate.now(), BigDecimal.valueOf(totalPrice), 0.0, user);
 					ordersServiceImpl.addOrders(order);
 
 					for (CartItem c : listCartItem_temp) {
@@ -811,8 +815,8 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 					updateTableCartItem();
 					updateTotalPrice();
 
-					textField.setText("");
-					spinner.setValue(1);
+					tfID_tabOrder.setText("");
+					spinnerQuantity_tabOrder.setValue(1);
 					textField_2.setText("");
 
 				} catch (Exception e2) {
@@ -826,33 +830,41 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 // info
 		// show password
-		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1_1)) {
+		if (o.equals(btnShowPass_tabInfo)) {
 			if (password) {
-				textField_32.setEchoChar((char) 0);
+				tfPassWord_tabInfo.setEchoChar((char) 0);
 				password = false;
 				return;
 			}
-			textField_32.setEchoChar('•');
+			tfPassWord_tabInfo.setEchoChar('•');
 			password = true;
 		}
 
 		// save password
-		if (o.equals(btnNewButton_2_1_1_1_1_3_1_1)) {
+		if (o.equals(btnSave_tabInfo)) {
+			if (tfPassWord_tabInfo.getText().strip() == "") {
+				JOptionPane.showMessageDialog(this, "Mật khẩu rỗng!", "Quản Lý Siêu Thị", 2);
+				return;
+			}
 
+			String patternPassword = "^(?=.*[A-Za-z0-9]).{6,}$";
+			if (!checkRegex(patternPassword, tfPassWord_tabInfo.getText().strip())) {
+				JOptionPane.showMessageDialog(this, "Thêm thất bại: Password không đúng định dạng", "Quản Lý Siêu Thị",
+						2);
+				return;
+			}
 			int i = JOptionPane.showConfirmDialog(this, "Xác nhận đổi mật khẩu", "Quản Lý Siêu Thị", 2);
-
 			if (i == 0) {
 				try {
-					user.setPassword(textField_32.getText());
+					user.setPassword(tfPassWord_tabInfo.getText());
 					usersServiceImpl.updateUsers(user);
-					textField_32.setEchoChar('•');
+					tfPassWord_tabInfo.setEchoChar('•');
 					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Quản Lý Siêu Thị", 1);
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại", "Quản Lý Siêu Thị", 2);
 				}
 			}
 		}
-			
 
 	}
 
@@ -866,7 +878,14 @@ public class HomeEmploy_gui extends JFrame implements ActionListener {
 
 	private void updateTableCartItem() {
 		model_CartItem.setCartItems(listCartItem_temp);
-		table.setModel(model_CartItem);
-		table.updateUI();
+		table_tabOrder.setModel(model_CartItem);
+		table_tabOrder.updateUI();
 	}
+
+	private boolean checkRegex(String pattern, String str) {
+		Pattern r = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		Matcher m = r.matcher(str);
+		return m.find();
+	}
+
 }

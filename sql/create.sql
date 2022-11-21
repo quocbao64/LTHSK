@@ -7,7 +7,7 @@ USE QLST
 GO
 CREATE TABLE Users(
 	ID int PRIMARY KEY NOT NULL,
-	Name NVARCHAR(30) NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
 	Gender BIT,
 	Gmail VARCHAR(50) NOT NULL,
 	Phone VARCHAR(10) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE Users(
 	BirthDate DATE,
 	HireDate DATE,
 	Role VARCHAR(20) NOT NULL,
-	Password VARCHAR(20) NOT NULL
+	Password VARCHAR(100) NOT NULL
 )
 
 GO
@@ -30,16 +30,16 @@ CREATE TABLE Orders(
 GO
 CREATE TABLE Categories(
 	ID int PRIMARY KEY NOT NULL,
-	Name NVARCHAR(100) NOT NULL,
+	Name NVARCHAR(150) NOT NULL,
 )
 
 GO
 CREATE TABLE Suppliers(
 	ID int PRIMARY KEY NOT NULL,
-	Name NVARCHAR(100) NOT NULL,
+	Name NVARCHAR(150) NOT NULL,
 	Gmail VARCHAR(50),
 	Phone VARCHAR(10) NOT NULL,
-	Address NVARCHAR(150)
+	Address NVARCHAR(200)
 )
 
 GO
@@ -64,21 +64,20 @@ CREATE TABLE CartItem(
 -- Nam: 1, Nu:0
 GO
 INSERT INTO [dbo].[Users]([ID],[Name],[Gender],[Gmail],[Phone],[Address],[BirthDate],[HireDate],[Role],[Password]) VALUES
-			(1,N'Nguyễn Phương Thảo',1,'nguyenphuongthao01@gmail.com','0902121940',N'727/942 Trần Hưng Đạo P.1 Quận 5 TP.Hồ Chí Minh','1997-2-23','2021-6-10','ROLE_EMPLOYEE','pass123'),
-			(2,N'Trần Trọng Hải Minh',0,'trantronghaiminh02@gmail.com','0918335697',N'1333/9 Huỳnh Tấn Phát Quận 7 TP.Hồ Chí Minh','1994-8-20','2021-4-12','ROLE_EMPLOYEE','pass123'),
-			(3,N'Phạm Nhàn',1,'phamnhan03@gmail.com','0302121900',N'Ân Phong Cầu Giấy TP.Hà Nội','1999-3-20','2021-2-22','ROLE_EMPLOYEE','pass123'),
-			(4,N'Bùi Thị Hương Thu',1,'buithithuhuong04@gmail.com','0802121907',N'Kp3 P. Tân Thới Hiệp Q12 TP.Hồ Chí Minh','1998-3-20','2021-12-23','ROLE_EMPLOYEE','pass123'),
-			(5,N'Nguyễn Minh Sang',0,'nguyenminhsang05@gmail.com','0982121915',N'109/5 Thống Nhất P.16 Q.Gò Vấp TP.Hồ Chí Minh','1998-5-11','2021-11-12','ROLE_EMPLOYEE','pass123'),
-			(6,N'Phạm Thị Minh Trang',1,'phamthiminhtrang06@gmail.com','0302111901',N'293/150D1 Trường Chinh F14 Quận Tân Bình TP.Hồ Chí Minh','1999-2-22','2021-4-23','ROLE_EMPLOYEE','pass123'),
-			(7,N'Nguyễn Khánh Dũng',0,'nguyenkhanhdung07@gmail.com','0332121900',N'133/38A Van Than P.8 Q.6 TP.Hồ Chí Minh','1995-9-20','2021-10-10','ROLE_EMPLOYEE','pass123'),
-			(8,N'Lương Lệ Mỹ',1,'luonglemy08@gmail.com','0802121909',N'N4/2T50 Tô Hiến Thành Q.10 TP.Hồ Chí Minh','1997-2-27','2021-2-26','ROLE_EMPLOYEE','pass123'),
-			(9,N'Nguyễn Lệ Quyên',1,'nguyenlequyen09@gmail.com','0882121960',N'Ngõ 165 Cầu Giấy TP.Hà Nội','1997-6-12','2021-12-14','ROLE_EMPLOYEE','pass123'),
-			(10,N'Đoàn Mạnh Thiệp',0,'doanmanhthiet10@gmail.com','0302121911',N'507C Cầu Giấy TP.Hà Nội','1996-3-22','2021-9-18','ROLE_EMPLOYEE','pass123'),
+			(1,N'Nguyễn Thị Thảo',1,'nguyenphuongthao01@gmail.com','0902121940',N'727/942 Trần Hưng Đạo P.1 Quận 5 TP.Hồ Chí Minh','1997-2-23','2021-6-10','ROLE_EMPLOYEE','pass123'),
+			(2,N'Nguyễn Văn Minh',0,'trantronghaiminh02@gmail.com','0918335697',N'1333/9 Huỳnh Tấn Phát Quận 7 TP.Hồ Chí Minh','1994-8-20','2021-4-12','ROLE_EMPLOYEE','pass123'),
+			(3,N'Nguyễn Thị Nhàn',1,'phamnhan03@gmail.com','0302121900',N'Ân Phong Cầu Giấy TP.Hà Nội','1999-3-20','2021-2-22','ROLE_EMPLOYEE','pass123'),
+			(4,N'Nguyễn Thị Hương',1,'buithithuhuong04@gmail.com','0802121907',N'Kp3 P. Tân Thới Hiệp Q12 TP.Hồ Chí Minh','1998-3-20','2021-12-23','ROLE_EMPLOYEE','pass123'),
+			(5,N'Nguyễn Văn Sang',0,'nguyenminhsang05@gmail.com','0982121915',N'109/5 Thống Nhất P.16 Q.Gò Vấp TP.Hồ Chí Minh','1998-5-11','2021-11-12','ROLE_EMPLOYEE','pass123'),
+			(6,N'Nguyễn Thị Trang',1,'phamthiminhtrang06@gmail.com','0302111901',N'293/150D1 Trường Chinh F14 Quận Tân Bình TP.Hồ Chí Minh','1999-2-22','2021-4-23','ROLE_EMPLOYEE','pass123'),
+			(7,N'Nguyễn Văn Dũng',0,'nguyenkhanhdung07@gmail.com','0332121900',N'133/38A Van Than P.8 Q.6 TP.Hồ Chí Minh','1995-9-20','2021-10-10','ROLE_EMPLOYEE','pass123'),
+			(8,N'Nguyễn Thị Mỹ',1,'luonglemy08@gmail.com','0802121909',N'N4/2T50 Tô Hiến Thành Q.10 TP.Hồ Chí Minh','1997-2-27','2021-2-26','ROLE_EMPLOYEE','pass123'),
+			(9,N'Nguyễn Thị Quyên',1,'nguyenlequyen09@gmail.com','0882121960',N'Ngõ 165 Cầu Giấy TP.Hà Nội','1997-6-12','2021-12-14','ROLE_EMPLOYEE','pass123'),
+			(10,N'Nguyễn Văn Thiệp',0,'doanmanhthiet10@gmail.com','0302121911',N'507C Cầu Giấy TP.Hà Nội','1996-3-22','2021-9-18','ROLE_EMPLOYEE','pass123'),
 			(11,N'Huỳnh Quốc Bảo',0,'bao11@gmail.com','0333399988',N'12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh','2002-2-22','2021-1-27','ROLE_ADMIN','pass123'),
 			(12,N'Nguyễn Văn Sơn',0,'son12@gmail.com', '0395906032',N'12 Nguyễn văn bảo p4 gò vấp TP.Hồ Chí Minh','2002-2-22','2021-1-27','ROLE_EMPLOYEE','pass123')
 
 
--- discount = 0, cô hỏi thì bảo là ko có chương trình giảm giá 
 GO
 INSERT INTO [dbo].[Orders]([ID],[OrderDate],[TotalPrice],[DisCount],[UsersID]) VALUES
            (1001,'2022-11-10',100000,0,12),
@@ -189,7 +188,6 @@ INSERT INTO [dbo].[CartItem]([ID],[Quantity],[OrdersID],[ProductID]) VALUES
 		   (10031,2,1015,23),
 		   (10032,2,1015,24),
 		   (10033,1,1015,25)
-
 
 go
 select * from Users
