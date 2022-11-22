@@ -147,7 +147,6 @@ public class Login_gui extends JFrame implements ActionListener {
 			try {
 				users = usersServiceImpl.searchUsersByGmail(tfGmail.getText().strip());
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -163,9 +162,8 @@ public class Login_gui extends JFrame implements ActionListener {
 			if(users.getRole().compareTo("ROLE_ADMIN")==0) {
 				this.setVisible(false);
 				try {
-					new HomeAdmin_gui().setVisible(true);
+					new HomeAdmin_gui(users).setVisible(true);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -174,7 +172,6 @@ public class Login_gui extends JFrame implements ActionListener {
 				try {
 					new HomeEmploy_gui(users).setVisible(true);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

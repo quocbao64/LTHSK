@@ -2,10 +2,12 @@ package entity;
 
 import java.time.LocalDate;
 
+import handler.UsersHandler;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -13,9 +15,12 @@ public class Users {
 	@XmlAttribute(required = true)
 	private int ID;
 	private String name;
+	@XmlAttribute()
 	private int gender;
 	private String gmail, phone, address;
+	@XmlJavaTypeAdapter(value = UsersHandler.class)
 	private LocalDate birthDate;
+	@XmlJavaTypeAdapter(value = UsersHandler.class)
 	private LocalDate hireDate;
 	private String role, password;
 	

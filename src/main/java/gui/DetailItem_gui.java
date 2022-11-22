@@ -178,7 +178,7 @@ public class DetailItem_gui extends JFrame implements ActionListener {
 		btnClose = new JButton("  Hoàn thành");
 		btnClose.setIcon(new ImageIcon("image\\check-mark.png"));
 		btnClose.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnClose.setBackground(SystemColor.menu);
+		btnClose.setBackground(UIManager.getColor("Button.background"));
 		btnClose.setBounds(302, 306, 174, 30);
 		contentPane.add(btnClose);
 		btnClose.addActionListener(this);
