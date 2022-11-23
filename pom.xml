@@ -5,6 +5,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>LTHSK_QuanLySieuThi</name>
 	<description>LTHSK_QuanLySieuThi</description>
+	<properties>
+	  <sonar.organization>quocbao64</sonar.organization>
+	  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
