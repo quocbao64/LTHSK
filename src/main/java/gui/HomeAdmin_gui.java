@@ -335,7 +335,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// Service
+// Service
 		categoriesServiceImpl = new CategoriesServiceImpl(ConnectDB.getInstance().getConnection());
 		productServiceImpl = new ProductServiceImpl(ConnectDB.getInstance().getConnection());
 		suppliersServiceImpl = new SuppliersServiceImpl(ConnectDB.getInstance().getConnection());
@@ -343,8 +343,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		cartItemServiceImpl = new CartItemServiceImpl(ConnectDB.getInstance().getConnection());
 		usersServiceImpl = new UsersServiceImpl(ConnectDB.getInstance().getConnection());
 
-		// List cartItem
-
+// List cartItem
 		listProductCategory = categoriesServiceImpl.getListProductNullCategories();
 		listProduct = productServiceImpl.getListProducts();
 		listOrder = ordersServiceImpl.getListOrders();
@@ -788,7 +787,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		tfIDProduct_tabBill.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		tfIDProduct_tabBill.setColumns(10);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Mã nhân viên");
+		JLabel lblNewLabel_1_1 = new JLabel("Tên nhân viên");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_1_1.setBounds(47, 76, 108, 32);
 		panel_5_1.add(lblNewLabel_1_1);
@@ -895,7 +894,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 
 			private void updateCom_4(int index) {
 				tfIDProduct_tabBill.setText(listOrder.get(index).getID() + "");
-				tfIDUser_tabBill.setText(listOrder.get(index).getUsers().getID() + "");
+				tfIDUser_tabBill.setText(listOrder.get(index).getUsers().getName() + "");
 				tfTotalPrice_tabBill.setText(listOrder.get(index).getTotalPrice() + "");
 				tfDiscout_tabBill.setText(listOrder.get(index).getDiscount() + "");
 				dateOrder_tabBill.setDate(java.sql.Date.valueOf(listOrder.get(index).getOrderDate()));
@@ -2663,7 +2662,6 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 		}
 
 // event Users
-
 		// rỗng field
 		if (o.equals(btnReset_tabUser)) {
 			tfSearch_tabUser.setText("");
@@ -2934,7 +2932,7 @@ public class HomeAdmin_gui extends JFrame implements ActionListener {
 			return false;
 		}
 		String patternEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
-		String patternPhone = "([\\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\\b";
+		String patternPhone = "^(03|05|07|08|09|01)+([0-9]{8})";
 		String patternPassword = "^(?=.*[A-Za-z0-9]).{6,}$";
 
 		if (!checkRegex(patternEmail, tfGmail_tabUser.getText().strip())) {

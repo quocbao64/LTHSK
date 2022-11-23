@@ -47,9 +47,9 @@ public class ProductTableModel extends AbstractTableModel{
 		case NAME:
 			return p.getName();
 		case SUPPLIERSID:
-			return p.getSuppliers().getID();
+			return p.getSuppliers().getName();
 		case CATEGORYID:
-			return p.getCategories().getID();
+			return p.getCategories().getName();
 		case PRICE:
 			return String.format("%,.0f", p.getPrice()) + " ₫";
 			
